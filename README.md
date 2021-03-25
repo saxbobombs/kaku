@@ -1,24 +1,19 @@
-# vuepixelart
+# pixelart
 
-## Project setup
-```
-npm install
-```
+draw something
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## used technologies
 
-### Compiles and minifies for production
-```
-npm run build
-```
+* vue.js 3
+* tiny-emitter
+* core-js
 
-### Lints and fixes files
-```
-npm run lint
-```
+## dev
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+* run `npm install` once
+* run `npm run serve`
+* open http://localhost:8080/
+
+## build
+
+* run `npm run build`

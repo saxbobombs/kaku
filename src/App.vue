@@ -1,15 +1,19 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>PixelArt</h1>
+    
+    <PixelArtControls />
+    <PixelArtCanvas />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import PixelArtControls from './components/PixelArtControls.vue'
+import PixelArtCanvas from './components/PixelArtCanvas.vue'
 
 export default {
-  name: 'App',
+  name: 'PixelArt',
   components: {
-    HelloWorld
+    PixelArtControls,
+    PixelArtCanvas,
   }
 }
 </script>
