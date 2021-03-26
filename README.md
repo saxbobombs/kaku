@@ -7,6 +7,9 @@ draw something
 * vue.js 3
 * tiny-emitter
 * core-js
+* Bootstrap
+* jQuery
+* Popper.js
 
 ## dev
 

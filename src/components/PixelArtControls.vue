@@ -9,14 +9,14 @@
 			</ul>
 			<ul class="drawmode">
 				<li v-for="m in drawModes" :key="m.index">
-					<button type="button" v-on:click="chooseDrawMode(m.value)" :title="m.name">
+					<button type="button" class="btn btn-primary" v-on:click="chooseDrawMode(m.value)" :title="m.name">
 						{{ m.name }}
 					</button>
 				</li>
 			</ul>
 			<ul class="gridSize">
 				<li v-for="g in gridSizes" :key="g.index">
-					<button type="button" v-on:click="chooseGridSize(g.value)" :title="g.name">
+					<button type="button" class="btn btn-primary" v-on:click="chooseGridSize(g.value)" :title="g.name">
 						{{ g.name }}
 					</button>
 				</li>
