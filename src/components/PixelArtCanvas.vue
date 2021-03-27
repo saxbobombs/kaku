@@ -47,8 +47,9 @@ export default {
 	methods: {
 		draw: function(pEvent){
 			const _me = this,
-				_canvasPosX = _me.$refs.canvas.offsetLeft,
-				_canvasPosY = _me.$refs.canvas.offsetTop;
+				_canvasBoundingClientRect = _me.$refs.canvas.getBoundingClientRect(), // to get the position relative to viewport
+				_canvasPosX = _canvasBoundingClientRect.left,
+				_canvasPosY = _canvasBoundingClientRect.top;
 
 			const _gridItem = PixelArtLib.getGridItemFromPosition(pEvent.clientX - _canvasPosX, pEvent.clientY - _canvasPosY);
 			if(_gridItem){
