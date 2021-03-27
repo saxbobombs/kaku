@@ -28,6 +28,10 @@ export default {
 			_me.gridSize = pGridSize;
 			PixelArtLib.setGridSize(pGridSize);
 		});
+		
+		EventBus.$on('downloadImage', function(){
+			PixelArtLib.downloadImage('pixelart_img');
+		});
 	},
 
 	data() {

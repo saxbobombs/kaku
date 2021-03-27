@@ -124,6 +124,17 @@ const getGridItemFromPosition = function(pPosX, pPosY){
 	return null;
 }
 
+const downloadImage = function(pFileName){
+	var link = document.createElement('a');
+
+	var _data = canvasEl.toDataURL('image/png');
+	link.href = _data.replace(/^data:image\/[^;]/, 'data:application/octet-stream');
+	link.download = pFileName + '.png';
+
+	link.click();
+
+}
+
 const applyColor = function(pDrawMode, pColorCode, pGridStartItem){
 	switch(pDrawMode){
 		case 'simple': 
@@ -161,5 +172,6 @@ export default {
     init: init,
 	setGridSize: setGridSize,
 	getGridItemFromPosition: getGridItemFromPosition,
-	applyColor: applyColor
+	applyColor: applyColor,
+	downloadImage: downloadImage
 }

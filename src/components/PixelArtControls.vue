@@ -22,6 +22,8 @@
 				</li>
 			</ul>
 
+			<button class="btn btn-primary" v-on:click="downloadImage"><i class="fas fa-file-download"></i> Download</button>
+
 			{{colorToUse}}
 		</fieldset>
 </template>
@@ -78,6 +80,9 @@ export default {
 		},
 		chooseGridSize: function(pGridSize){
 			EventBus.$emit("changeGridSize", pGridSize);
+		},
+		downloadImage: function(){
+			EventBus.$emit("downloadImage");
 		}
 	}
 }
