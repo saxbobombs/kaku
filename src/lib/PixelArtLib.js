@@ -3,9 +3,9 @@ let gridMap = {},
 	gridSize = 8;
 
 // config
-let gridItemSize = 20,
-	gridItemDefaultBgColor = '#ddd',
-	gridItemDefaultBorderColor = '#000';
+let gridItemSize = 8,
+	gridItemDefaultBgColor = '#eee',
+	gridItemDefaultBorderColor = '#333';
 
 /**
  * generate the grid

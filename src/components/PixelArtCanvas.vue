@@ -42,7 +42,7 @@ export default {
 
 	data() {
 		return {
-			colorToUse: '#f00',
+			colorToUse: '#27AF60',
 			drawMode: 'simple',
 			gridSize: 8
 		}
