@@ -10,9 +10,6 @@
 <script>
 import PixelArtControls from './components/PixelArtControls.vue'
 import PixelArtCanvas from './components/PixelArtCanvas.vue'
-import './../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import './../node_modules/bootstrap/dist/js/bootstrap.min.js';
-import './../node_modules/@fortawesome/fontawesome-free/css/all.min.css';
 
 export default {
   name: 'PixelArt',

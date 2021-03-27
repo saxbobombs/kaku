@@ -2,29 +2,27 @@
 		<fieldset>
 			<ul class="colors">
 				<li v-for="c in colors" :key="c.index">
-					<button type="button" v-on:click="chooseColor(c.value)" :style="'background:#' + c.value" :title="c.name">
+					<b-button v-on:click="chooseColor(c.value)" :style="'background:#' + c.value" :title="c.name">
 						<span>{{ c.name }}</span>
-					</button>
+					</b-button>
 				</li>
 			</ul>
 			<ul class="drawmode">
 				<li v-for="m in drawModes" :key="m.index">
-					<button type="button" class="btn btn-primary" v-on:click="chooseDrawMode(m.value)" :title="m.name">
+					<b-button v-on:click="chooseDrawMode(m.value)" :title="m.name">
 						<i :class="'fas ' + m.icon " aria-hidden="true"></i>
-					</button>
+					</b-button>
 				</li>
 			</ul>
 			<ul class="gridSize">
 				<li v-for="g in gridSizes" :key="g.index">
-					<button type="button" class="btn btn-primary" v-on:click="chooseGridSize(g.value)" :title="g.name">
+					<b-button v-on:click="chooseGridSize(g.value)" :title="g.name">
 						{{ g.name }}
-					</button>
+					</b-button>
 				</li>
 			</ul>
 
-			<button class="btn btn-primary" v-on:click="downloadImage"><i class="fas fa-file-download"></i> Download</button>
-
-			{{colorToUse}}
+			<b-button v-on:click="downloadImage"><i class="fas fa-file-download"></i> Download</b-button>
 		</fieldset>
 </template>
 

@@ -4,12 +4,9 @@ draw something
 
 ## used technologies
 
-* vue.js 2
-* tiny-emitter
-* core-js
+* Vue.js 2
 * Bootstrap
-* jQuery
-* Popper.js
+* BootstrapVue
 
 ## dev
 
