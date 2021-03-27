@@ -1,10 +1,10 @@
 <template>
 <div>
-	<ul>
+	<ul class="control-container">
 		<li>
-			<b-dropdown class="pa-ctrl-btn rounded-0" dropright>
+			<b-dropdown class="control-button">
 				<template #button-content>
-					<i class="fas fa-th"></i> ({{gridSize}})
+					<i class="fas fa-th"></i>
 				</template>
 				<b-dropdown-item v-for="g in gridSizes" :key="g.index" v-on:click="chooseGridSize(g.value)" :title="g.name">
 					{{ g.name }}
@@ -20,33 +20,41 @@
 			
 		</li>
 		<li>
-			<b-form-radio-group class="pa-ctrl-btn" buttons v-model="drawMode" v-on:change="chooseDrawMode">
+			<b-form-radio-group class="control-button drawmode" buttons v-model="drawMode" v-on:change="chooseDrawMode">
 				<template v-for="option in drawModes">
-					<b-form-radio :value="option.value" :key="option.text">
-						<i :class="'fas '+option.icon "></i> {{ option.text }}
+					<b-form-radio :value="option.value" :key="option.index" >
+						<i :class="'fas '+option.icon "></i>
 					</b-form-radio>
 				</template>
 			</b-form-radio-group>
 
 		</li>
-		<li>
-			<b-button class="pa-ctrl-btn" href="#" v-on:click="downloadImage()">
+		<li class="right">
+			<b-button class="control-button" href="#" v-on:click="downloadImage()">
 				<i class="fas fa-file-download"></i> Download
 			</b-button>
 		</li>
-	</ul>
-  
+	</ul>  
 </div>
 </template>
 
 <script>
+
 import EventBus from "./../utils/EventBus";
+import VSwatches from "vue-swatches"
+import "vue-swatches/dist/vue-swatches.css"
 
 export default {
 	name: 'PixelArtControls',
+		components: {
+			VSwatches
+		},
 
 		mounted(){
 			var _me = this;
+
+			// var colorPicker = new Iro.ColorPicker('#picker');
+			// console.log(colorPicker);
 
 			EventBus.$on('setConfigDefaults', function(pDefaults){
 				_me.gridSize = pDefaults.gridSize;
@@ -80,22 +88,31 @@ export default {
 					icon: 'fa-pencil-alt'
 				}],
 				gridSizes: [{
-					name: '8',
+					name: '8x8',
 					value: 8
 				},{
-					name: '12',
+					name: '12x12',
 					value: 12
 				},{
-					name: '16',
+					name: '16x16',
 					value: 16
 				},{
-					name: '32',
+					name: '32x32',
 					value: 32
 				}],
 		}
 	},
 
 	methods: {
+		swatches: function(){
+			console.log(arguments);
+		},
+
+		openColorPicker: function(){
+			var _me = this;
+			_me.$refs['color-picker-modal'].show()
+		},
+
 		chooseColor: function(pColor){
 			EventBus.$emit("changeColor", pColor);
 			this.colorToUse = pColor;
@@ -117,22 +134,30 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-	ul{
+	.control-container{
 		width:100%;
 		list-style:none;
 		padding:0;
+		margin:0;
 	}
-	li{
+	.control-container>li{
 		margin-bottom:4px;
+		margin-right:4px;
+		display: inline-block;
 	}
-	.pa-ctrl-btn{
-		width:100%;
+		
+	.color-preview{
+		display:inline-block;
+		width:2em;
+		height:1.5em;
+		border:1px solid;
+		vertical-align: top;
 	}
 
-	.color{
-		display:inline-block;
-		width:1em;
-		height:1em;
-		border:1px solid;
+</style>
+
+<style>
+	.input-group.color-picker input{
+		flex:1;
 	}
 </style>

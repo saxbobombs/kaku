@@ -1,18 +1,15 @@
 <template>
     <div id="app">
-      <h1>PixelArt</h1>
-
       <b-container>
-        <b-row>
-          <b-col sm="3">
-            <PixelArtControls />
-          </b-col>
-          <b-col>
+        <h1>PixelArt</h1>
+        
+        <div class="control-container">
+          <PixelArtControls />
+        </div>
         <div class="canvas-container">
           <PixelArtCanvas />
         </div>
-          </b-col>
-        </b-row>
+        
       </b-container>
     </div>
 </template>
@@ -32,14 +29,28 @@ export default {
 </script>
 
 <style>
+html{
+  background:#eee;
+}
+
 #app{
   padding:10px;
+  background:#eee;
+}
+
+.control-container{
+  background:#eee;
+  
 }
 .canvas-container{
-		background:#eee;
+		background:#fff;
 		padding:10px;
-    padding-top:50px;
 		box-shadow:0 0 4px #aaa inset;
 		margin:0 auto;
-	}
+    overflow:auto;
+}
+.canvas-container canvas{
+  display:block;
+  margin:0 auto;
+}
 </style>

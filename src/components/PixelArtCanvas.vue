@@ -1,7 +1,5 @@
 <template>
-	<div>
-		<canvas ref="canvas" v-on:click="draw($event)" v-on:mousedown="initLine($event)" width="0" height="0"></canvas>
-	</div>
+	<canvas ref="canvas" v-on:click="draw($event)" v-on:mousedown="initLine($event)" width="0" height="0"></canvas>
 </template>
 
 <script>
