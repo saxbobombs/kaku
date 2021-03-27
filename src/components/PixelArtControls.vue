@@ -46,6 +46,16 @@ import EventBus from "./../utils/EventBus";
 
 export default {
 	name: 'PixelArtControls',
+
+		mounted(){
+			var _me = this;
+
+			EventBus.$on('setConfigDefaults', function(pDefaults){
+				_me.gridSize = pDefaults.gridSize;
+				_me.colorToUse = pDefaults.colorToUse;
+				_me.drawMode = pDefaults.drawMode;
+			});
+		},
 	
 		data() {
 			return {

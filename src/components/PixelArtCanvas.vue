@@ -18,6 +18,12 @@ export default {
 		PixelArtLib.init(_me.$refs.canvas);
 		PixelArtLib.setGridSize(_me.gridSize);
 
+		EventBus.$emit('setConfigDefaults', {
+			gridSize: _me.gridSize,
+			colorToUse: _me.colorToUse,
+			drawMode: _me.drawMode
+		});
+
 		EventBus.$on('changeColor', function(pColorCode){
 			_me.colorToUse = pColorCode;
 		});
