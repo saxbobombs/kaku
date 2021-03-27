@@ -133,6 +133,7 @@ const getGridItemFromPosition = function(pPosX, pPosY){
 
 const downloadImage = function(pFileName){
 	var link = document.createElement('a');
+	// console.log('sad');
 
 	var _data = canvasEl.toDataURL('image/png');
 	link.href = _data.replace(/^data:image\/[^;]/, 'data:application/octet-stream');

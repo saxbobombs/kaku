@@ -1,13 +1,26 @@
 <template>
     <div id="app">
-        <h1>PixelArt</h1>
         
-        <PixelArtControls />
-        <PixelArtCanvas />
+        
+      <h1>PixelArt</h1>
+
+      <b-container>
+        <b-row>
+          <b-col sm="3">
+            <PixelArtControls />
+          </b-col>
+          <b-col>
+        <div class="canvas-container">
+          <PixelArtCanvas />
+        </div>
+          </b-col>
+        </b-row>
+      </b-container>
     </div>
 </template>
 
 <script>
+
 import PixelArtControls from './components/PixelArtControls.vue'
 import PixelArtCanvas from './components/PixelArtCanvas.vue'
 
@@ -21,12 +34,14 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+#app{
+  padding:10px;
 }
+.canvas-container{
+		background:#eee;
+		padding:10px;
+    padding-top:50px;
+		box-shadow:0 0 4px #aaa inset;
+		margin:0 auto;
+	}
 </style>

@@ -1,5 +1,7 @@
 <template>
-  <canvas ref="canvas" v-on:click="draw($event)" v-on:mousedown="initLine($event)" width="0" height="0"></canvas>
+	<div>
+		<canvas ref="canvas" v-on:click="draw($event)" v-on:mousedown="initLine($event)" width="0" height="0"></canvas>
+	</div>
 </template>
 
 <script>
@@ -74,7 +76,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-canvas{
-  box-shadow: 0 0 2px red;
-}
+
 </style>

@@ -1,29 +1,44 @@
 <template>
-		<fieldset>
-			<ul class="colors">
-				<li v-for="c in colors" :key="c.index">
+<div>
+	<ul>
+		<li>
+			<b-dropdown class="pa-ctrl-btn rounded-0" dropright>
+				<template #button-content>
+					<i class="fas fa-th"></i> ({{gridSize}})
+				</template>
+				<b-dropdown-item v-for="g in gridSizes" :key="g.index" v-on:click="chooseGridSize(g.value)" :title="g.name">
+					{{ g.name }}
+				</b-dropdown-item>
+			</b-dropdown>
+		</li>
+		<li>
+			<b-dropdown class="pa-ctrl-btn" dropright>
+				<template #button-content>
+					<i class="fas fa-palette"></i>
+				</template>
+				<b-dropdown-item v-for="c in colors" :key="c.index">
 					<b-button v-on:click="chooseColor(c.value)" :style="'background:#' + c.value" :title="c.name">
 						<span>{{ c.name }}</span>
 					</b-button>
-				</li>
-			</ul>
-			<ul class="drawmode">
-				<li v-for="m in drawModes" :key="m.index">
-					<b-button v-on:click="chooseDrawMode(m.value)" :title="m.name">
-						<i :class="'fas ' + m.icon " aria-hidden="true"></i>
-					</b-button>
-				</li>
-			</ul>
-			<ul class="gridSize">
-				<li v-for="g in gridSizes" :key="g.index">
-					<b-button v-on:click="chooseGridSize(g.value)" :title="g.name">
-						{{ g.name }}
-					</b-button>
-				</li>
-			</ul>
+				</b-dropdown-item>
+			</b-dropdown>
+		</li>
+		<li>
+			<b-button-group class="pa-ctrl-btn">
+				<b-button v-for="m in drawModes" :key="m.index" v-on:click="chooseDrawMode(m.value)" :title="m.name">
+					<i :class="'fas ' + m.icon " aria-hidden="true"></i>
+				</b-button>
+			</b-button-group>
 
-			<b-button v-on:click="downloadImage"><i class="fas fa-file-download"></i> Download</b-button>
-		</fieldset>
+		</li>
+		<li>
+			<b-button class="pa-ctrl-btn" href="#" v-on:click="downloadImage()">
+				<i class="fas fa-file-download"></i> Download
+			</b-button>
+		</li>
+	</ul>
+  
+</div>
 </template>
 
 <script>
@@ -33,7 +48,8 @@ export default {
 	name: 'PixelArtControls',
 	
 		data() {
-			return {		
+			return {
+				gridSize: 8,
 				colors: [{
 					name: 'rot',
 					value: 'f00'
@@ -65,7 +81,7 @@ export default {
 				},{
 					name: '32',
 					value: 32
-				}]
+				}],
 		}
 	},
 
@@ -77,6 +93,7 @@ export default {
 			EventBus.$emit("changeDrawMode", pDrawMode);
 		},
 		chooseGridSize: function(pGridSize){
+			this.gridSize = pGridSize;
 			EventBus.$emit("changeGridSize", pGridSize);
 		},
 		downloadImage: function(){
@@ -88,28 +105,15 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-fieldset{
-	display:inline-block;
-	vertical-align:top;
-}
-button span{
-	display:none;
-}
-
-.colors{
-	list-style:none;
-	margin:0;
-	padding:0;
-}
-.colors li{
-	display:inline-block;
-}
-.colors button{
-		margin:1px;
-		border:1px solid #000;
-		width:10px;
-		height:10px;
+	ul{
+		width:100%;
+		list-style:none;
 		padding:0;
-}
+	}
+	li{
+		margin-bottom:4px;
+	}
+	.pa-ctrl-btn{
+		width:100%;
+	}
 </style>
