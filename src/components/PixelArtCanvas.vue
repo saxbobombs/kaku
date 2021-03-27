@@ -1,5 +1,5 @@
 <template>
-  <canvas ref="canvas" v-on:click="draw($event)" width="0" height="0"></canvas>
+  <canvas ref="canvas" v-on:click="draw($event)" v-on:mousedown="initLine($event)" width="0" height="0"></canvas>
 </template>
 
 <script>
@@ -52,6 +52,21 @@ export default {
 			if(_gridItem){
 				PixelArtLib.applyColor(_me.drawMode, _me.colorToUse, _gridItem);
 			}
+		},
+
+		initLine: function(){
+			var _me = this;
+
+			var _mouseUp = function(){
+				window.removeEventListener('mouseup', _mouseUp);
+				window.removeEventListener('mousemove', _mouseMove);
+			}
+			var _mouseMove = function(pEvent){
+				_me.draw(pEvent);
+
+			}
+			window.addEventListener('mouseup', _mouseUp);
+			window.addEventListener('mousemove', _mouseMove);
 		}
 	}
 }
