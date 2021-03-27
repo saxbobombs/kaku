@@ -1,8 +1,10 @@
 <template>
-    <h1>PixelArt</h1>
-    
-    <PixelArtControls />
-    <PixelArtCanvas />
+    <div id="app">
+        <h1>PixelArt</h1>
+        
+        <PixelArtControls />
+        <PixelArtCanvas />
+    </div>
 </template>
 
 <script>

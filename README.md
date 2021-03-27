@@ -4,7 +4,7 @@ draw something
 
 ## used technologies
 
-* vue.js 3
+* vue.js 2
 * tiny-emitter
 * core-js
 * Bootstrap
