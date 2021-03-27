@@ -29,9 +29,14 @@
 
 		</li>
 		<li class="right">
-			<b-button class="control-button" href="#" v-on:click="downloadImage()" variant="light">
-				<i class="fas fa-file-download"></i> Download
-			</b-button>
+			<b-dropdown variant="light" class="control-button">
+				<template #button-content>
+					<i class="fas fa-file-download"></i> Download
+				</template>
+				<b-dropdown-item v-on:click="downloadImage('png')">PNG</b-dropdown-item>
+				<b-dropdown-item v-on:click="downloadImage('jpg')">JPG</b-dropdown-item>
+				<b-dropdown-item v-on:click="downloadImage('gif')">GIF</b-dropdown-item>
+			</b-dropdown>
 		</li>
 	</ul>  
 </div>
@@ -124,8 +129,8 @@ export default {
 			this.gridSize = pGridSize;
 			EventBus.$emit("changeGridSize", pGridSize);
 		},
-		downloadImage: function(){
-			EventBus.$emit("downloadImage");
+		downloadImage: function(pImageType){
+			EventBus.$emit("downloadImage", pImageType);
 		}
 	}
 }
@@ -170,31 +175,30 @@ export default {
 		display:inline-block;
 		padding-left:15px;
 		padding-right:10px;
-		border-top:1px solid;
-		border-bottom:1px solid;
 	}
 	.btn-group label{
-		border-left:0;
-		border-right:0;
+		border:0;
 	}
 	.btn-group{
 		border-left:1px solid;
 		border-right:1px solid;
 	}
 
+	.control-button{
+		border-top:1px solid;
+		border-bottom:1px solid;
+	}
+
 	.grid-size-container .group-label,
 	.control-button,
+	.control-button .dropdown-toggle,
 	.btn-group label{
 		color:#218838 !important;
-		border-color:#fff;
 		border-color:#28a745 !important;
 		background:#f8f9fa;
 		border-radius:0;
 		box-shadow:none !important;
 		
-		/* background:#28a745;
-		border-color:#28a745;
-		border-radius:0; */
 	}
 	.btn-group label:hover{
 		background:#ddd !important;
@@ -220,5 +224,9 @@ export default {
 	.vue-swatches__container,
 	.vue-swatches__swatch{
 		border-radius:0 !important;
+	}
+
+	.control-button button{
+		color:#218838 !important;
 	}
 </style>

@@ -35,8 +35,8 @@ export default {
 			PixelArtLib.setGridSize(pGridSize);
 		});
 		
-		EventBus.$on('downloadImage', function(){
-			PixelArtLib.downloadImage('pixelart_img');
+		EventBus.$on('downloadImage', function(pImageType){
+			PixelArtLib.downloadImage('pixelart_img', pImageType);
 		});
 	},
 
