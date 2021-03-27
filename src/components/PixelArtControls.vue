@@ -10,7 +10,7 @@
 			<ul class="drawmode">
 				<li v-for="m in drawModes" :key="m.index">
 					<button type="button" class="btn btn-primary" v-on:click="chooseDrawMode(m.value)" :title="m.name">
-						{{ m.name }}
+						<i :class="'fas ' + m.icon " aria-hidden="true"></i>
 					</button>
 				</li>
 			</ul>
@@ -46,10 +46,12 @@ export default {
 				}],
 				drawModes: [{
 					value: 'floodfill',
-					name: 'Floodfill'
+					name: 'Floodfill',
+					icon: 'fa-fill-drip'
 				},{
 					value: 'simple',
-					name: 'Dot'
+					name: 'Dot',
+					icon: 'fa-pencil-alt'
 				}],
 				gridSizes: [{
 					name: '8',
