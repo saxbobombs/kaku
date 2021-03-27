@@ -14,7 +14,7 @@
 		<li>
 			<b-dropdown class="pa-ctrl-btn" dropright>
 				<template #button-content>
-					<i class="fas fa-palette"></i>
+					<i class="fas fa-palette"></i> <span class="color" :style="'background:#' + colorToUse"></span>
 				</template>
 				<b-dropdown-item v-for="c in colors" :key="c.index">
 					<b-button v-on:click="chooseColor(c.value)" :style="'background:#' + c.value" :title="c.name">
@@ -50,6 +50,7 @@ export default {
 		data() {
 			return {
 				gridSize: 8,
+				colorToUse: null,
 				colors: [{
 					name: 'rot',
 					value: 'f00'
@@ -88,6 +89,8 @@ export default {
 	methods: {
 		chooseColor: function(pColor){
 			EventBus.$emit("changeColor", pColor);
+			this.colorToUse = pColor;
+
 		},
 		chooseDrawMode: function(pDrawMode){
 			EventBus.$emit("changeDrawMode", pDrawMode);
@@ -115,5 +118,12 @@ export default {
 	}
 	.pa-ctrl-btn{
 		width:100%;
+	}
+
+	.color{
+		display:inline-block;
+		width:1em;
+		height:1em;
+		border:1px solid;
 	}
 </style>
