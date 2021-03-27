@@ -24,11 +24,13 @@
 			</b-dropdown>
 		</li>
 		<li>
-			<b-button-group class="pa-ctrl-btn">
-				<b-button v-for="m in drawModes" :key="m.index" v-on:click="chooseDrawMode(m.value)" :title="m.name">
-					<i :class="'fas ' + m.icon " aria-hidden="true"></i>
-				</b-button>
-			</b-button-group>
+			<b-form-radio-group class="pa-ctrl-btn" buttons v-model="drawMode" v-on:change="chooseDrawMode">
+				<template v-for="option in drawModes">
+					<b-form-radio :value="option.value" :key="option.text">
+						<i :class="'fas '+option.icon "></i> {{ option.text }}
+					</b-form-radio>
+				</template>
+			</b-form-radio-group>
 
 		</li>
 		<li>
@@ -59,8 +61,9 @@ export default {
 	
 		data() {
 			return {
-				gridSize: 8,
+				gridSize: null,
 				colorToUse: null,
+				drawMode: null,
 				colors: [{
 					name: 'rot',
 					value: 'f00'
@@ -73,11 +76,11 @@ export default {
 				}],
 				drawModes: [{
 					value: 'floodfill',
-					name: 'Floodfill',
+					text: 'Floodfill',
 					icon: 'fa-fill-drip'
 				},{
 					value: 'simple',
-					name: 'Dot',
+					text: 'Pencil',
 					icon: 'fa-pencil-alt'
 				}],
 				gridSizes: [{

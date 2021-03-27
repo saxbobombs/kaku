@@ -1,7 +1,5 @@
 <template>
     <div id="app">
-        
-        
       <h1>PixelArt</h1>
 
       <b-container>
