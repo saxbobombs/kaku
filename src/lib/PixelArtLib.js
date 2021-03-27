@@ -68,38 +68,45 @@ const _drawGrid = function(){
 	}	
 }
 
+/**
+ * use floodfill algorithm to fill the grid.
+ * 
+ * recursively check every neighbouring griditem with the same color and recolor it.
+ *  
+ * @param {string} pColorToUse 
+ * @param {string} pColorToOverride 
+ * @param {object} pGridStartItem 
+ */
 function _applyFloodFill(pColorToUse, pColorToOverride, pGridStartItem){
+	// already colored, ignore
 	if(pGridStartItem.bgcolor === pColorToUse){
 		return;
 	}
+	// recolor the griditem
 	if(pGridStartItem.bgcolor === pColorToOverride){
 		pGridStartItem.bgcolor = pColorToUse;
 	}
+
+	// check the neighbours
 	var _x = pGridStartItem.coordX,
 		_y = pGridStartItem.coordY;
-	// oberer Nachbar
-	var _oberer = gridMap[_x + ':' + (_y - 1)];
-	
-	if(_oberer && _oberer.bgcolor === pColorToOverride){
-		_applyFloodFill(pColorToUse, pColorToOverride, _oberer);
-	}
-	
-	var _linker = gridMap[(_x - 1) + ':' + _y];
-	
-	if(_linker && _linker.bgcolor === pColorToOverride){
-		_applyFloodFill(pColorToUse, pColorToOverride, _linker);
-	}
 
-	var _rechter = gridMap[(_x + 1) + ':' + _y];
-	
-	if(_rechter && _rechter.bgcolor === pColorToOverride){
-		_applyFloodFill(pColorToUse, pColorToOverride, _rechter);
-	}
+	var _neighbourKeys = [
+		[(_x - 1) + ':' + _y], // left
+		[(_x - 1) + ':' + (_y - 1)], // top left
+		[_x + ':' + (_y - 1)], // top
+		[(_x + 1) + ':' + (_y - 1)], // top right
+		[(_x + 1) + ':' + _y], // right
+		[(_x + 1) + ':' + (_y + 1)], // bottom right
+		[_x + ':' + (_y + 1)], // bottom
+		[(_x - 1) + ':' + (_y + 1)], // bottom left
+	];
 
-	var _unterer = gridMap[_x + ':' + (_y + 1)];
-	
-	if(_unterer && _unterer.bgcolor === pColorToOverride){
-		_applyFloodFill(pColorToUse, pColorToOverride, _unterer);
+	for(var _i = 0; _i < _neighbourKeys.length; _i++){
+		var _gridItem = gridMap[_neighbourKeys[_i]];
+		if(_gridItem && _gridItem.bgcolor === pColorToOverride){
+			_applyFloodFill(pColorToUse, pColorToOverride, _gridItem);
+		}
 	}
 }
 
