@@ -4,8 +4,8 @@ let gridMap = {},
 
 // config
 let gridItemSize = 20,
-	gridItemDefaultBgColor = 'ddd',
-	gridItemDefaultBorderColor = '000';
+	gridItemDefaultBgColor = '#ddd',
+	gridItemDefaultBorderColor = '#000';
 
 /**
  * generate the grid
@@ -61,8 +61,8 @@ const _drawGrid = function(){
 		_context.lineTo(_posX + _lineFix, _posY + _lineFix);
 		_context.closePath();
 	
-		_context.strokeStyle = '#' + _gridItem.bordercolor;
-		_context.fillStyle = '#' + _gridItem.bgcolor;
+		_context.strokeStyle = _gridItem.bordercolor;
+		_context.fillStyle = _gridItem.bgcolor;
 		_context.fill();
 		_context.stroke();
 	}	

@@ -5,6 +5,7 @@ draw something
 ## used technologies
 
 * Vue.js 2
+* Vue swatches
 * Bootstrap
 * BootstrapVue
 

@@ -12,16 +12,12 @@
 			</b-dropdown>
 		</li>
 		<li>
-			<b-dropdown class="pa-ctrl-btn" dropright>
-				<template #button-content>
-					<i class="fas fa-palette"></i> <span class="color" :style="'background:#' + colorToUse"></span>
-				</template>
-				<b-dropdown-item v-for="c in colors" :key="c.index">
-					<b-button v-on:click="chooseColor(c.value)" :style="'background:#' + c.value" :title="c.name">
-						<span>{{ c.name }}</span>
-					</b-button>
-				</b-dropdown-item>
-			</b-dropdown>
+			<v-swatches row-length="5" v-model="colorToUse" v-on:input="chooseColor">
+				<b-button class="control-button" slot="trigger">
+					<i class="fas fa-palette"></i> <span class="color-preview" :style="'background:' + colorToUse"></span>
+				</b-button>
+			</v-swatches>
+			
 		</li>
 		<li>
 			<b-form-radio-group class="pa-ctrl-btn" buttons v-model="drawMode" v-on:change="chooseDrawMode">

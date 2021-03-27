@@ -44,7 +44,7 @@ export default {
 
 	data() {
 		return {
-			colorToUse: 'f00',
+			colorToUse: '#f00',
 			drawMode: 'simple',
 			gridSize: 8
 		}
