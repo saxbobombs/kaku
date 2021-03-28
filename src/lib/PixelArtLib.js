@@ -143,9 +143,14 @@ const downloadImage = function(pFileName, pImageType){
 }
 
 const applyColor = function(pDrawMode, pColorCode, pGridStartItem){
+	let _redraw = true;
 	switch(pDrawMode){
 		case 'simple': 
-		pGridStartItem.bgcolor = pColorCode;
+		if(pGridStartItem.bgcolor === pColorCode){
+			_redraw = false;
+		}else{
+			pGridStartItem.bgcolor = pColorCode;
+		}
 		break;
 		case 'floodfill': 
 			_applyFloodFill(pColorCode, pGridStartItem.bgcolor, pGridStartItem);
@@ -153,7 +158,9 @@ const applyColor = function(pDrawMode, pColorCode, pGridStartItem){
 		default: console.warn('unbekannter drawmode ' + pDrawMode);
 	}
 
-	_drawGrid();
+	if(_redraw){
+		_drawGrid();
+	}
 }
 
 const setGridSize = function(pGridSize){
