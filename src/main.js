@@ -9,5 +9,5 @@ import './../node_modules/@fortawesome/fontawesome-free/css/all.min.css';
 Vue.use(BootstrapVue)
 
 new Vue({
-  render: h => h(App),
+	render: h => h(App),
 }).$mount('#app')

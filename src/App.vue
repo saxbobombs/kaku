@@ -1,107 +1,110 @@
 <template>
-    <div id="app">
-      <div id="header">
-        <b-container>
-          <h1><img src="@/assets/pixelart_img.png" alt=""> PixelArt</h1>
-          <p>draw something</p>
-        </b-container>
-      </div>
+  <div id="app">
+    <div id="header">
       <b-container>
-        <b-toast class="browser-comp" ref="browser-comp" static title="browser compatibility" no-auto-hide>
-          please use a modern browser to avoid unexpected behavior.
-        </b-toast>
-        <div class="control-container">
-          <PixelArtControls />
-        </div>
-        <div class="canvas-container">
-          <PixelArtCanvas />
-        </div>
-        
+        <h1><img src="@/assets/pixelart_img.png" alt="" /> PixelArt</h1>
+        <p>draw something</p>
       </b-container>
     </div>
+    <b-container>
+      <b-toast
+        class="browser-comp"
+        ref="browser-comp"
+        static
+        title="browser compatibility"
+        no-auto-hide
+      >
+        please use a modern browser to avoid unexpected behavior.
+      </b-toast>
+      <div class="control-container">
+        <PixelArtControls />
+      </div>
+      <div class="canvas-container">
+        <PixelArtCanvas />
+      </div>
+    </b-container>
+  </div>
 </template>
 
 <script>
-
-import PixelArtControls from './components/PixelArtControls.vue'
-import PixelArtCanvas from './components/PixelArtCanvas.vue'
-import Utils from './utils/Utils';
+import PixelArtControls from "./components/PixelArtControls.vue";
+import PixelArtCanvas from "./components/PixelArtCanvas.vue";
+import Utils from "./utils/Utils";
 
 export default {
-  name: 'PixelArt',
+  name: "PixelArt",
   components: {
     PixelArtControls,
     PixelArtCanvas,
   },
 
-  mounted(){
+  mounted() {
     var _me = this;
 
     // check browser
-    if(!Utils.browserIsCompatible()){
-      _me.$refs['browser-comp'].show();
+    if (!Utils.browserIsCompatible()) {
+      _me.$refs["browser-comp"].show();
     }
-  }
-}
+  },
+};
 </script>
 
 <style>
-html{
-  background:#efefef;
+html {
+  background: #efefef;
 }
-body{
-  color:#218838 !important;
+body {
+  color: #218838 !important;
 }
-#header h1{
-  border-bottom:1px solid;
-  margin:0;
+#header h1 {
+  border-bottom: 1px solid;
+  margin: 0;
 }
-#header h1 img{
+#header h1 img {
   vertical-align: top;
-  display:inline-block;
-  margin-top:8px;
+  display: inline-block;
+  margin-top: 8px;
 }
-#header p{
-  margin:0;
-}
-
-#app{
-  padding:10px;
-  background:#efefef;
-}
-#header{
-  background:#fff;
-  margin:-15px;
-  padding-top:15px;
-  padding-bottom:15px;
-  margin-bottom:10px;
-  border:1px solid #fff;
-  box-shadow:0 0 4px #444 inset;
+#header p {
+  margin: 0;
 }
 
-.canvas-container{
-		background:#fff;
-    border:1px solid #fff;
-		padding:10px;
-		box-shadow:0 0 4px #444 inset;
-		margin:0 auto;
-    overflow:auto;
+#app {
+  padding: 10px;
+  background: #efefef;
 }
-.canvas-container canvas{
-  display:block;
-  margin:0 auto;
+#header {
+  background: #fff;
+  margin: -15px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  margin-bottom: 10px;
+  border: 1px solid #fff;
+  box-shadow: 0 0 4px #444 inset;
 }
 
-.browser-comp{
-  border-radius:0 !important;
-  max-width:none !important;
-  color:#444;
+.canvas-container {
+  background: #fff;
+  border: 1px solid #fff;
+  padding: 10px;
+  box-shadow: 0 0 4px #444 inset;
+  margin: 0 auto;
+  overflow: auto;
 }
-.browser-comp .toast{
-  box-shadow:none !important;
-  border-radius:0 !important;
-  width:100% !important;
-  max-width:none !important;
-  
+.canvas-container canvas {
+  display: block;
+  margin: 0 auto;
+}
+
+.browser-comp {
+  border-radius: 0 !important;
+  max-width: none !important;
+  color: #444;
+}
+.browser-comp .toast {
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
 }
 </style>

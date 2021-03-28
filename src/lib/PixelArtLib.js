@@ -1,6 +1,6 @@
 /**
  * PixelArtLib
- * 
+ *
  * library for canvas manipulations
  */
 
@@ -19,51 +19,51 @@ let gridItemSize = 8, // width & height of grid item
 /**
  * calculate the grid
  */
-const _generateGrid = function(){
-    var _x = 0;
-    var _y = 0;
+const _generateGrid = function () {
+	var _x = 0;
+	var _y = 0;
 
 	gridMap = {};
 
-    for(var i = 0; i < gridItemsHorizontal * gridItemsVertical; i++){
-        if(_x >= gridItemsHorizontal){
-            _x = 0;
-            _y++;
-        }
+	for (var i = 0; i < gridItemsHorizontal * gridItemsVertical; i++) {
+		if (_x >= gridItemsHorizontal) {
+			_x = 0;
+			_y++;
+		}
 
-        gridMap[_x + ':' + _y] = {
-            index: i,
-            bgcolor: gridItemDefaultBgColor,
-            bordercolor: gridItemDefaultBorderColor,
-            coordX: _x,
-            coordY: _y
-        };
+		gridMap[_x + ':' + _y] = {
+			index: i,
+			bgcolor: gridItemDefaultBgColor,
+			bordercolor: gridItemDefaultBorderColor,
+			coordX: _x,
+			coordY: _y
+		};
 
-        _x++;
-    }
+		_x++;
+	}
 }
 
 /**
  * draw the grid
  */
-const _drawGrid = function(){
+const _drawGrid = function () {
 	const _context = canvasEl.getContext('2d');
-	
-	// always redraw everything
-	_context.clearRect(0,0, canvasEl.width, canvasEl.height);
 
-	for(let _key in gridMap){
+	// always redraw everything
+	_context.clearRect(0, 0, canvasEl.width, canvasEl.height);
+
+	for (let _key in gridMap) {
 		var _gridItem = gridMap[_key],
 			_posX = (_gridItem.coordX * gridItemSize),
 			_posY = (_gridItem.coordY * gridItemSize);
 
 		_gridItem.posX = _posX;
 		_gridItem.posY = _posY;
-	
+
 		// for lines to to be 1px wide, this fix is needed
 		// details: https://stackoverflow.com/questions/7530593/html5-canvas-and-line-width/7531540#7531540
 		var _lineFix = 0.5;
-		
+
 		_context.beginPath();
 		_context.moveTo(_posX + _lineFix, _posY + _lineFix);
 		_context.lineTo(_posX + gridItemSize + _lineFix, _posY + _lineFix);
@@ -71,30 +71,30 @@ const _drawGrid = function(){
 		_context.lineTo(_posX + _lineFix, _posY + gridItemSize + _lineFix);
 		_context.lineTo(_posX + _lineFix, _posY + _lineFix);
 		_context.closePath();
-	
+
 		_context.strokeStyle = _gridItem.bordercolor;
 		_context.fillStyle = _gridItem.bgcolor;
 		_context.fill();
 		_context.stroke();
-	}	
+	}
 }
 
 /**
  * use floodfill algorithm to fill the grid.
- * 
+ *
  * recursively check every neighbouring griditem with the same color and recolor it.
- *  
- * @param {string} pColorToUse 
- * @param {string} pColorToOverride 
- * @param {object} pGridStartItem 
+ *
+ * @param {string} pColorToUse
+ * @param {string} pColorToOverride
+ * @param {object} pGridStartItem
  */
-function _applyFloodFill(pColorToUse, pColorToOverride, pGridStartItem){
+function _applyFloodFill(pColorToUse, pColorToOverride, pGridStartItem) {
 	// already colored, ignore
-	if(pGridStartItem.bgcolor === pColorToUse){
+	if (pGridStartItem.bgcolor === pColorToUse) {
 		return;
 	}
 	// recolor the griditem
-	if(pGridStartItem.bgcolor === pColorToOverride){
+	if (pGridStartItem.bgcolor === pColorToOverride) {
 		pGridStartItem.bgcolor = pColorToUse;
 	}
 
@@ -113,9 +113,9 @@ function _applyFloodFill(pColorToUse, pColorToOverride, pGridStartItem){
 		[(_x - 1) + ':' + (_y + 1)], // bottom left
 	];
 
-	for(var _i = 0; _i < _neighbourKeys.length; _i++){
+	for (var _i = 0; _i < _neighbourKeys.length; _i++) {
 		var _gridItem = gridMap[_neighbourKeys[_i]];
-		if(_gridItem && _gridItem.bgcolor === pColorToOverride){
+		if (_gridItem && _gridItem.bgcolor === pColorToOverride) {
 			_applyFloodFill(pColorToUse, pColorToOverride, _gridItem);
 		}
 	}
@@ -123,18 +123,18 @@ function _applyFloodFill(pColorToUse, pColorToOverride, pGridStartItem){
 
 /**
  * get grid item via pos
- * 
- * @param {number} pPosX 
- * @param {number} pPosY 
+ *
+ * @param {number} pPosX
+ * @param {number} pPosY
  */
-const getGridItemFromPosition = function(pPosX, pPosY){
-	for(var _key in gridMap){
+const getGridItemFromPosition = function (pPosX, pPosY) {
+	for (var _key in gridMap) {
 		var _gridItem = gridMap[_key];
 
 		// +1/-1, damit bei margin auch bei klick auf border gefärbt wird
-		if(_gridItem.posX < pPosX + 1 && _gridItem.posX + gridItemSize > pPosX - 1 &&
+		if (_gridItem.posX < pPosX + 1 && _gridItem.posX + gridItemSize > pPosX - 1 &&
 			_gridItem.posY < pPosY + 1 && _gridItem.posY + gridItemSize > pPosY - 1
-		){
+		) {
 			return _gridItem;
 		}
 	}
@@ -144,48 +144,48 @@ const getGridItemFromPosition = function(pPosX, pPosY){
 
 /**
  * generate a download request
- * 
- * @param {string} pFileName 
- * @param {string} pImageType 
+ *
+ * @param {string} pFileName
+ * @param {string} pImageType
  */
-const downloadImage = function(pFileName, pImageType){
-	DownloadJs(canvasEl.toDataURL('image/'+pImageType), pFileName + '.' + pImageType, 'image/' + pImageType);
+const downloadImage = function (pFileName, pImageType) {
+	DownloadJs(canvasEl.toDataURL('image/' + pImageType), pFileName + '.' + pImageType, 'image/' + pImageType);
 }
 
 /**
  * color the selected grid item in desired color and drawmode
- * 
- * @param {string} pDrawMode 
- * @param {string} pColorCode 
- * @param {object} pGridStartItem 
+ *
+ * @param {string} pDrawMode
+ * @param {string} pColorCode
+ * @param {object} pGridStartItem
  */
-const applyDrawMode = function(pDrawMode, pColorCode, pGridStartItem){
+const applyDrawMode = function (pDrawMode, pColorCode, pGridStartItem) {
 	let _redraw = true;
-	switch(pDrawMode){
-		case 'simple': 
-		if(pGridStartItem.bgcolor === pColorCode){
-			_redraw = false;
-		}else{
-			pGridStartItem.bgcolor = pColorCode;
-		}
-		break;
-		case 'floodfill': 
+	switch (pDrawMode) {
+		case 'simple':
+			if (pGridStartItem.bgcolor === pColorCode) {
+				_redraw = false;
+			} else {
+				pGridStartItem.bgcolor = pColorCode;
+			}
+			break;
+		case 'floodfill':
 			_applyFloodFill(pColorCode, pGridStartItem.bgcolor, pGridStartItem);
-		break;
+			break;
 		default: console.warn('unbekannter drawmode ' + pDrawMode);
 	}
 
-	if(_redraw){
+	if (_redraw) {
 		_drawGrid();
 	}
 }
 
 /**
  * redraw the grid in desired size
- * 
- * @param {int} pGridSize 
+ *
+ * @param {int} pGridSize
  */
-const setGridSize = function(pGridSize){
+const setGridSize = function (pGridSize) {
 	gridItemsHorizontal = pGridSize;
 	gridItemsVertical = pGridSize;
 
@@ -199,16 +199,16 @@ const setGridSize = function(pGridSize){
 
 /**
  * init the canvas
- * 
- * @param {<canvas>} pCanvas 
+ *
+ * @param {<canvas>} pCanvas
  */
-const init = function(pCanvas){
-    canvasEl = pCanvas;
+const init = function (pCanvas) {
+	canvasEl = pCanvas;
 }
 
 // API
 export default {
-    init: init,
+	init: init,
 	setGridSize: setGridSize,
 	getGridItemFromPosition: getGridItemFromPosition,
 	applyDrawMode: applyDrawMode,

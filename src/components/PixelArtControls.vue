@@ -38,7 +38,7 @@
 				<b-dropdown-item v-on:click="downloadImage('gif')">GIF</b-dropdown-item>
 			</b-dropdown>
 		</li>
-	</ul>  
+	</ul>
 </div>
 </template>
 
@@ -66,7 +66,7 @@ export default {
 				_me.drawMode = pDefaults.drawMode;
 			});
 		},
-	
+
 		data() {
 			return {
 				gridSize: null,
@@ -146,7 +146,7 @@ export default {
 		margin-right:4px;
 		display: inline-block;
 	}
-		
+
 	.color-preview{
 		display:inline-block;
 		width:2em;
@@ -198,7 +198,7 @@ export default {
 	.control-button.b-dropdown{
 		border:0;
 	}
-	
+
 
 	.btn-group label:hover{
 		background:#ddd !important;
