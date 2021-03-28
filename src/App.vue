@@ -53,9 +53,21 @@ export default {
 html {
   background: #efefef;
 }
+
 body {
   color: #218838 !important;
 }
+
+#header {
+  background: #fff;
+  margin: -15px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  margin-bottom: 10px;
+  border: 1px solid #fff;
+  box-shadow: 0 0 4px #444 inset;
+}
+
 #header h1 {
   border-bottom: 1px solid;
   margin: 0;
@@ -73,15 +85,6 @@ body {
   padding: 10px;
   background: #efefef;
 }
-#header {
-  background: #fff;
-  margin: -15px;
-  padding-top: 15px;
-  padding-bottom: 15px;
-  margin-bottom: 10px;
-  border: 1px solid #fff;
-  box-shadow: 0 0 4px #444 inset;
-}
 
 .canvas-container {
   background: #fff;
@@ -91,6 +94,7 @@ body {
   margin: 0 auto;
   overflow: auto;
 }
+
 .canvas-container canvas {
   display: block;
   margin: 0 auto;
@@ -101,6 +105,7 @@ body {
   max-width: none !important;
   color: #444;
 }
+
 .browser-comp .toast {
   box-shadow: none !important;
   border-radius: 0 !important;

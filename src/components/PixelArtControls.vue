@@ -79,9 +79,6 @@ export default {
   mounted() {
     var _me = this;
 
-    // var colorPicker = new Iro.ColorPicker('#picker');
-    // console.log(colorPicker);
-
     EventBus.$on("setConfigDefaults", function (pDefaults) {
       _me.gridSize = pDefaults.gridSize;
       _me.colorToUse = pDefaults.colorToUse;
@@ -170,6 +167,7 @@ export default {
   margin: 0;
   margin-bottom: 7px;
 }
+
 .control-container > li {
   margin-bottom: 4px;
   margin-right: 4px;
@@ -196,17 +194,20 @@ export default {
   height: 100%;
   vertical-align: middle;
 }
+
 .grid-size-container .group-label {
   display: inline-block;
   padding-left: 15px;
   padding-right: 10px;
 }
-.btn-group label {
-  border: 0;
-}
+
 .btn-group {
   border-left: 1px solid;
   border-right: 1px solid;
+}
+
+.btn-group label {
+  border: 0;
 }
 
 .control-button {
@@ -224,6 +225,7 @@ export default {
   border-radius: 0;
   box-shadow: none !important;
 }
+
 .control-button.b-dropdown {
   border: 0;
 }
@@ -231,6 +233,7 @@ export default {
 .btn-group label:hover {
   background: #ddd !important;
 }
+
 .btn-group label:active,
 .btn-group label.active {
   border-color: #fff !important;
@@ -241,27 +244,28 @@ export default {
 </style>
 
 <style>
-.control-button.b-dropdown button,
-.dropdown-menu {
+.control-container .control-button.b-dropdown button,
+.control-container .dropdown-menu {
   border-color: #28a745 !important;
   border-radius: 0 !important;
 }
-.dropdown-menu {
+
+.control-container .dropdown-menu {
   margin-top: 5px !important;
 }
 
-.vue-swatches__container {
+.control-container .vue-swatches__container {
   border: 1px solid #28a745 !important;
   background: #f8f9fa;
   box-shadow: none !important;
 }
 
-.vue-swatches__container,
-.vue-swatches__swatch {
+.control-container .vue-swatches__container,
+.control-container .vue-swatches__swatch {
   border-radius: 0 !important;
 }
 
-.control-button button {
+.control-container .control-button button {
   color: #218838 !important;
 }
 </style>
