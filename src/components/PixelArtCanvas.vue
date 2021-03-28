@@ -1,5 +1,5 @@
 <template>
-	<canvas ref="canvas" v-on:click="draw($event)" v-on:mousedown="initLine($event)" width="0" height="0"></canvas>
+	<canvas ref="canvas" v-on:click="draw($event)" v-on:mousedown="initSimpleLine($event)" width="0" height="0"></canvas>
 </template>
 
 <script>
@@ -16,12 +16,14 @@ export default {
 		PixelArtLib.init(_me.$refs.canvas);
 		PixelArtLib.setGridSize(_me.gridSize);
 
+		// the controls need to know what to select first
 		EventBus.$emit('setConfigDefaults', {
 			gridSize: _me.gridSize,
 			colorToUse: _me.colorToUse,
 			drawMode: _me.drawMode
 		});
 
+		// listen to events from controls
 		EventBus.$on('changeColor', function(pColorCode){
 			_me.colorToUse = pColorCode;
 		});
@@ -42,6 +44,7 @@ export default {
 
 	data() {
 		return {
+			// defaults
 			colorToUse: '#27AF60',
 			drawMode: 'simple',
 			gridSize: 8
@@ -49,6 +52,11 @@ export default {
 	},
 
 	methods: {
+		/**
+		 * get the clicked grid item and color it with drawmode
+		 * 
+		 * @param {pEvent} - PointerEvent
+		 */
 		draw: function(pEvent){
 			const _me = this,
 				_canvasBoundingClientRect = _me.$refs.canvas.getBoundingClientRect(), // to get the position relative to viewport
@@ -57,12 +65,19 @@ export default {
 
 			const _gridItem = PixelArtLib.getGridItemFromPosition(pEvent.clientX - _canvasPosX, pEvent.clientY - _canvasPosY);
 			if(_gridItem){
-				PixelArtLib.applyColor(_me.drawMode, _me.colorToUse, _gridItem);
+				PixelArtLib.applyDrawMode(_me.drawMode, _me.colorToUse, _gridItem);
 			}
 		},
 
-		initLine: function(){
+		/**
+		 * to draw a line in simple mode, events need to be bound
+		 */
+		initSimpleLine: function(){
 			var _me = this;
+
+			if(_me.drawMode !== 'simple'){
+				return;
+			}
 
 			var _mouseUp = function(){
 				window.removeEventListener('mouseup', _mouseUp);

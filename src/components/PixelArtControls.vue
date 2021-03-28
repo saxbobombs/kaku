@@ -72,16 +72,6 @@ export default {
 				gridSize: null,
 				colorToUse: null,
 				drawMode: null,
-				colors: [{
-					name: 'rot',
-					value: 'f00'
-				}, {
-					name: 'blau',
-					value: '00f'
-				}, {
-					name: 'grün',
-					value: '0f0'
-				}],
 				drawModes: [{
 					value: 'floodfill',
 					text: 'Floodfill',
@@ -108,27 +98,33 @@ export default {
 	},
 
 	methods: {
-		swatches: function(){
-			console.log(arguments);
-		},
-
-		openColorPicker: function(){
-			var _me = this;
-			_me.$refs['color-picker-modal'].show()
-		},
-
+		/**
+		 * publish color change
+		 */
 		chooseColor: function(pColor){
 			EventBus.$emit("changeColor", pColor);
 			this.colorToUse = pColor;
 
 		},
+
+		/**
+		 * publish drawmode change
+		 */
 		chooseDrawMode: function(pDrawMode){
 			EventBus.$emit("changeDrawMode", pDrawMode);
 		},
+
+		/**
+		 * publish gridsize change
+		 */
 		chooseGridSize: function(pGridSize){
 			this.gridSize = pGridSize;
 			EventBus.$emit("changeGridSize", pGridSize);
 		},
+
+		/**
+		 * publish a download request
+		 */
 		downloadImage: function(pImageType){
 			EventBus.$emit("downloadImage", pImageType);
 		}

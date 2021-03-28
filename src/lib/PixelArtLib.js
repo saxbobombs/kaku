@@ -1,14 +1,21 @@
-let gridMap = {},
-	canvasEl = null,
-	gridSize = 8;
+/**
+ * PixelArtLib
+ * 
+ * library for canvas manipulations
+ */
+
+let gridMap = {}, // map of griditems
+	canvasEl = null, // ref to canvas
+	gridItemsHorizontal = 8, // amount of grid items per row
+	gridItemsVertical = 8; // amount of grid item rows
 
 // config
-let gridItemSize = 8,
-	gridItemDefaultBgColor = '#eee',
-	gridItemDefaultBorderColor = '#333';
+let gridItemSize = 8, // width & height of grid item
+	gridItemDefaultBgColor = '#eee', // grid item fill color
+	gridItemDefaultBorderColor = '#333'; // grid item border
 
 /**
- * generate the grid
+ * calculate the grid
  */
 const _generateGrid = function(){
     var _x = 0;
@@ -16,8 +23,8 @@ const _generateGrid = function(){
 
 	gridMap = {};
 
-    for(var i = 0; i < gridSize * gridSize; i++){
-        if(_x >= gridSize){
+    for(var i = 0; i < gridItemsHorizontal * gridItemsVertical; i++){
+        if(_x >= gridItemsHorizontal){
             _x = 0;
             _y++;
         }
@@ -40,6 +47,7 @@ const _generateGrid = function(){
 const _drawGrid = function(){
 	const _context = canvasEl.getContext('2d');
 	
+	// always redraw everything
 	_context.clearRect(0,0, canvasEl.width, canvasEl.height);
 
 	for(let _key in gridMap){
@@ -50,7 +58,8 @@ const _drawGrid = function(){
 		_gridItem.posX = _posX;
 		_gridItem.posY = _posY;
 	
-		// TODO
+		// for lines to to be 1px wide, this fix is needed
+		// details: https://stackoverflow.com/questions/7530593/html5-canvas-and-line-width/7531540#7531540
 		var _lineFix = 0.5;
 		
 		_context.beginPath();
@@ -131,18 +140,31 @@ const getGridItemFromPosition = function(pPosX, pPosY){
 	return null;
 }
 
+/**
+ * generate a download request
+ * 
+ * @param {string} pFileName 
+ * @param {string} pImageType 
+ */
 const downloadImage = function(pFileName, pImageType){
 	var link = document.createElement('a');
 
-	var _data = canvasEl.toDataURL('image/'+pImageType);
-	link.href = _data.replace(/^data:image\/[^;]/, 'data:application/octet-stream');
+	var _data = canvasEl.toDataURL('image/'+pImageType); // base64-string of image data
+	// TODO: ie11
+	link.href = _data.replace(/^data:image\/[^;]/, 'data:application/octet-stream'); // replace type 
 	link.download = pFileName + '.'+pImageType;
 
 	link.click();
-
 }
 
-const applyColor = function(pDrawMode, pColorCode, pGridStartItem){
+/**
+ * color the selected grid item in desired color and drawmode
+ * 
+ * @param {string} pDrawMode 
+ * @param {string} pColorCode 
+ * @param {object} pGridStartItem 
+ */
+const applyDrawMode = function(pDrawMode, pColorCode, pGridStartItem){
 	let _redraw = true;
 	switch(pDrawMode){
 		case 'simple': 
@@ -163,11 +185,18 @@ const applyColor = function(pDrawMode, pColorCode, pGridStartItem){
 	}
 }
 
+/**
+ * redraw the grid in desired size
+ * 
+ * @param {int} pGridSize 
+ */
 const setGridSize = function(pGridSize){
-	gridSize = pGridSize;
+	gridItemsHorizontal = pGridSize;
+	gridItemsVertical = pGridSize;
 
-	canvasEl.width = gridSize * gridItemSize + 1;
-	canvasEl.height = gridSize * gridItemSize + 1;
+	// +1 for the right and bottom border
+	canvasEl.width = gridItemsHorizontal * gridItemSize + 1;
+	canvasEl.height = gridItemsVertical * gridItemSize + 1;
 
 	_generateGrid();
 	_drawGrid();
@@ -182,10 +211,11 @@ const init = function(pCanvas){
     canvasEl = pCanvas;
 }
 
+// API
 export default {
     init: init,
 	setGridSize: setGridSize,
 	getGridItemFromPosition: getGridItemFromPosition,
-	applyColor: applyColor,
+	applyDrawMode: applyDrawMode,
 	downloadImage: downloadImage
 }
