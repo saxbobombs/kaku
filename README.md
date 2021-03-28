@@ -1,4 +1,4 @@
-# pixelart
+# PixelArt
 
 draw something
 
