@@ -8,6 +8,7 @@ draw something
 * Vue swatches
 * Bootstrap
 * BootstrapVue
+* downloadjs
 
 ## dev
 

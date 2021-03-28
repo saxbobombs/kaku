@@ -4,6 +4,8 @@
  * library for canvas manipulations
  */
 
+import DownloadJs from 'downloadjs';
+
 let gridMap = {}, // map of griditems
 	canvasEl = null, // ref to canvas
 	gridItemsHorizontal = 8, // amount of grid items per row
@@ -147,14 +149,7 @@ const getGridItemFromPosition = function(pPosX, pPosY){
  * @param {string} pImageType 
  */
 const downloadImage = function(pFileName, pImageType){
-	var link = document.createElement('a');
-
-	var _data = canvasEl.toDataURL('image/'+pImageType); // base64-string of image data
-	// TODO: ie11
-	link.href = _data.replace(/^data:image\/[^;]/, 'data:application/octet-stream'); // replace type 
-	link.download = pFileName + '.'+pImageType;
-
-	link.click();
+	DownloadJs(canvasEl.toDataURL('image/'+pImageType), pFileName + '.' + pImageType, 'image/' + pImageType);
 }
 
 /**
