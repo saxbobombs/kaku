@@ -198,8 +198,12 @@ export default {
 		background:#f8f9fa;
 		border-radius:0;
 		box-shadow:none !important;
-		
 	}
+	.control-button.b-dropdown{
+		border:0;
+	}
+	
+
 	.btn-group label:hover{
 		background:#ddd !important;
 	}
@@ -216,9 +220,18 @@ export default {
 
 <style>
 
+.control-button.b-dropdown button, .dropdown-menu{
+		border-color:#28a745 !important;
+		border-radius:0 !important;
+	}
+	.dropdown-menu {
+		margin-top:5px !important;
+	}
+
 	.vue-swatches__container{
 		border:1px solid #28a745 !important;
 		background:#f8f9fa;
+		box-shadow:none !important;
 	}
 
 	.vue-swatches__container,
