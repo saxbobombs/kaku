@@ -9,6 +9,7 @@ draw something
 * Bootstrap
 * BootstrapVue
 * downloadjs
+* bowser
 
 ## dev
 

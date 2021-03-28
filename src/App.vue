@@ -7,6 +7,9 @@
         </b-container>
       </div>
       <b-container>
+        <b-toast class="browser-comp" ref="browser-comp" static title="browser compatibility" no-auto-hide>
+          please use a modern browser to avoid unexpected behavior.
+        </b-toast>
         <div class="control-container">
           <PixelArtControls />
         </div>
@@ -22,12 +25,22 @@
 
 import PixelArtControls from './components/PixelArtControls.vue'
 import PixelArtCanvas from './components/PixelArtCanvas.vue'
+import Utils from './utils/Utils';
 
 export default {
   name: 'PixelArt',
   components: {
     PixelArtControls,
     PixelArtCanvas,
+  },
+
+  mounted(){
+    var _me = this;
+
+    // check browser
+    if(!Utils.browserIsCompatible()){
+      _me.$refs['browser-comp'].show();
+    }
   }
 }
 </script>
@@ -77,5 +90,18 @@ body{
 .canvas-container canvas{
   display:block;
   margin:0 auto;
+}
+
+.browser-comp{
+  border-radius:0 !important;
+  max-width:none !important;
+  color:#444;
+}
+.browser-comp .toast{
+  box-shadow:none !important;
+  border-radius:0 !important;
+  width:100% !important;
+  max-width:none !important;
+  
 }
 </style>
