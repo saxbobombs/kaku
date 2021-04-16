@@ -14,6 +14,10 @@ import PixelArtLib from "./../lib/PixelArtLib";
 export default {
   name: "PixelArtCanvas",
 
+  created() {
+    this.drawStartGridItem = null;
+  },
+
   mounted() {
     const _me = this;
 
@@ -50,8 +54,8 @@ export default {
     return {
       // defaults
       colorToUse: "#27AF60",
-      drawMode: "simple",
-      gridSize: 8,
+      drawMode: "line",
+      gridSize: 32,
     };
   },
 
@@ -66,20 +70,28 @@ export default {
 
       const _gridItem = PixelArtLib.getGridItemFromEvent(pEvent);
       if (_gridItem) {
-        PixelArtLib.applyDrawMode(_me.drawMode, _me.colorToUse, _gridItem);
+        PixelArtLib.applyDrawMode(_me.drawMode, _me.colorToUse, {
+            current: _gridItem,
+            start: _me.drawStartGridItem
+        });
       }
     },
 
     /**
      * init drawing events
      */
-    initDraw: function () {
+    initDraw: function (pEvent) {
       var _me = this;
+
+      PixelArtLib.cacheGridMap();
+      _me.drawStartGridItem = PixelArtLib.getGridItemFromEvent(pEvent);
 
       var _mouseUp = function (pEvent) {
         window.removeEventListener("mouseup", _mouseUp);
         window.removeEventListener("mousemove", _mouseMove);
-		_me.draw(pEvent);
+        _me.draw(pEvent);
+
+        _me.drawStartGridItem = null;
       };
       var _mouseMove = function (pEvent) {
         _me.draw(pEvent);
