@@ -143,6 +143,23 @@ const getGridItemFromPosition = function (pPosX, pPosY) {
 }
 
 /**
+ * get grid item via (mouse) event
+ *
+ * @param {object} pEvent
+ * @returns
+ */
+const getGridItemFromEvent = function (pEvent) {
+	const _canvasBoundingClientRect = canvasEl.getBoundingClientRect(), // to get the position relative to viewport
+        _canvasPosX = _canvasBoundingClientRect.left,
+        _canvasPosY = _canvasBoundingClientRect.top;
+
+	return getGridItemFromPosition(
+		pEvent.clientX - _canvasPosX,
+		pEvent.clientY - _canvasPosY
+	);
+}
+
+/**
  * generate a download request
  *
  * @param {string} pFileName
@@ -211,6 +228,7 @@ export default {
 	init: init,
 	setGridSize: setGridSize,
 	getGridItemFromPosition: getGridItemFromPosition,
+	getGridItemFromEvent: getGridItemFromEvent,
 	applyDrawMode: applyDrawMode,
 	downloadImage: downloadImage
 }

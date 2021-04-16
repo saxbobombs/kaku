@@ -1,8 +1,7 @@
 <template>
   <canvas
     ref="canvas"
-    v-on:click="draw($event)"
-    v-on:mousedown="initSimpleLine($event)"
+    v-on:mousedown="initDraw($event)"
     width="0"
     height="0"
   ></canvas>
@@ -63,33 +62,24 @@ export default {
      * @param {pEvent} - PointerEvent
      */
     draw: function (pEvent) {
-      const _me = this,
-        _canvasBoundingClientRect = _me.$refs.canvas.getBoundingClientRect(), // to get the position relative to viewport
-        _canvasPosX = _canvasBoundingClientRect.left,
-        _canvasPosY = _canvasBoundingClientRect.top;
+      const _me = this;
 
-      const _gridItem = PixelArtLib.getGridItemFromPosition(
-        pEvent.clientX - _canvasPosX,
-        pEvent.clientY - _canvasPosY
-      );
+      const _gridItem = PixelArtLib.getGridItemFromEvent(pEvent);
       if (_gridItem) {
         PixelArtLib.applyDrawMode(_me.drawMode, _me.colorToUse, _gridItem);
       }
     },
 
     /**
-     * to draw a line in simple mode, events need to be bound
+     * init drawing events
      */
-    initSimpleLine: function () {
+    initDraw: function () {
       var _me = this;
 
-      if (_me.drawMode !== "simple") {
-        return;
-      }
-
-      var _mouseUp = function () {
+      var _mouseUp = function (pEvent) {
         window.removeEventListener("mouseup", _mouseUp);
         window.removeEventListener("mousemove", _mouseMove);
+		_me.draw(pEvent);
       };
       var _mouseMove = function (pEvent) {
         _me.draw(pEvent);
