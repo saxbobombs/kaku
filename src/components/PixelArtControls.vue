@@ -102,6 +102,11 @@ export default {
           text: "Pencil",
           icon: "fa-pencil-alt",
         },
+        {
+          value: "line",
+          text: "Line",
+          icon: "fa-pencil-ruler",
+        },
       ],
       gridSizes: [
         {

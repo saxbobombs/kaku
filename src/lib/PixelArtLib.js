@@ -7,6 +7,7 @@
 import DownloadJs from 'downloadjs';
 
 let gridMap = {}, // map of griditems
+	gridMapCache = {}, // cache of maps for some drawing methods
 	canvasEl = null, // ref to canvas
 	gridItemsHorizontal = 8, // amount of grid items per row
 	gridItemsVertical = 8; // amount of grid item rows
@@ -122,6 +123,53 @@ function _applyFloodFill(pColorToUse, pColorToOverride, pGridStartItem) {
 }
 
 /**
+ * draw a line between two points
+ *
+ * @param {string} pColorCode
+ * @param {object} pStartGridItem
+ * @param {object} pCurrentGridItem
+ */
+function _applyLine(pColorCode, pStartGridItem, pCurrentGridItem){
+	// clear the line to be redrawn
+	for(let _gridItemIndex in gridMapCache){
+		gridMap[_gridItemIndex].bgcolor = gridMapCache[_gridItemIndex].bgcolor;
+	}
+
+	// bresenham's line algorithm
+	let x0 = pStartGridItem.coordX,
+		y0 = pStartGridItem.coordY,
+		x1 = pCurrentGridItem.coordX,
+		y1 = pCurrentGridItem.coordY,
+		dx = Math.abs(x1 - x0),
+		sx = x0 < x1 ? 1 : -1,
+		dy = -1 * Math.abs(y1 - y0),
+		sy = y0 < y1 ? 1 : -1,
+		err = dx + dy;
+
+	const t = true;
+
+	while(t){
+		gridMap[x0 + ':' + y0].bgcolor = pColorCode;
+		if (x0 == x1 && y0 == y1){
+			break;
+		}
+
+		let e2 = 2 * err;
+
+		if (e2 >= dy){
+			err += dy;
+			x0 += sx;
+		}
+
+		if(e2 <= dx) {
+			err += dx;
+			y0 += sy;
+		}
+
+	}
+}
+
+/**
  * get grid item via pos
  *
  * @param {number} pPosX
@@ -143,6 +191,23 @@ const getGridItemFromPosition = function (pPosX, pPosY) {
 }
 
 /**
+ * get grid item via (mouse) event
+ *
+ * @param {object} pEvent
+ * @returns
+ */
+const getGridItemFromEvent = function (pEvent) {
+	const _canvasBoundingClientRect = canvasEl.getBoundingClientRect(), // to get the position relative to viewport
+        _canvasPosX = _canvasBoundingClientRect.left,
+        _canvasPosY = _canvasBoundingClientRect.top;
+
+	return getGridItemFromPosition(
+		pEvent.clientX - _canvasPosX,
+		pEvent.clientY - _canvasPosY
+	);
+}
+
+/**
  * generate a download request
  *
  * @param {string} pFileName
@@ -159,18 +224,24 @@ const downloadImage = function (pFileName, pImageType) {
  * @param {string} pColorCode
  * @param {object} pGridStartItem
  */
-const applyDrawMode = function (pDrawMode, pColorCode, pGridStartItem) {
-	let _redraw = true;
+const applyDrawMode = function (pDrawMode, pColorCode, pGridItems) {
+	let _redraw = true,
+		_currentGridItem = pGridItems.current;
+
 	switch (pDrawMode) {
 		case 'simple':
-			if (pGridStartItem.bgcolor === pColorCode) {
+
+			if (_currentGridItem.bgcolor === pColorCode) {
 				_redraw = false;
 			} else {
-				pGridStartItem.bgcolor = pColorCode;
+				_currentGridItem.bgcolor = pColorCode;
 			}
 			break;
 		case 'floodfill':
-			_applyFloodFill(pColorCode, pGridStartItem.bgcolor, pGridStartItem);
+			_applyFloodFill(pColorCode, _currentGridItem.bgcolor, _currentGridItem);
+			break;
+		case 'line':
+			_applyLine(pColorCode, pGridItems.start, _currentGridItem)
 			break;
 		default: console.warn('unbekannter drawmode ' + pDrawMode);
 	}
@@ -178,6 +249,13 @@ const applyDrawMode = function (pDrawMode, pColorCode, pGridStartItem) {
 	if (_redraw) {
 		_drawGrid();
 	}
+}
+
+/**
+ * deep clone the grid for certain draw modes
+ */
+const cacheGridMap = function(){
+	gridMapCache = JSON.parse(JSON.stringify(gridMap));
 }
 
 /**
@@ -210,7 +288,9 @@ const init = function (pCanvas) {
 export default {
 	init: init,
 	setGridSize: setGridSize,
+	cacheGridMap: cacheGridMap,
 	getGridItemFromPosition: getGridItemFromPosition,
+	getGridItemFromEvent: getGridItemFromEvent,
 	applyDrawMode: applyDrawMode,
 	downloadImage: downloadImage
 }
