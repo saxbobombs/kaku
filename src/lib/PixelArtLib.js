@@ -236,11 +236,14 @@ const applyDrawMode = function (pDrawMode, pColorCode, pGridItems) {
 				_currentGridItem.bgcolor = pColorCode;
 			}
 			break;
-			case 'erase':
-				_currentGridItem.bgcolor = '#ffffff00';
-			break;
+		case 'erase':
+			_currentGridItem.bgcolor = '#ffffff00';
+		break;
 		case 'floodfill':
 			_applyFloodFill(pColorCode, _currentGridItem.bgcolor, _currentGridItem);
+			break;
+		case 'flooderase':
+			_applyFloodFill('#ffffff00', _currentGridItem.bgcolor, _currentGridItem);
 			break;
 		case 'line':
 			_applyLine(pColorCode, pGridItems.start, _currentGridItem)

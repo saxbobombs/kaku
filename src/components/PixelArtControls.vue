@@ -112,6 +112,11 @@ export default {
           text: "Eraser",
           icon: "fa-eraser",
         },
+        {
+          value: "flooderase",
+          text: "FloodEraser",
+          icon: "fa-times",
+        },
       ],
       gridSizes: [
         {
