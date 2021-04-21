@@ -14,8 +14,8 @@ let gridMap = {}, // map of griditems
 
 // config
 let gridItemSize = 8, // width & height of grid item
-	gridItemDefaultBgColor = '#eee', // grid item fill color
-	gridItemDefaultBorderColor = '#333'; // grid item border
+	gridItemDefaultBgColor = '#eeeeee00', // grid item fill color
+	gridItemDefaultBorderColor = '#666'; // grid item border
 
 /**
  * calculate the grid
@@ -230,12 +230,14 @@ const applyDrawMode = function (pDrawMode, pColorCode, pGridItems) {
 
 	switch (pDrawMode) {
 		case 'simple':
-
 			if (_currentGridItem.bgcolor === pColorCode) {
 				_redraw = false;
 			} else {
 				_currentGridItem.bgcolor = pColorCode;
 			}
+			break;
+			case 'erase':
+				_currentGridItem.bgcolor = '#ffffff00';
 			break;
 		case 'floodfill':
 			_applyFloodFill(pColorCode, _currentGridItem.bgcolor, _currentGridItem);

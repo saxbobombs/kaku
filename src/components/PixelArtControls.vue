@@ -107,6 +107,11 @@ export default {
           text: "Line",
           icon: "fa-pencil-ruler",
         },
+        {
+          value: "erase",
+          text: "Eraser",
+          icon: "fa-eraser",
+        },
       ],
       gridSizes: [
         {
