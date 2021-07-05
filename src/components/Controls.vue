@@ -70,6 +70,11 @@
 					</template>
 				</b-form-radio-group>
 			</li>
+			<li>
+				<b-button class="control-button">
+					<i class="fas fa-undo" v-on:click="undo"></i>
+				</b-button>
+			</li>
 			<li class="right">
 				<b-dropdown variant="light" class="control-button">
 					<template #button-content>
@@ -169,6 +174,10 @@ export default {
 	},
 
 	methods: {
+
+		undo: function(){
+			EventBus.$emit("undo");
+		},
 
 		changeGridItemSize: function(pSize){
 			EventBus.$emit("changeGridItemSize", parseInt(pSize));

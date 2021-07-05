@@ -18,6 +18,8 @@ let gridItemSize = 8, // width & height of grid item
 	gridItemDefaultBorderColor = '#666', // grid item border
 	gridItemBorderVisible = true;
 
+let history = [];
+
 /**
  * calculate the grid
  */
@@ -43,6 +45,8 @@ const _generateGrid = function () {
 
 		_x++;
 	}
+
+	history.push(_cloneGridMap());
 }
 
 /**
@@ -171,8 +175,14 @@ function _applyLine(pColorCode, pStartGridItem, pCurrentGridItem){
 			err += dx;
 			y0 += sy;
 		}
-
 	}
+}
+
+/**
+ *
+ */
+const _cloneGridMap = function(){
+	return JSON.parse(JSON.stringify(gridMap));
 }
 
 /**
@@ -281,7 +291,7 @@ const applyDrawMode = function (pDrawMode, pColorCode, pGridItems) {
  * deep clone the grid for certain draw modes
  */
 const cacheGridMap = function(){
-	gridMapCache = JSON.parse(JSON.stringify(gridMap));
+	gridMapCache = _cloneGridMap();
 }
 
 /**
@@ -299,6 +309,18 @@ const setGridSize = function (pGridSize) {
 
 	_generateGrid();
 	_drawGrid();
+}
+
+const undo = function(){
+	var _historyItem = history.pop();
+	if(_historyItem){
+		gridMap = _historyItem;
+		_drawGrid();
+	}
+}
+
+const updateHistory = function(){
+	history.push(_cloneGridMap());
 }
 
 /**
@@ -320,5 +342,7 @@ export default {
 	applyDrawMode: applyDrawMode,
 	downloadImage: downloadImage,
 	showGridLines: showGridLines,
-	changeGridItemSize: changeGridItemSize
+	changeGridItemSize: changeGridItemSize,
+	undo: undo,
+	updateHistory: updateHistory
 }

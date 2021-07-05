@@ -58,6 +58,10 @@ export default {
 		EventBus.$on("changeGridItemSize", function (pSize) {
 			kakuLib.changeGridItemSize(pSize);
 		});
+
+		EventBus.$on("undo", function () {
+			kakuLib.undo();
+		});
 	},
 
 	data() {
@@ -96,11 +100,13 @@ export default {
 			var _me = this;
 
 			kakuLib.cacheGridMap();
+			kakuLib.updateHistory();
 			_me.drawStartGridItem = kakuLib.getGridItemFromEvent(pEvent);
 
 			var _mouseUp = function (pEvent) {
 				window.removeEventListener("mouseup", _mouseUp);
 				window.removeEventListener("mousemove", _mouseMove);
+
 				_me.draw(pEvent);
 
 				_me.drawStartGridItem = null;
