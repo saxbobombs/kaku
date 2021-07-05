@@ -17,8 +17,19 @@
 				</b-form-radio-group>
 			</li>
 			<li>
-				<b-form-checkbox-group>
-					<b-form-checkbox v-on:change="changeShowGridLines" v-model="showGridLines" value="1" unchecked-value="0">grid lines</b-form-checkbox>
+				<b-form-checkbox-group
+					class="control-button grid-size-container"
+					buttons
+				>
+					<b-form-checkbox v-on:change="changeShowGridLines" v-model="showGridLines" value="1" unchecked-value="0">
+						<template v-if="showGridLines == 1">
+						<i class="fas fa-border-all"></i>
+						</template>
+						<template v-else>
+						<i class="fas fa-border-none"></i>
+						</template>
+						grid lines
+					</b-form-checkbox>
 				</b-form-checkbox-group>
 			</li>
 			<li>
