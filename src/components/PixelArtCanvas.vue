@@ -111,4 +111,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+	canvas{
+		box-shadow: 0px 0px 2px #aaa;
+	}
 </style>
