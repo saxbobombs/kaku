@@ -2,8 +2,7 @@
   <div id="app">
     <div id="header">
       <b-container>
-        <h1><img src="@/assets/pixelart_img.png" alt="" /> PixelArt</h1>
-        <p>draw something</p>
+        <h1>kaku</h1>
       </b-container>
     </div>
     <b-container>
@@ -17,25 +16,25 @@
         please use a modern browser to avoid unexpected behavior.
       </b-toast>
       <div class="control-container">
-        <PixelArtControls />
+        <Controls />
       </div>
       <div class="canvas-container">
-        <PixelArtCanvas />
+        <DrawingPad />
       </div>
     </b-container>
   </div>
 </template>
 
 <script>
-import PixelArtControls from "./components/PixelArtControls.vue";
-import PixelArtCanvas from "./components/PixelArtCanvas.vue";
+import Controls from "./components/Controls.vue";
+import DrawingPad from "./components/DrawingPad.vue";
 import Utils from "./utils/Utils";
 
 export default {
-  name: "PixelArt",
+  name: "kaku",
   components: {
-    PixelArtControls,
-    PixelArtCanvas,
+    Controls,
+    DrawingPad,
   },
 
   mounted() {
@@ -50,12 +49,14 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans+SC:wght@100&display=swap');
+
 html {
   background: #efefef;
 }
 
 body {
-  color: #218838 !important;
+  color: #222 !important;
 }
 
 #header {
@@ -66,10 +67,10 @@ body {
   margin-bottom: 10px;
   border: 1px solid #fff;
   box-shadow: 0 0 4px #444 inset;
+  font-family: 'Alegreya Sans SC', sans-serif;
 }
 
 #header h1 {
-  border-bottom: 1px solid;
   margin: 0;
 }
 #header h1 img {

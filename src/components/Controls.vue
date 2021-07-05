@@ -82,12 +82,12 @@
 </template>
 
 <script>
-import EventBus from "./../utils/EventBus";
+import EventBus from "../utils/EventBus";
 import VSwatches from "vue-swatches";
 import "vue-swatches/dist/vue-swatches.css";
 
 export default {
-	name: "PixelArtControls",
+	name: "Controls",
 	components: {
 		VSwatches,
 	},

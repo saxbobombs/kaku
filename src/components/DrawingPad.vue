@@ -8,11 +8,11 @@
 </template>
 
 <script>
-import EventBus from "./../utils/EventBus";
-import PixelArtLib from "./../lib/PixelArtLib";
+import EventBus from "../utils/EventBus";
+import kakuLib from "../lib/kakuLib";
 
 export default {
-	name: "PixelArtCanvas",
+	name: "DrawingPad",
 
 	created() {
 		this.drawStartGridItem = null;
@@ -21,8 +21,8 @@ export default {
 	mounted() {
 		const _me = this;
 
-		PixelArtLib.init(_me.$refs.canvas);
-		PixelArtLib.setGridSize(_me.gridSize);
+		kakuLib.init(_me.$refs.canvas);
+		kakuLib.setGridSize(_me.gridSize);
 
 		// the controls need to know what to select first
 		EventBus.$emit("setConfigDefaults", {
@@ -43,15 +43,15 @@ export default {
 
 		EventBus.$on("changeGridSize", function (pGridSize) {
 			_me.gridSize = pGridSize;
-			PixelArtLib.setGridSize(pGridSize);
+			kakuLib.setGridSize(pGridSize);
 		});
 
 		EventBus.$on("downloadImage", function (pImageType) {
-			PixelArtLib.downloadImage("pixelart_img", pImageType);
+			kakuLib.downloadImage("kaku_img", pImageType);
 		});
 
 		EventBus.$on("changeShowGridLines", function (pImageType) {
-			PixelArtLib.showGridLines(!!pImageType);
+			kakuLib.showGridLines(!!pImageType);
 		});
 	},
 
@@ -74,9 +74,9 @@ export default {
 		draw: function (pEvent) {
 			const _me = this;
 
-			const _gridItem = PixelArtLib.getGridItemFromEvent(pEvent);
+			const _gridItem = kakuLib.getGridItemFromEvent(pEvent);
 			if (_gridItem) {
-				PixelArtLib.applyDrawMode(_me.drawMode, _me.colorToUse, {
+				kakuLib.applyDrawMode(_me.drawMode, _me.colorToUse, {
 						current: _gridItem,
 						start: _me.drawStartGridItem
 				});
@@ -89,8 +89,8 @@ export default {
 		initDraw: function (pEvent) {
 			var _me = this;
 
-			PixelArtLib.cacheGridMap();
-			_me.drawStartGridItem = PixelArtLib.getGridItemFromEvent(pEvent);
+			kakuLib.cacheGridMap();
+			_me.drawStartGridItem = kakuLib.getGridItemFromEvent(pEvent);
 
 			var _mouseUp = function (pEvent) {
 				window.removeEventListener("mouseup", _mouseUp);

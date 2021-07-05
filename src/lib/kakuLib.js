@@ -1,5 +1,5 @@
 /**
- * PixelArtLib
+ * kakuLib
  *
  * library for canvas manipulations
  */

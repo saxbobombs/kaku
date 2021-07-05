@@ -1,8 +1,8 @@
-# PixelArt
+# kaku
 
 draw something
 
-https://saxoneee.github.io/pixelart/dist/
+https://saxoneee.github.io/kaku/dist/
 
 ## used technologies
 
@@ -12,6 +12,7 @@ https://saxoneee.github.io/pixelart/dist/
 * BootstrapVue
 * downloadjs
 * bowser
+* Font Awesome 5
 
 ## dev
 
