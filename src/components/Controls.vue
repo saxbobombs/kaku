@@ -2,6 +2,15 @@
 	<div>
 		<ul class="control-container">
 			<li>
+				<b-form-input
+					v-on:change="changeGridItemSize"
+					v-model="gridItemSize"
+					class="griditemsize"
+					type="number"
+					min="1"
+					max="20" />
+			</li>
+			<li>
 				<b-form-radio-group
 					class="control-button grid-size-container"
 					buttons
@@ -99,8 +108,8 @@ export default {
 			_me.gridSize = pDefaults.gridSize;
 			_me.colorToUse = pDefaults.colorToUse;
 			_me.drawMode = pDefaults.drawMode;
-			console.log(pDefaults);
 			_me.showGridLines = pDefaults.showGridLines;
+			_me.gridItemSize = pDefaults.gridItemSize;
 		});
 	},
 
@@ -110,6 +119,7 @@ export default {
 			colorToUse: null,
 			drawMode: null,
 			showGridLines: null,
+			gridItemSize: null,
 			drawModes: [
 				{
 					value: "floodfill",
@@ -159,6 +169,10 @@ export default {
 	},
 
 	methods: {
+
+		changeGridItemSize: function(pSize){
+			EventBus.$emit("changeGridItemSize", parseInt(pSize));
+		},
 
 		changeShowGridLines: function(pIsChecked){
 			EventBus.$emit("changeShowGridLines", pIsChecked + '' === '1' ? true : false);
@@ -278,6 +292,10 @@ export default {
 	border-color: #28a745 !important;
 	background: #ddd !important;
 	outline: unset;
+}
+
+.griditemsize{
+	width:100px;
 }
 </style>
 

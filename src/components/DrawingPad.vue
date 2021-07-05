@@ -30,6 +30,7 @@ export default {
 			colorToUse: _me.colorToUse,
 			drawMode: _me.drawMode,
 			showGridLines: _me.showGridLines,
+			gridItemSize: _me.gridItemSize,
 		});
 
 		// listen to events from controls
@@ -53,6 +54,10 @@ export default {
 		EventBus.$on("changeShowGridLines", function (pImageType) {
 			kakuLib.showGridLines(!!pImageType);
 		});
+
+		EventBus.$on("changeGridItemSize", function (pSize) {
+			kakuLib.changeGridItemSize(pSize);
+		});
 	},
 
 	data() {
@@ -61,7 +66,8 @@ export default {
 			colorToUse: "#27AF60",
 			drawMode: "line",
 			gridSize: 32,
-			showGridLines: 1
+			showGridLines: 1,
+			gridItemSize: 8
 		};
 	},
 

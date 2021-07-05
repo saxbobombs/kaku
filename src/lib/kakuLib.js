@@ -223,8 +223,18 @@ const downloadImage = function (pFileName, pImageType) {
 	DownloadJs(canvasEl.toDataURL('image/' + pImageType), pFileName + '.' + pImageType, 'image/' + pImageType);
 }
 
+/**
+ *
+ * @param {boolean} pShow
+ */
 const showGridLines = function(pShow){
 	gridItemBorderVisible = pShow;
+	_drawGrid();
+}
+
+const changeGridItemSize = function(pGridItemSize){
+	gridItemSize = pGridItemSize;
+	setGridSize(gridItemsHorizontal);
 	_drawGrid();
 }
 
@@ -309,5 +319,6 @@ export default {
 	getGridItemFromEvent: getGridItemFromEvent,
 	applyDrawMode: applyDrawMode,
 	downloadImage: downloadImage,
-	showGridLines: showGridLines
+	showGridLines: showGridLines,
+	changeGridItemSize: changeGridItemSize
 }
