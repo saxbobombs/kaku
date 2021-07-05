@@ -14,8 +14,9 @@ let gridMap = {}, // map of griditems
 
 // config
 let gridItemSize = 8, // width & height of grid item
-	gridItemDefaultBgColor = '#eeeeee00', // grid item fill color
-	gridItemDefaultBorderColor = '#666'; // grid item border
+	gridItemDefaultBgColor = '#ffffff00', // grid item fill color
+	gridItemDefaultBorderColor = '#666', // grid item border
+	gridItemBorderVisible = true;
 
 /**
  * calculate the grid
@@ -63,7 +64,10 @@ const _drawGrid = function () {
 
 		// for lines to to be 1px wide, this fix is needed
 		// details: https://stackoverflow.com/questions/7530593/html5-canvas-and-line-width/7531540#7531540
-		var _lineFix = 0.5;
+		var _lineFix = 0;
+		if(gridItemBorderVisible){
+			_lineFix = 0.5;
+		}
 
 		_context.beginPath();
 		_context.moveTo(_posX + _lineFix, _posY + _lineFix);
@@ -76,7 +80,9 @@ const _drawGrid = function () {
 		_context.strokeStyle = _gridItem.bordercolor;
 		_context.fillStyle = _gridItem.bgcolor;
 		_context.fill();
-		_context.stroke();
+		if(gridItemBorderVisible){
+			_context.stroke();
+		}
 	}
 }
 
@@ -217,6 +223,11 @@ const downloadImage = function (pFileName, pImageType) {
 	DownloadJs(canvasEl.toDataURL('image/' + pImageType), pFileName + '.' + pImageType, 'image/' + pImageType);
 }
 
+const showGridLines = function(pShow){
+	gridItemBorderVisible = pShow;
+	_drawGrid();
+}
+
 /**
  * color the selected grid item in desired color and drawmode
  *
@@ -297,5 +308,6 @@ export default {
 	getGridItemFromPosition: getGridItemFromPosition,
 	getGridItemFromEvent: getGridItemFromEvent,
 	applyDrawMode: applyDrawMode,
-	downloadImage: downloadImage
+	downloadImage: downloadImage,
+	showGridLines: showGridLines
 }
