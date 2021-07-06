@@ -22,16 +22,16 @@ export default {
 		const _me = this;
 
 		kakuLib.init(_me.$refs.canvas);
-		kakuLib.setGridSize(_me.gridSize);
 
-		// the controls need to know what to select first
-		EventBus.$emit("setConfigDefaults", {
-			gridSize: _me.gridSize,
-			colorToUse: _me.colorToUse,
-			drawMode: _me.drawMode,
-			showGridLines: _me.showGridLines,
-			gridItemSize: _me.gridItemSize,
+		EventBus.$on("setConfigDefaults", function (pDefaults) {
+			kakuLib.setGridSize(pDefaults.gridSize);
+			_me.gridSize = pDefaults.gridSize;
+			_me.colorToUse = pDefaults.colorToUse;
+			_me.drawMode = pDefaults.drawMode;
+			_me.showGridLines = pDefaults.showGridLines;
+			_me.gridItemSize = pDefaults.gridItemSize;
 		});
+
 
 		// listen to events from controls
 		EventBus.$on("changeColor", function (pColorCode) {
@@ -62,17 +62,6 @@ export default {
 		EventBus.$on("undo", function () {
 			kakuLib.undo();
 		});
-	},
-
-	data() {
-		return {
-			// defaults
-			colorToUse: "#27AF60",
-			drawMode: "line",
-			gridSize: 32,
-			showGridLines: 1,
-			gridItemSize: 8
-		};
 	},
 
 	methods: {

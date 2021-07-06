@@ -8,7 +8,7 @@
 					class="griditemsize"
 					type="number"
 					min="1"
-					max="20" />
+					max="100" />
 			</li>
 			<li>
 				<b-form-radio-group
@@ -108,7 +108,6 @@ export default {
 
 	mounted() {
 		var _me = this;
-
 		EventBus.$on("setConfigDefaults", function (pDefaults) {
 			_me.gridSize = pDefaults.gridSize;
 			_me.colorToUse = pDefaults.colorToUse;

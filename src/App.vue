@@ -23,6 +23,9 @@
 import Controls from "./components/Controls.vue";
 import DrawingPad from "./components/DrawingPad.vue";
 import Utils from "./utils/Utils";
+import EventBus from "./utils/EventBus";
+import Config from "./cfg/config";
+
 
 export default {
 	name: "kaku",
@@ -34,6 +37,7 @@ export default {
 	mounted() {
 		var _me = this;
 
+		EventBus.$emit("setConfigDefaults", Config.defaults);
 		// check browser
 		if (!Utils.browserIsCompatible()) {
 			_me.$refs["browser-comp"].show();
