@@ -8,15 +8,15 @@ import DownloadJs from 'downloadjs';
 
 let gridMap = {}, // map of griditems
 	gridMapCache = {}, // cache of maps for some drawing methods
-	canvasEl = null, // ref to canvas
-	gridItemsHorizontal = 8, // amount of grid items per row
-	gridItemsVertical = 8; // amount of grid item rows
+	canvasEl = null; // ref to canvas
 
 // config
-let gridItemSize = 8, // width & height of grid item
-	gridItemDefaultBgColor = '#ffffff00', // grid item fill color
-	gridItemDefaultBorderColor = '#666', // grid item border
-	gridItemBorderVisible = true;
+let gridItemSize,
+	gridItemDefaultBgColor,
+	gridItemDefaultBorderColor,
+	gridItemBorderVisible,
+	gridItemsHorizontal,
+	gridItemsVertical;
 
 let history = [];
 
@@ -328,8 +328,15 @@ const updateHistory = function(){
  *
  * @param {<canvas>} pCanvas
  */
-const init = function (pCanvas) {
+const init = function (pCanvas, pDefaults) {
 	canvasEl = pCanvas;
+
+	gridItemSize = pDefaults.gridItemSize;
+	gridItemDefaultBgColor = pDefaults.gridItemDefaultBgColor;
+	gridItemDefaultBorderColor = pDefaults.gridItemDefaultBorderColor;
+	gridItemBorderVisible = pDefaults.gridItemBorderVisible;
+	gridItemsHorizontal = pDefaults.gridItemsHorizontal;
+	gridItemsVertical = pDefaults.gridItemsVertical;
 }
 
 // API
@@ -344,5 +351,5 @@ export default {
 	showGridLines: showGridLines,
 	changeGridItemSize: changeGridItemSize,
 	undo: undo,
-	updateHistory: updateHistory
+	updateHistory: updateHistory,
 }

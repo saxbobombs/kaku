@@ -23,9 +23,8 @@ export default {
 	mounted() {
 		const _me = this;
 
-		kakuLib.init(_me.$refs.canvas);
-
 		EventBus.$on("setConfigDefaults", function (pDefaults) {
+			kakuLib.init(_me.$refs.canvas, pDefaults);
 			kakuLib.setGridSize(pDefaults.gridSize);
 			_me.gridSize = pDefaults.gridSize;
 			_me.colorToUse = pDefaults.colorToUse;
