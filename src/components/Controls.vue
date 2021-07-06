@@ -2,60 +2,73 @@
 	<div>
 		<ul class="control-container">
 			<li>
-				<b-form-input
-					v-on:change="changeGridItemSize"
-					v-model="gridItemSize"
-					class="griditemsize"
-					type="number"
-					min="1"
-					max="100" />
+				<b-button v-b-modal.modal-1>
+					<i class="fas fa-image"></i>
+				</b-button>
+				<b-modal id="modal-1" title="image settings">
+
+					<b-form>
+						<b-form-group label="grid item size">
+							<b-form-input
+								v-on:change="changeGridItemSize"
+								v-model="gridItemSize"
+								class="griditemsize"
+								type="number"
+								min="1"
+								max="100"
+							/>
+						</b-form-group>
+						<b-form-group label="grid size">
+							<b-form-radio-group
+								class="control-button grid-size-container"
+								buttons
+								v-model="gridSize"
+								v-on:change="chooseGridSize"
+
+							>
+								<i class="group-label fas fa-th"></i>
+								<template v-for="option in gridSizes">
+									<b-form-radio :value="option.value" :key="option.index">
+										{{ option.name }}
+									</b-form-radio>
+								</template>
+							</b-form-radio-group>
+						</b-form-group>
+						<b-form-group label="show grid">
+							<b-form-checkbox-group
+								class="control-button grid-size-container"
+								buttons
+							>
+								<b-form-checkbox v-on:change="changeShowGridLines" v-model="showGridLines" value="1" unchecked-value="0">
+									<template v-if="showGridLines == 1">
+									<i class="fas fa-border-all"></i>
+									</template>
+									<template v-else>
+									<i class="fas fa-border-none"></i>
+									</template>
+								</b-form-checkbox>
+							</b-form-checkbox-group>
+						</b-form-group>
+						<b-form-group label="download">
+							<b-dropdown class="control-button">
+							<template #button-content>
+								<i class="fas fa-file-download"></i> choose format
+							</template>
+							<b-dropdown-item v-on:click="downloadImage('png')"
+								>PNG</b-dropdown-item
+							>
+							<b-dropdown-item v-on:click="downloadImage('jpg')"
+								>JPG</b-dropdown-item
+							>
+							<b-dropdown-item v-on:click="downloadImage('gif')"
+								>GIF</b-dropdown-item
+							>
+						</b-dropdown>
+						</b-form-group>
+					</b-form>
+					</b-modal>
 			</li>
-			<li>
-				<b-form-radio-group
-					class="control-button grid-size-container"
-					buttons
-					v-model="gridSize"
-					v-on:change="chooseGridSize"
-				>
-					<i class="group-label fas fa-th"></i>
-					<template v-for="option in gridSizes">
-						<b-form-radio :value="option.value" :key="option.index">
-							{{ option.name }}
-						</b-form-radio>
-					</template>
-				</b-form-radio-group>
-			</li>
-			<li>
-				<b-form-checkbox-group
-					class="control-button grid-size-container"
-					buttons
-				>
-					<b-form-checkbox v-on:change="changeShowGridLines" v-model="showGridLines" value="1" unchecked-value="0">
-						<template v-if="showGridLines == 1">
-						<i class="fas fa-border-all"></i>
-						</template>
-						<template v-else>
-						<i class="fas fa-border-none"></i>
-						</template>
-						grid lines
-					</b-form-checkbox>
-				</b-form-checkbox-group>
-			</li>
-			<li>
-				<v-swatches
-					row-length="5"
-					v-model="colorToUse"
-					v-on:input="chooseColor"
-				>
-					<b-button class="control-button" slot="trigger" variant="light">
-						<i class="fas fa-palette"></i>
-						<span
-							class="color-preview"
-							:style="'background:' + colorToUse"
-						></span>
-					</b-button>
-				</v-swatches>
-			</li>
+
 			<li>
 				<b-form-radio-group
 					class="control-button drawmode"
@@ -71,25 +84,24 @@
 				</b-form-radio-group>
 			</li>
 			<li>
+				<v-swatches
+					row-length="5"
+					v-model="colorToUse"
+					v-on:input="chooseColor"
+				>
+					<b-button class="control-button" slot="trigger">
+						<i class="fas fa-palette"></i>
+						<span
+							class="color-preview"
+							:style="'background:' + colorToUse"
+						></span>
+					</b-button>
+				</v-swatches>
+			</li>
+			<li>
 				<b-button class="control-button">
 					<i class="fas fa-undo" v-on:click="undo"></i>
 				</b-button>
-			</li>
-			<li class="right">
-				<b-dropdown variant="light" class="control-button">
-					<template #button-content>
-						<i class="fas fa-file-download"></i> Download
-					</template>
-					<b-dropdown-item v-on:click="downloadImage('png')"
-						>PNG</b-dropdown-item
-					>
-					<b-dropdown-item v-on:click="downloadImage('jpg')"
-						>JPG</b-dropdown-item
-					>
-					<b-dropdown-item v-on:click="downloadImage('gif')"
-						>GIF</b-dropdown-item
-					>
-				</b-dropdown>
 			</li>
 		</ul>
 	</div>
@@ -217,119 +229,3 @@ export default {
 	},
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.control-container {
-	width: 100%;
-	list-style: none;
-	padding: 0;
-	margin: 0;
-	margin-bottom: 7px;
-}
-
-.control-container > li {
-	margin-bottom: 4px;
-	margin-right: 4px;
-	display: inline-block;
-}
-
-.color-preview {
-	display: inline-block;
-	width: 2em;
-	height: 1.5em;
-	border: 1px solid #fff;
-	vertical-align: top;
-}
-
-.grid-size-container {
-	color: #fff;
-	position: relative;
-}
-
-.grid-size-container .group-label::after {
-	content: " ";
-	display: inline-block;
-	width: 0;
-	height: 100%;
-	vertical-align: middle;
-}
-
-.grid-size-container .group-label {
-	display: inline-block;
-	padding-left: 15px;
-	padding-right: 10px;
-}
-
-.btn-group {
-	border-left: 1px solid;
-	border-right: 1px solid;
-}
-
-.btn-group label {
-	border: 0;
-}
-
-.control-button {
-	border-top: 1px solid;
-	border-bottom: 1px solid;
-}
-
-.grid-size-container .group-label,
-.control-button,
-.control-button .dropdown-toggle,
-.btn-group label {
-	color: #218838 !important;
-	border-color: #28a745 !important;
-	background: #f8f9fa;
-	border-radius: 0;
-	box-shadow: none !important;
-}
-
-.control-button.b-dropdown {
-	border: 0;
-}
-
-.btn-group label:hover {
-	background: #ddd !important;
-}
-
-.btn-group label:active,
-.btn-group label.active {
-	border-color: #fff !important;
-	border-color: #28a745 !important;
-	background: #ddd !important;
-	outline: unset;
-}
-
-.griditemsize{
-	width:100px;
-}
-</style>
-
-<style>
-.control-container .control-button.b-dropdown button,
-.control-container .dropdown-menu {
-	border-color: #28a745 !important;
-	border-radius: 0 !important;
-}
-
-.control-container .dropdown-menu {
-	margin-top: 5px !important;
-}
-
-.control-container .vue-swatches__container {
-	border: 1px solid #28a745 !important;
-	background: #f8f9fa;
-	box-shadow: none !important;
-}
-
-.control-container .vue-swatches__container,
-.control-container .vue-swatches__swatch {
-	border-radius: 0 !important;
-}
-
-.control-container .control-button button {
-	color: #218838 !important;
-}
-</style>
