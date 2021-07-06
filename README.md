@@ -23,3 +23,8 @@ https://saxoneee.github.io/kaku/dist/
 ## build
 
 * run `npm run build`
+
+## maybe todos
+
+* extra current drawop canvas
+* filters
