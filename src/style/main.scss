@@ -10,7 +10,6 @@ body {
 
 #app{
 	padding-top:10px;
-	box-shadow:0 0 2px red inset;
 	height:100%;
 	flex:1;
 	display:flex;
@@ -34,9 +33,12 @@ body {
 	margin: 0 auto;
 	overflow: auto;
 	flex:1;
-	box-shadow:0 0 2px blue;
 	width:100%;
 	overflow:auto;
+	display:flex;
+	justify-content: center;
+	flex-direction: column;
+
 }
 
 .canvas-container canvas {

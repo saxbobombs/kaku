@@ -1,10 +1,12 @@
 <template>
-	<canvas
-		ref="canvas"
-		v-on:mousedown="initDraw($event)"
-		width="0"
-		height="0"
-	></canvas>
+	<div class="inner">
+		<canvas
+			ref="canvas"
+			v-on:mousedown="initDraw($event)"
+			width="0"
+			height="0"
+		></canvas>
+	</div>
 </template>
 
 <script>
