@@ -2,7 +2,7 @@
 	<div>
 		<ul class="control-container">
 			<li>
-				<b-button v-b-modal.modal-1>
+				<b-button v-b-modal.modal-1 v-b-tooltip.hover title="image settings">
 					<i class="fas fa-image"></i>
 				</b-button>
 				<b-modal id="modal-1" title="image settings">
@@ -77,7 +77,7 @@
 					v-on:change="chooseDrawMode"
 				>
 					<template v-for="option in drawModes">
-						<b-form-radio :value="option.value" :key="option.index">
+						<b-form-radio :value="option.value" :key="option.index" v-b-tooltip.hover :title="option.text">
 							<i :class="'fas ' + option.icon"></i>
 						</b-form-radio>
 					</template>
@@ -88,6 +88,7 @@
 					row-length="5"
 					v-model="colorToUse"
 					v-on:input="chooseColor"
+					v-b-tooltip.hover title="color picker"
 				>
 					<b-button class="control-button" slot="trigger">
 						<i class="fas fa-palette"></i>
@@ -99,7 +100,7 @@
 				</v-swatches>
 			</li>
 			<li>
-				<b-button class="control-button">
+				<b-button class="control-button" v-b-tooltip.hover title="undo">
 					<i class="fas fa-undo" v-on:click="undo"></i>
 				</b-button>
 			</li>
