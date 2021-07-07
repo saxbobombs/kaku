@@ -89,6 +89,11 @@ export default {
 		initDraw: function (pEvent) {
 			var _me = this;
 
+			// only left mouse button
+			if(pEvent.which !== 1){
+				return;
+			}
+
 			kakuLib.cacheGridMap();
 			kakuLib.updateHistory();
 			_me.drawStartGridItem = kakuLib.getGridItemFromEvent(pEvent);
