@@ -24,6 +24,7 @@ import Controls from "./components/Controls.vue";
 import DrawingPad from "./components/DrawingPad.vue";
 import Utils from "./utils/Utils";
 import EventBus from "./utils/EventBus";
+import Cursor from "./utils/Cursor";
 import Config from "./cfg/config";
 
 
@@ -34,8 +35,12 @@ export default {
 		DrawingPad,
 	},
 
+
+
 	mounted() {
 		var _me = this;
+
+		Cursor.initCursor();
 
 		EventBus.$emit("setConfigDefaults", Config.defaults);
 		// check browser
@@ -47,7 +52,7 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans+SC:wght@200&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans+SC:wght@200&display=swap'); */
 @import './style/main.scss';
 
 </style>

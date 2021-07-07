@@ -13,6 +13,8 @@
 import EventBus from "../utils/EventBus";
 import kakuLib from "../lib/kakuLib";
 
+import Cursor from "../utils/Cursor";
+
 export default {
 	name: "DrawingPad",
 
@@ -22,6 +24,42 @@ export default {
 
 	mounted() {
 		const _me = this;
+
+		Cursor.addCursorChanger(_me.$refs.canvas, function(){
+			switch(_me.drawMode){
+				case 'simple':
+					return {
+						offsetX: -1,
+						offsetY: -24,
+						text:'<i class="fas fa-pencil-alt"></i>'
+					}
+				case 'line':
+					return {
+						offsetX: 0,
+						offsetY: -24,
+						text:'<i class="fas fa-pencil-ruler"></i>'
+					}
+				case 'floodfill':
+					return {
+						offsetX: 0,
+						offsetY: -24,
+						text:'<i class="fas fa-fill-drip fa-flip-horizontal"></i>'
+					}
+				case 'erase':
+					return {
+						offsetX: -6,
+						offsetY: -22,
+						text:'<i class="fas fa-eraser"></i>'
+					}
+				case 'flooderase':
+					return {
+						offsetX: -24,
+						offsetY: -23,
+						text:'<i class="fas fa-fill-drip"></i>'
+					}
+			}
+
+		});
 
 		EventBus.$on("setConfigDefaults", function (pDefaults) {
 			kakuLib.init(_me.$refs.canvas, pDefaults);
@@ -112,6 +150,8 @@ export default {
 			window.addEventListener("mouseup", _mouseUp);
 			window.addEventListener("mousemove", _mouseMove);
 		},
+
+
 	},
 };
 </script>

@@ -115,7 +115,7 @@ export default {
 				{
 					value: "floodfill",
 					text: "Floodfill",
-					icon: "fa-fill-drip",
+					icon: "fa-fill-drip fa-flip-horizontal",
 				},
 				{
 					value: "simple",
@@ -135,7 +135,7 @@ export default {
 				{
 					value: "flooderase",
 					text: "FloodEraser",
-					icon: "fa-times",
+					icon: "fa-fill-drip",
 				},
 			],
 			gridSizes: [

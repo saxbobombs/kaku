@@ -79,7 +79,6 @@ const _drawGrid = function () {
 	}
 
 	if(gridItemBorderVisible){
-		console.log(gridItemSize, canvasEl.height);
 		for(var _y = 1; _y * gridItemSize < canvasEl.height; _y++){
 			var _linePosY = gridItemSize * _y;
 			// for lines to to be 1px wide, this fix is needed

@@ -48,6 +48,16 @@ body {
 .canvas-container canvas {
 	display: block;
 	margin: 0 auto;
+	cursor:none;
+}
+
+.cursor {
+	position:absolute;
+	pointer-events:none;
+	font-size:24px;
+	color:#666;
+	text-shadow:1px 1px 0 #fff;
+	line-height: 0;
 }
 
 .browser-comp {
