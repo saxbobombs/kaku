@@ -2,71 +2,26 @@
 	<div>
 		<ul class="control-container">
 			<li>
-				<b-button v-b-modal.modal-1 v-b-tooltip.hover title="image settings">
+				<b-button v-b-modal.image-settings-window v-b-tooltip.hover title="image settings">
 					<i class="fas fa-image"></i>
 				</b-button>
-				<b-modal id="modal-1" title="image settings">
-
-					<b-form>
-						<b-form-group label="grid item size">
-							<b-form-input
-								v-on:change="changeGridItemSize"
-								v-model="gridItemSize"
-								class="griditemsize"
-								type="number"
-								min="1"
-								max="100"
-							/>
-						</b-form-group>
-						<b-form-group label="grid size">
-							<b-form-radio-group
-								class="control-button grid-size-container"
-								buttons
-								v-model="gridSize"
-								v-on:change="chooseGridSize"
-
-							>
-								<i class="group-label fas fa-th"></i>
-								<template v-for="option in gridSizes">
-									<b-form-radio :value="option.value" :key="option.index">
-										{{ option.name }}
-									</b-form-radio>
-								</template>
-							</b-form-radio-group>
-						</b-form-group>
-						<b-form-group label="show grid">
-							<b-form-checkbox-group
-								class="control-button grid-size-container"
-								buttons
-							>
-								<b-form-checkbox v-on:change="changeShowGridLines" v-model="showGridLines" value="1" unchecked-value="0">
-									<template v-if="showGridLines == 1">
-									<i class="fas fa-border-all"></i>
-									</template>
-									<template v-else>
-									<i class="fas fa-border-none"></i>
-									</template>
-								</b-form-checkbox>
-							</b-form-checkbox-group>
-						</b-form-group>
-						<b-form-group label="download">
-							<b-dropdown class="control-button">
-							<template #button-content>
-								<i class="fas fa-file-download"></i> choose format
-							</template>
-							<b-dropdown-item v-on:click="downloadImage('png')"
-								>PNG</b-dropdown-item
-							>
-							<b-dropdown-item v-on:click="downloadImage('jpg')"
-								>JPG</b-dropdown-item
-							>
-							<b-dropdown-item v-on:click="downloadImage('gif')"
-								>GIF</b-dropdown-item
-							>
-						</b-dropdown>
-						</b-form-group>
-					</b-form>
-					</b-modal>
+				<ImageSettingsWindow
+					v-on:submit="onImageSettingsWindowSubmit" />
+			</li>
+			<li>
+				<b-form-checkbox-group
+					class="control-button grid-size-container"
+					buttons
+				>
+					<b-form-checkbox v-on:change="changeShowGridLines" v-model="showGridLines" value="1" unchecked-value="0" v-b-tooltip.hover title="show/hide grid">
+						<template v-if="showGridLines == 1">
+						<i class="fas fa-border-all"></i>
+						</template>
+						<template v-else>
+						<i class="fas fa-border-none"></i>
+						</template>
+					</b-form-checkbox>
+				</b-form-checkbox-group>
 			</li>
 
 			<li>
@@ -104,6 +59,22 @@
 					<i class="fas fa-undo" v-on:click="undo"></i>
 				</b-button>
 			</li>
+			<li>
+				<b-dropdown class="control-button" v-b-tooltip.hover title="download image">
+					<template #button-content>
+						<i class="fas fa-file-download"></i>
+					</template>
+					<b-dropdown-item v-on:click="downloadImage('png')"
+						>PNG</b-dropdown-item
+					>
+					<b-dropdown-item v-on:click="downloadImage('jpg')"
+						>JPG</b-dropdown-item
+					>
+					<b-dropdown-item v-on:click="downloadImage('gif')"
+						>GIF</b-dropdown-item
+					>
+				</b-dropdown>
+			</li>
 		</ul>
 	</div>
 </template>
@@ -113,10 +84,13 @@ import EventBus from "../utils/EventBus";
 import VSwatches from "vue-swatches";
 import "vue-swatches/dist/vue-swatches.css";
 
+import ImageSettingsWindow from './ImageSettingsWindow.vue';
+
 export default {
 	name: "Controls",
 	components: {
 		VSwatches,
+		ImageSettingsWindow
 	},
 
 	mounted() {
@@ -125,7 +99,7 @@ export default {
 			_me.gridSize = pDefaults.gridSize;
 			_me.colorToUse = pDefaults.colorToUse;
 			_me.drawMode = pDefaults.drawMode;
-			_me.showGridLines = pDefaults.showGridLines;
+			_me.showGridLines = pDefaults.showGridLines ? '1' : '0';
 			_me.gridItemSize = pDefaults.gridItemSize;
 		});
 	},
@@ -186,6 +160,13 @@ export default {
 	},
 
 	methods: {
+
+		onImageSettingsWindowSubmit: function(pSettings){
+			var _me = this;
+
+			_me.changeGridItemSize(pSettings.gridItemSize);
+			_me.chooseGridSize(pSettings.gridSize);
+		},
 
 		undo: function(){
 			EventBus.$emit("undo");
