@@ -66,25 +66,50 @@ const _drawGrid = function () {
 		_gridItem.posX = _posX;
 		_gridItem.posY = _posY;
 
-		// for lines to to be 1px wide, this fix is needed
-		// details: https://stackoverflow.com/questions/7530593/html5-canvas-and-line-width/7531540#7531540
-		var _lineFix = 0;
-		if(gridItemBorderVisible){
-			_lineFix = 0.5;
-		}
-
 		_context.beginPath();
-		_context.moveTo(_posX + _lineFix, _posY + _lineFix);
-		_context.lineTo(_posX + gridItemSize + _lineFix, _posY + _lineFix);
-		_context.lineTo(_posX + gridItemSize + _lineFix, _posY + gridItemSize + _lineFix);
-		_context.lineTo(_posX + _lineFix, _posY + gridItemSize + _lineFix);
-		_context.lineTo(_posX + _lineFix, _posY + _lineFix);
+		_context.moveTo(_posX, _posY);
+		_context.lineTo(_posX + gridItemSize, _posY);
+		_context.lineTo(_posX + gridItemSize, _posY + gridItemSize);
+		_context.lineTo(_posX, _posY + gridItemSize);
+		_context.lineTo(_posX, _posY);
 		_context.closePath();
 
-		_context.strokeStyle = _gridItem.bordercolor;
 		_context.fillStyle = _gridItem.bgcolor;
 		_context.fill();
-		if(gridItemBorderVisible){
+	}
+
+	if(gridItemBorderVisible){
+		console.log(gridItemSize, canvasEl.height);
+		for(var _y = 1; _y * gridItemSize < canvasEl.height; _y++){
+			var _linePosY = gridItemSize * _y;
+			// for lines to to be 1px wide, this fix is needed
+			// details: https://stackoverflow.com/questions/7530593/html5-canvas-and-line-width/7531540#7531540
+			_linePosY = Math.floor(_linePosY) + 0.5;
+
+			_context.beginPath();
+			_context.moveTo(0, _linePosY);
+			_context.lineTo(canvasEl.width, _linePosY);
+			_context.lineTo(0, _linePosY);
+			_context.closePath();
+
+			_context.lineWidth = 1;
+			_context.strokeStyle = _gridItem.bordercolor;
+			_context.stroke();
+		}
+		for(var _x = 1; _x * gridItemSize < canvasEl.height; _x++){
+			var _linePosX = gridItemSize * _x;
+			// for lines to to be 1px wide, this fix is needed
+			// details: https://stackoverflow.com/questions/7530593/html5-canvas-and-line-width/7531540#7531540
+			_linePosX = Math.floor(_linePosX) + 0.5;
+
+			_context.beginPath();
+			_context.moveTo(_linePosX, 0);
+			_context.lineTo(_linePosX, canvasEl.height);
+			_context.lineTo(_linePosX, 0);
+			_context.closePath();
+
+			_context.lineWidth = 1;
+			_context.strokeStyle = _gridItem.bordercolor;
 			_context.stroke();
 		}
 	}
@@ -124,8 +149,8 @@ function _applyFloodFill(pColorToUse, pColorToOverride, pGridStartItem) {
 		[(_x - 1) + ':' + (_y + 1)], // bottom left
 	];
 
-	for (var _i = 0; _i < _neighbourKeys.length; _i++) {
-		var _gridItem = gridMap[_neighbourKeys[_i]];
+	for (var _n = 0; _n < _neighbourKeys.length; _n++) {
+		var _gridItem = gridMap[_neighbourKeys[_n]];
 		if (_gridItem && _gridItem.bgcolor === pColorToOverride) {
 			_applyFloodFill(pColorToUse, pColorToOverride, _gridItem);
 		}
@@ -303,9 +328,8 @@ const setGridSize = function (pGridSize) {
 	gridItemsHorizontal = pGridSize;
 	gridItemsVertical = pGridSize;
 
-	// +1 for the right and bottom border
-	canvasEl.width = gridItemsHorizontal * gridItemSize + 1;
-	canvasEl.height = gridItemsVertical * gridItemSize + 1;
+	canvasEl.width = gridItemsHorizontal * gridItemSize;
+	canvasEl.height = gridItemsVertical * gridItemSize;
 
 	_generateGrid();
 	_drawGrid();
