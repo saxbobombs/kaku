@@ -1,4 +1,5 @@
 import Bowser from "bowser";
+import isMobile from "is-mobile";
 
 const bowserParser = Bowser.getParser(window.navigator.userAgent);
 
@@ -20,5 +21,9 @@ export default {
 		}
 
 		return _compatible;
+	},
+
+	isMobile: function(){
+		return isMobile();
 	}
 };

@@ -42,6 +42,10 @@ export default {
 
 		Cursor.initCursor();
 
+		if(Utils.isMobile()){
+			document.body.classList.add('kaku-is-mobile');
+		}
+
 		EventBus.$emit("setConfigDefaults", Config.defaults);
 		// check browser
 		if (!Utils.browserIsCompatible()) {

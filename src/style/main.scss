@@ -1,6 +1,7 @@
 
 html, body{
 	height:100%;
+	overflow: hidden
 }
 body {
 	color: #222 !important;
@@ -119,4 +120,8 @@ body {
 
 .griditemsize{
 	width:100px;
+}
+
+.kaku-is-mobile{
+	/* tbd */
 }
