@@ -13,7 +13,6 @@ export default {
 
 		_me._cursor.appendChild(_icon);
 		document.body.appendChild(_me._cursor);
-		console.log(_me, _me._cursor);
 	},
 
 	addCursorChanger: function(pElement, pCursorContentGetter){
