@@ -11,7 +11,8 @@ let gridMap = {}, // map of griditems
 	canvasEl = null; // ref to canvas
 
 // config
-let gridItemSize,
+let gridSize,
+	gridItemSize,
 	gridItemDefaultBgColor,
 	gridItemDefaultBorderColor,
 	gridItemBorderVisible,
@@ -95,7 +96,7 @@ const _drawGrid = function () {
 			_context.strokeStyle = _gridItem.bordercolor;
 			_context.stroke();
 		}
-		for(var _x = 1; _x * gridItemSize < canvasEl.height; _x++){
+		for(var _x = 1; _x * gridItemSize < canvasEl.width; _x++){
 			var _linePosX = gridItemSize * _x;
 			// for lines to to be 1px wide, this fix is needed
 			// details: https://stackoverflow.com/questions/7530593/html5-canvas-and-line-width/7531540#7531540
@@ -268,7 +269,7 @@ const showGridLines = function(pShow){
 
 const changeGridItemSize = function(pGridItemSize){
 	gridItemSize = pGridItemSize;
-	setGridSize(gridItemsHorizontal);
+	setGridSize(gridSize);
 	_drawGrid();
 }
 
@@ -324,8 +325,17 @@ const cacheGridMap = function(){
  * @param {int} pGridSize
  */
 const setGridSize = function (pGridSize) {
-	gridItemsHorizontal = pGridSize;
-	gridItemsVertical = pGridSize;
+	gridSize = pGridSize;
+
+	if(typeof gridSize === 'string'){
+		var _gridSize = gridSize.split('x');
+		gridItemsHorizontal = _gridSize[0];
+		gridItemsVertical = _gridSize[1];
+	}else{
+		gridItemsHorizontal = pGridSize;
+		gridItemsVertical = pGridSize;
+	}
+
 
 	canvasEl.width = gridItemsHorizontal * gridItemSize;
 	canvasEl.height = gridItemsVertical * gridItemSize;
@@ -354,6 +364,7 @@ const updateHistory = function(){
 const init = function (pCanvas, pDefaults) {
 	canvasEl = pCanvas;
 
+	gridSize = pDefaults.gridSize;
 	gridItemSize = pDefaults.gridItemSize;
 	gridItemDefaultBgColor = pDefaults.gridItemDefaultBgColor;
 	gridItemDefaultBorderColor = pDefaults.gridItemDefaultBorderColor;

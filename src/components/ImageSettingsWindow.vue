@@ -66,7 +66,15 @@ export default {
 				{
 					name: "32x32",
 					value: 32,
-				}
+				},
+				{
+					name: "32x64",
+					value: "32x64",
+				},
+				{
+					name: "64x32",
+					value: "64x32",
+				},
 			],
 		};
 	},
