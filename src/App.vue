@@ -37,7 +37,9 @@ export default {
 	mounted() {
 		var _me = this;
 
-		_me.initCursor();
+		if(!Utils.isMobile()){
+			_me.initCursor();
+		}
 
 		if (Utils.isMobile()) {
 			document.body.classList.add("kaku-is-mobile");
@@ -96,10 +98,6 @@ export default {
 				Cursor.update(document.body);
 			});
 		},
-	},
-
-	onCursorChange: function () {
-		console.log();
 	},
 };
 </script>
