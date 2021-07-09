@@ -37,11 +37,11 @@ export default {
 	mounted() {
 		var _me = this;
 
-		if(!Utils.isMobile()){
+		if(!Utils.isTouchDevice()){
 			_me.initCursor();
 		}
 
-		if (Utils.isMobile()) {
+		if (Utils.isTouchDevice()) {
 			document.body.classList.add("kaku-is-mobile");
 		}
 

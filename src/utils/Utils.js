@@ -23,7 +23,7 @@ export default {
 		return _compatible;
 	},
 
-	isMobile: function(){
+	isTouchDevice: function(){
 		// TODO: touch detection is more suitable
 		return isMobile();
 	}

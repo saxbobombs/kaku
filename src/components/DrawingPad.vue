@@ -2,7 +2,6 @@
 	<div class="inner">
 		<canvas
 			ref="canvas"
-			v-on:mousedown="initDraw($event)"
 			width="0"
 			height="0"
 		></canvas>
@@ -13,6 +12,7 @@
 import EventBus from "../utils/EventBus";
 import kakuLib from "../lib/kakuLib";
 import Cursor from "../utils/Cursor";
+import Utils from "../utils/Utils";
 
 export default {
 	name: "DrawingPad",
@@ -23,6 +23,12 @@ export default {
 
 	mounted() {
 		const _me = this;
+
+		if(Utils.isTouchDevice()){
+			_me.$refs.canvas.addEventListener('touchstart', _me.initDraw);
+		}else{
+			_me.$refs.canvas.addEventListener('mousedown', _me.initDraw);
+		}
 
 		EventBus.$on("setConfigDefaults", function (pDefaults) {
 			kakuLib.init(_me.$refs.canvas, pDefaults);
@@ -94,27 +100,43 @@ export default {
 		initDraw: function (pEvent) {
 			var _me = this;
 
-			// only left mouse button
-			if(pEvent.which !== 1){
+			// only left mouse button on desktop
+			if(!Utils.isTouchDevice() && pEvent.which !== 1){
 				return;
 			}
 
 			kakuLib.cacheGridMap();
 			kakuLib.updateHistory();
-			_me.drawStartGridItem = kakuLib.getGridItemFromEvent(pEvent);
+
+			var _event = (Utils.isTouchDevice()) ? pEvent.touches[0] : pEvent;
+			_me.drawStartGridItem = kakuLib.getGridItemFromEvent(_event);
 
 			var _mouseUp = function (pEvent) {
-				window.removeEventListener("mouseup", _mouseUp);
-				window.removeEventListener("mousemove", _mouseMove);
-				_me.draw(pEvent);
+				var _event = (Utils.isTouchDevice()) ? pEvent.changedTouches[0] : pEvent;
+
+				if(Utils.isTouchDevice()){
+					window.removeEventListener("touchend", _mouseUp);
+					window.removeEventListener("touchmove", _mouseMove);
+				}else{
+					window.removeEventListener("mouseup", _mouseUp);
+					window.removeEventListener("mousemove", _mouseMove);
+				}
+				_me.draw(_event);
 
 				_me.drawStartGridItem = null;
 			};
 			var _mouseMove = function (pEvent) {
-				_me.draw(pEvent);
+				var _event = (Utils.isTouchDevice()) ? pEvent.touches[0] : pEvent;
+				_me.draw(_event);
 			};
-			window.addEventListener("mouseup", _mouseUp);
-			window.addEventListener("mousemove", _mouseMove);
+
+			if(Utils.isTouchDevice()){
+				window.addEventListener("touchend", _mouseUp);
+				window.addEventListener("touchmove", _mouseMove);
+			}else{
+				window.addEventListener("mouseup", _mouseUp);
+				window.addEventListener("mousemove", _mouseMove);
+			}
 		},
 
 
