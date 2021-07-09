@@ -108,11 +108,11 @@ export default {
 			kakuLib.cacheGridMap();
 			kakuLib.updateHistory();
 
-			var _event = (Utils.isTouchDevice()) ? pEvent.touches[0] : pEvent;
+			var _event = _me.getCursorEvent(pEvent);
 			_me.drawStartGridItem = kakuLib.getGridItemFromEvent(_event);
 
 			var _mouseUp = function (pEvent) {
-				var _event = (Utils.isTouchDevice()) ? pEvent.changedTouches[0] : pEvent;
+				var _event = _me.getCursorEvent(pEvent);
 
 				if(Utils.isTouchDevice()){
 					window.removeEventListener("touchend", _mouseUp);
@@ -126,7 +126,7 @@ export default {
 				_me.drawStartGridItem = null;
 			};
 			var _mouseMove = function (pEvent) {
-				var _event = (Utils.isTouchDevice()) ? pEvent.touches[0] : pEvent;
+				var _event = _me.getCursorEvent(pEvent);
 				_me.draw(_event);
 			};
 
@@ -139,6 +139,11 @@ export default {
 			}
 		},
 
+		getCursorEvent: function(pEvent){
+			var _event = Utils.getCursorEvent(pEvent);
+
+			return _event;
+		}
 
 	},
 };

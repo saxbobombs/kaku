@@ -26,5 +26,25 @@ export default {
 	isTouchDevice: function(){
 		// TODO: touch detection is more suitable
 		return isMobile();
+	},
+
+	/**
+	 * return MouseEvent or TouchEvent-Touch
+	 *
+	 * @param {*} pEvent
+	 * @returns
+	 */
+	getCursorEvent(pEvent){
+		var _me = this,
+			_event = pEvent;
+
+		if(_me.isTouchDevice()){
+			_event = pEvent.touches[0];
+			if(!_event){
+				_event = pEvent.changedTouches[0];
+			}
+		}
+
+		return _event;
 	}
 };
