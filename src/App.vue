@@ -60,8 +60,8 @@ export default {
 				switch (_me._drawMode) {
 					case "simple":
 						return {
-							offsetX: -1,
-							offsetY: -24,
+							offsetX: 15,
+							offsetY: 15,
 							text: '<i class="fas fa-pencil-alt"></i>',
 						};
 					case "line":
@@ -72,20 +72,20 @@ export default {
 						};
 					case "floodfill":
 						return {
-							offsetX: 0,
-							offsetY: -24,
+							offsetX: 15,
+							offsetY: 15,
 							text: '<i class="fas fa-fill-drip fa-flip-horizontal"></i>',
 						};
 					case "erase":
 						return {
-							offsetX: -6,
-							offsetY: -22,
+							offsetX: 15,
+							offsetY: 15,
 							text: '<i class="fas fa-eraser"></i>',
 						};
 					case "flooderase":
 						return {
-							offsetX: -24,
-							offsetY: -23,
+							offsetX: 15,
+							offsetY: 15,
 							text: '<i class="fas fa-fill-drip"></i>',
 						};
 				}
