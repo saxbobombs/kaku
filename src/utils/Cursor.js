@@ -18,7 +18,8 @@ export default {
 	addCursorChanger: function(pElement, pCursorContentGetter){
 		var _me = this;
 		pElement.addEventListener('mousemove', function(pEvent){
-			if(_me._cursor && pEvent){
+			if(_me._cursor && pEvent && !pEvent.noPropagationForCursor){
+				pEvent.noPropagationForCursor = true; // mousemove should not propagate for cursor
 				var _c = pCursorContentGetter();
 				if(!_c){
 					return;
