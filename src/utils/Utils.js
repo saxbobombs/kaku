@@ -24,6 +24,7 @@ export default {
 	},
 
 	isMobile: function(){
+		// TODO: touch detection is more suitable
 		return isMobile();
 	}
 };

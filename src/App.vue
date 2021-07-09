@@ -66,8 +66,8 @@ export default {
 						};
 					case "line":
 						return {
-							offsetX: 0,
-							offsetY: -24,
+							offsetX: 15,
+							offsetY: 15,
 							text: '<i class="fas fa-pencil-ruler"></i>',
 						};
 					case "floodfill":

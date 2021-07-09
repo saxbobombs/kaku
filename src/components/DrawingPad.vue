@@ -12,6 +12,7 @@
 <script>
 import EventBus from "../utils/EventBus";
 import kakuLib from "../lib/kakuLib";
+import Cursor from "../utils/Cursor";
 
 export default {
 	name: "DrawingPad",
@@ -31,6 +32,10 @@ export default {
 			_me.drawMode = pDefaults.drawMode;
 			_me.showGridLines = pDefaults.showGridLines;
 			_me.gridItemSize = pDefaults.gridItemSize;
+		});
+
+		Cursor.addCursorChanger(_me.$refs.canvas, function () {
+			return 'hide';
 		});
 
 
