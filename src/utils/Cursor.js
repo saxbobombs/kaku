@@ -57,6 +57,10 @@ export default {
 		pElement.addEventListener('mouseout', function(){
 			_me._cursor.hidden = true;
 		})
+	},
+
+	update: function(pElement){
+		pElement.dispatchEvent(new Event('mousemove'));
 	}
 
 

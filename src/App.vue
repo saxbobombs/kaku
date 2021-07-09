@@ -89,9 +89,11 @@ export default {
 							text: '<i class="fas fa-fill-drip"></i>',
 						};
 				}
-				EventBus.$on("changeDrawMode", function (pDrawMode) {
-					_me._drawMode = pDrawMode;
-				});
+			});
+
+			EventBus.$on("changeDrawMode", function (pDrawMode) {
+				_me._drawMode = pDrawMode;
+				Cursor.update(document.body);
 			});
 		},
 	},
