@@ -46,8 +46,8 @@ export default {
 				}
 
 				_me._cursor.hidden = false;
-				_me._cursor.style.top = pEvent.clientY + ((_me._currentCursor.offsetY) ? _me._currentCursor.offsetY : 0) + 'px';
-				_me._cursor.style.left = pEvent.clientX + ((_me._currentCursor.offsetX) ? _me._currentCursor.offsetX : 0) + 'px';
+				_me._cursor.style.top = pEvent.clientY + ((_me._currentCursor && _me._currentCursor.offsetY) ? _me._currentCursor.offsetY : 0) + 'px';
+				_me._cursor.style.left = pEvent.clientX + ((_me._currentCursor && _me._currentCursor.offsetX) ? _me._currentCursor.offsetX : 0) + 'px';
 				if(_text){
 					_me._cursor.innerHTML = _text;
 				}
