@@ -1,7 +1,7 @@
 
 export default {
 	defaults: {
-		gridSize: 8, // integer or "<width>x<height>"
+		gridSize: '100x100', // integer or "<width>x<height>"
 		colorToUse: '#27AF60',
 		drawMode: 'line',
 		showGridLines: true,
