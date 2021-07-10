@@ -5,29 +5,57 @@
 		v-on:ok="submitModal">
 
 		<b-form>
-			<b-form-group label="grid item size">
-				<b-form-input
-					v-model="gridItemSize"
-					class="griditemsize"
-					type="number"
-					min="1"
-					max="100"
-				/>
-			</b-form-group>
-			<b-form-group label="grid size">
-				<b-form-radio-group
-					class="control-button grid-size-container"
-					buttons
-					v-model="gridSize"
-
-				>
-					<template v-for="option in gridSizes">
-						<b-form-radio :value="option.value" :key="option.index">
-							{{ option.name }}
-						</b-form-radio>
+			<b-tabs content-class="mt-3" ref="tabs">
+				<b-tab title="8bit" active>
+					<template #title>
+						8bit
 					</template>
-				</b-form-radio-group>
-			</b-form-group>
+						<b-form-group label="grid item size">
+							<b-form-input
+								v-model="gridItemSize"
+								class="griditemsize"
+								type="number"
+								min="1"
+								max="100"
+							/>
+						</b-form-group>
+						<b-form-group label="grid size">
+							<b-form-radio-group
+								class="control-button grid-size-container"
+								buttons
+								v-model="gridSize"
+
+							>
+								<template v-for="option in gridSizes">
+									<b-form-radio :value="option.value" :key="option.index">
+										{{ option.name }}
+									</b-form-radio>
+								</template>
+							</b-form-radio-group>
+						</b-form-group>
+				</b-tab>
+				<b-tab title="photo">
+					<template #title>
+						photo
+					</template>
+					<b-form-group label="width (px)">
+						<b-form-input
+							v-model="gridWidth"
+							class="gridWidth"
+							type="number"
+							min="1"
+						/>
+					</b-form-group>
+					<b-form-group label="height (px)">
+						<b-form-input
+							v-model="gridHeight"
+							class="gridHeight"
+							type="number"
+							min="1"
+						/>
+					</b-form-group>
+				</b-tab>
+			</b-tabs>
 		</b-form>
 	</b-modal>
 </template>
@@ -43,6 +71,8 @@ export default {
 		EventBus.$on("setConfigDefaults", function (pDefaults) {
 			_me.gridSize = pDefaults.gridSize;
 			_me.gridItemSize = pDefaults.gridItemSize;
+			_me.gridWidth = pDefaults.gridWidth;
+			_me.gridHeight = pDefaults.gridHeight;
 		});
 	},
 
@@ -50,6 +80,8 @@ export default {
 		return {
 			gridSize: null,
 			gridItemSize: null,
+			gridWidth: null,
+			gridHeight: null,
 			gridSizes: [
 				{
 					name: "8x8",
@@ -84,8 +116,11 @@ export default {
 			var _me = this;
 
 			_me.$emit('submit', {
+				mode: _me.$refs.tabs.currentTab,
 				gridSize: _me.gridSize,
 				gridItemSize: _me.gridItemSize,
+				gridWidth: _me.gridWidth,
+				gridHeight: _me.gridHeight,
 			})
 		}
 	},

@@ -164,8 +164,17 @@ export default {
 		onImageSettingsWindowSubmit: function(pSettings){
 			var _me = this;
 
-			_me.changeGridItemSize(pSettings.gridItemSize);
-			_me.chooseGridSize(pSettings.gridSize);
+			switch(pSettings.mode){
+				case 0: // 8bit
+					_me.changeGridItemSize(pSettings.gridItemSize);
+					_me.chooseGridSize(pSettings.gridSize);
+				break;
+				case 1: // photo
+					_me.changeGridItemSize(1);
+					_me.chooseGridSize(pSettings.gridWidth + 'x' + pSettings.gridHeight);
+					_me.changeShowGridLines('0');
+				break;
+			}
 		},
 
 		undo: function(){
