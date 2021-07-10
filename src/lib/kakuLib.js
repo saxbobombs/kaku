@@ -6,6 +6,8 @@
 
 import DownloadJs from 'downloadjs';
 
+import floodfill from './drawmode/floodfill';
+
 let gridMap = {}, // map of griditems
 	gridMapCache = {}, // cache of maps for some drawing methods
 	canvasEl = null; // ref to canvas
@@ -111,48 +113,6 @@ const _drawGrid = function () {
 			_context.lineWidth = 1;
 			_context.strokeStyle = _gridItem.bordercolor;
 			_context.stroke();
-		}
-	}
-}
-
-/**
- * use floodfill algorithm to fill the grid.
- *
- * recursively check every neighbouring griditem with the same color and recolor it.
- *
- * @param {string} pColorToUse
- * @param {string} pColorToOverride
- * @param {object} pGridStartItem
- */
-function _applyFloodFill(pColorToUse, pColorToOverride, pGridStartItem) {
-	// already colored, ignore
-	if (pGridStartItem.bgcolor === pColorToUse) {
-		return;
-	}
-	// recolor the griditem
-	if (pGridStartItem.bgcolor === pColorToOverride) {
-		pGridStartItem.bgcolor = pColorToUse;
-	}
-
-	// check the neighbours
-	var _x = pGridStartItem.coordX,
-		_y = pGridStartItem.coordY;
-
-	var _neighbourKeys = [
-		[(_x - 1) + ':' + _y], // left
-		[(_x - 1) + ':' + (_y - 1)], // top left
-		[_x + ':' + (_y - 1)], // top
-		[(_x + 1) + ':' + (_y - 1)], // top right
-		[(_x + 1) + ':' + _y], // right
-		[(_x + 1) + ':' + (_y + 1)], // bottom right
-		[_x + ':' + (_y + 1)], // bottom
-		[(_x - 1) + ':' + (_y + 1)], // bottom left
-	];
-
-	for (var _n = 0; _n < _neighbourKeys.length; _n++) {
-		var _gridItem = gridMap[_neighbourKeys[_n]];
-		if (_gridItem && _gridItem.bgcolor === pColorToOverride) {
-			_applyFloodFill(pColorToUse, pColorToOverride, _gridItem);
 		}
 	}
 }
@@ -296,10 +256,11 @@ const applyDrawMode = function (pDrawMode, pColorCode, pGridItems) {
 			_currentGridItem.bgcolor = '#ffffff00';
 		break;
 		case 'floodfill':
-			_applyFloodFill(pColorCode, _currentGridItem.bgcolor, _currentGridItem);
+			floodfill.apply(gridMap, pColorCode, _currentGridItem.bgcolor, _currentGridItem);
+			// _applyFloodFill(pColorCode, _currentGridItem.bgcolor, _currentGridItem);
 			break;
 		case 'flooderase':
-			_applyFloodFill('#ffffff00', _currentGridItem.bgcolor, _currentGridItem);
+			floodfill.apply(gridMap, '#ffffff00', _currentGridItem.bgcolor, _currentGridItem);
 			break;
 		case 'line':
 			_applyLine(pColorCode, pGridItems.start, _currentGridItem)
