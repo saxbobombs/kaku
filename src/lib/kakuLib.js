@@ -69,6 +69,10 @@ const _drawGrid = function () {
 		_gridItem.posX = _posX;
 		_gridItem.posY = _posY;
 
+		if(_gridItem.bgcolor === '#ffffff00'){
+			continue;
+		}
+
 		_context.beginPath();
 		_context.moveTo(_posX, _posY);
 		_context.lineTo(_posX + gridItemSize, _posY);
