@@ -19,6 +19,7 @@ export default {
 
 	created() {
 		this.drawStartGridItem = null;
+		this.moveStartPoint = null;
 	},
 
 	mounted() {
@@ -33,6 +34,7 @@ export default {
 		EventBus.$on("setConfigDefaults", function (pDefaults) {
 			kakuLib.init(_me.$refs.canvas, pDefaults);
 			kakuLib.setGridSize(pDefaults.gridSize);
+			_me.calculateAndEmitDrawingPadPosition();
 			_me.gridSize = pDefaults.gridSize;
 			_me.colorToUse = pDefaults.colorToUse;
 			_me.drawMode = pDefaults.drawMode;
@@ -57,6 +59,7 @@ export default {
 		EventBus.$on("changeGridSize", function (pGridSize) {
 			_me.gridSize = pGridSize;
 			kakuLib.setGridSize(pGridSize);
+			_me.calculateAndEmitDrawingPadPosition();
 		});
 
 		EventBus.$on("downloadImage", function (pImageType) {
@@ -84,6 +87,11 @@ export default {
 		 */
 		draw: function (pEvent) {
 			const _me = this;
+
+			if (_me.drawMode == 'move') {
+				_me.calculateAndEmitDrawingPadPosition(pEvent)
+				return;
+			}
 
 			const _gridItem = kakuLib.getGridItemFromEvent(pEvent);
 			if (_gridItem) {
@@ -124,6 +132,7 @@ export default {
 				_me.draw(_event);
 
 				_me.drawStartGridItem = null;
+				_me.moveStartPoint = null;
 			};
 			var _mouseMove = function (pEvent) {
 				var _event = _me.getCursorEvent(pEvent);
@@ -143,6 +152,30 @@ export default {
 			var _event = Utils.getCursorEvent(pEvent);
 
 			return _event;
+		},
+
+		calculateAndEmitDrawingPadPosition: function(pCursorEvent = null) {
+			var _me = this;
+			
+			if (pCursorEvent) {
+				if(!_me.moveStartPoint) {
+					_me.moveStartPoint = {
+						x: pCursorEvent.clientX - _me.$refs.canvas.parentElement.parentElement.getBoundingClientRect().left,
+						y: pCursorEvent.clientY - _me.$refs.canvas.parentElement.parentElement.getBoundingClientRect().top,
+					};
+				}
+
+				EventBus.$emit('setDrawingPadPositionByEvent', pCursorEvent, _me.moveStartPoint);
+			} else {
+				const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+				const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+				
+				EventBus.$emit('setDrawingPadPosition', { 
+					x: (vw - _me.$refs.canvas.width) / 2,
+					y: (vh - _me.$refs.canvas.height) / 2,
+				});
+			}
+			
 		}
 
 	},

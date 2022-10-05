@@ -31,6 +31,9 @@
 					v-model="drawMode"
 					v-on:change="chooseDrawMode"
 				>
+					<b-form-radio value="move" key="move" v-b-tooltip.hover title="Move Canvas">
+						<i class="fas fa-arrows-alt"></i>
+					</b-form-radio>
 					<template v-for="option in drawModes">
 						<b-form-radio :value="option.value" :key="option.index" v-b-tooltip.hover :title="option.text">
 							<i :class="'fas ' + option.icon"></i>

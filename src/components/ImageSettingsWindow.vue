@@ -34,9 +34,9 @@
 							</b-form-radio-group>
 						</b-form-group>
 				</b-tab>
-				<b-tab title="photo">
+				<b-tab title="photo (tbd)" disabled>
 					<template #title>
-						photo
+						photo (tbd)
 					</template>
 					<b-form-group label="width (px)">
 						<b-form-input

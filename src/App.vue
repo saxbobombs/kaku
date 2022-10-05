@@ -9,12 +9,13 @@
 		>
 			please use a modern browser to avoid unexpected behavior.
 		</b-toast>
-		<div class="canvas-container">
-			<DrawingPad />
-		</div>
 
 		<div class="control-container">
 			<Controls />
+		</div>
+
+		<div class="canvas-container" ref="drawingpad-container">
+			<DrawingPad />
 		</div>
 	</b-container>
 </template>
@@ -44,6 +45,18 @@ export default {
 		if (Utils.isTouchDevice()) {
 			document.body.classList.add("kaku-is-mobile");
 		}
+
+		EventBus.$on('setDrawingPadPositionByEvent', (pCursorEvent, pStartPoint) => {
+			EventBus.$emit('setDrawingPadPosition', {
+				x: pCursorEvent.clientX - pStartPoint.x,
+				y: pCursorEvent.clientY - pStartPoint.y,
+			});
+		});
+
+		EventBus.$on('setDrawingPadPosition', (point) => {	
+			_me.$refs['drawingpad-container'].style.left = point.x + 'px';
+			_me.$refs['drawingpad-container'].style.top = point.y + 'px';
+		});
 
 		EventBus.$emit("setConfigDefaults", Config.defaults);
 		// check browser
@@ -89,6 +102,12 @@ export default {
 							offsetX: 15,
 							offsetY: 15,
 							text: '<i class="fas fa-fill-drip"></i>',
+						};
+					case "move":
+					return {
+							offsetX: 15,
+							offsetY: 15,
+							text: '<i class="fas fa-arrows-alt"></i>',
 						};
 				}
 			});

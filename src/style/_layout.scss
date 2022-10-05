@@ -1,0 +1,30 @@
+#app{
+	padding-top:10px;
+	height:100%;
+	flex:1;
+	display:flex;
+	flex-direction: column;
+}
+
+.canvas-container {
+	margin: 0 auto;
+	flex:1;
+	display:flex;
+	justify-content: center;
+	flex-direction: column;
+    position: absolute;
+}
+
+.canvas-container canvas {
+	display: block;
+	margin: 0 auto;
+	cursor:default;
+}
+
+.control-container {
+	width: 100%;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+    z-index: 999;
+}
