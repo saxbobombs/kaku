@@ -17,8 +17,10 @@ let gridSize,
 	gridItemSize,
 	gridItemDefaultBgColor,
 	gridItemDefaultBorderColor,
-	gridItemBorderVisible,
-	gridItemsHorizontal,
+	gridItemBorderVisible;
+
+// internal	
+let gridItemsHorizontal,
 	gridItemsVertical;
 
 let history = [];
@@ -333,9 +335,9 @@ const init = function (pCanvas, pDefaults) {
 	gridItemSize = pDefaults.gridItemSize;
 	gridItemDefaultBgColor = pDefaults.gridItemDefaultBgColor;
 	gridItemDefaultBorderColor = pDefaults.gridItemDefaultBorderColor;
-	gridItemBorderVisible = pDefaults.gridItemBorderVisible;
-	gridItemsHorizontal = pDefaults.gridItemsHorizontal;
-	gridItemsVertical = pDefaults.gridItemsVertical;
+	gridItemBorderVisible = pDefaults.showGridLines;
+	
+	setGridSize(gridSize);
 }
 
 // API

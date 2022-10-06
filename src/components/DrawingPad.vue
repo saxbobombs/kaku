@@ -33,7 +33,6 @@ export default {
 
 		EventBus.$on("setConfigDefaults", function (pDefaults) {
 			kakuLib.init(_me.$refs.canvas, pDefaults);
-			kakuLib.setGridSize(pDefaults.gridSize);
 			_me.calculateAndEmitDrawingPadPosition();
 			_me.gridSize = pDefaults.gridSize;
 			_me.colorToUse = pDefaults.colorToUse;
