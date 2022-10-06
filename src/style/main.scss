@@ -48,13 +48,25 @@ body {
 	display: inline-block;
 }
 
-.color-preview {
+.btn.cpicker {
+	height: 38px;
+	border-width: 5px;
+	border-style: solid;
+	font-family: 'Font Awesome 5 Free';
+}
+.btn.cpicker::before {
 	display: inline-block;
-	width: 2em;
-	height: 1.5em;
-	border: 1px solid #fff;
-	vertical-align: top;
-	margin-left:10px;
+	position:absolute;
+	left: 12px;
+	top:7px;
+	z-index: 9999;
+}
+.cpicker__color {
+	border: 1px solid;
+}
+.cpicker__footer .cpicker-btn, /* TODO: close button, but kanji */
+.cpicker-title { /* TODO: label, but kanji */
+	display: none;
 }
 
 .grid-size-container {

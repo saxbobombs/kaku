@@ -7,7 +7,7 @@ https://saxoneee.github.io/kaku/dist/
 ## used technologies
 
 * Vue.js 2
-* Vue swatches
+* @duoa/vue-color-picker
 * Bootstrap
 * BootstrapVue
 * downloadjs
@@ -26,5 +26,6 @@ https://saxoneee.github.io/kaku/dist/
 
 ## maybe todos
 
+* real sass support
 * extra current drawop canvas
 * filters

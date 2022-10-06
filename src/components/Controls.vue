@@ -42,20 +42,13 @@
 				</b-form-radio-group>
 			</li>
 			<li>
-				<v-swatches
-					row-length="5"
-					v-model="colorToUse"
-					v-on:input="chooseColor"
-					v-b-tooltip.hover title="color picker"
-				>
-					<b-button class="control-button" slot="trigger">
-						<i class="fas fa-palette"></i>
-						<span
-							class="color-preview"
-							:style="'background:' + colorToUse"
-						></span>
-					</b-button>
-				</v-swatches>
+				<vue-color-picker 
+					v-model="colorToUse" 
+					class="btn control-button btn-secondary fas fa-palette" 
+					v-b-tooltip.hover 
+					title="Color"
+					v-on:change="chooseColor"
+				/>
 			</li>
 			<li>
 				<b-button class="control-button" v-b-tooltip.hover title="undo">
@@ -83,16 +76,20 @@
 </template>
 
 <script>
-import EventBus from "../utils/EventBus";
-import VSwatches from "vue-swatches";
-import "vue-swatches/dist/vue-swatches.css";
 
+import Vue from 'vue';
+import VueColorPicker from '@duoa/vue-color-picker';
+import '@duoa/vue-color-picker/dist/vue-color-picker.css';
+
+// Register
+Vue.use(VueColorPicker);
+
+import EventBus from "../utils/EventBus";
 import ImageSettingsWindow from './ImageSettingsWindow.vue';
 
 export default {
 	name: "Controls",
 	components: {
-		VSwatches,
 		ImageSettingsWindow
 	},
 
