@@ -1,74 +1,57 @@
 <template>
 	<div>
+		<div class="version"><Version /></div>
 		<ul class="control-container">
 			<li>
-				<b-button v-b-modal.image-settings-window v-b-tooltip.hover title="image settings">
+				<b-button class="control-button" v-b-modal.image-settings-window v-b-tooltip.hover.right title="image settings">
 					<i class="fas fa-image"></i>
 				</b-button>
-				<ImageSettingsWindow
-					v-on:submit="onImageSettingsWindowSubmit" />
+				<ImageSettingsWindow v-on:submit="onImageSettingsWindowSubmit" />
 			</li>
 			<li>
-				<b-form-checkbox-group
-					class="control-button grid-size-container"
-					buttons
-				>
-					<b-form-checkbox v-on:change="changeShowGridLines" v-model="showGridLines" value="1" unchecked-value="0" v-b-tooltip.hover title="show/hide grid">
+				<b-form-checkbox-group class="control-button grid-size-container" buttons>
+					<b-form-checkbox v-on:change="changeShowGridLines" v-model="showGridLines" value="1"
+						unchecked-value="0" v-b-tooltip.hover.right title="show/hide grid">
 						<template v-if="showGridLines == 1">
-						<i class="fas fa-border-all"></i>
+							<i class="fas fa-border-all"></i>
 						</template>
 						<template v-else>
-						<i class="fas fa-border-none"></i>
+							<i class="fas fa-border-none"></i>
 						</template>
 					</b-form-checkbox>
 				</b-form-checkbox-group>
 			</li>
 
 			<li>
-				<b-form-radio-group
-					class="control-button drawmode"
-					buttons
-					v-model="drawMode"
-					v-on:change="chooseDrawMode"
-				>
-					<b-form-radio value="move" key="move" v-b-tooltip.hover title="Move Canvas">
+				<b-form-radio-group stacked class="control-button drawmode" buttons v-model="drawMode"
+					v-on:change="chooseDrawMode">
+					<b-form-radio value="move" key="move" v-b-tooltip.hover.right title="Move Canvas">
 						<i class="fas fa-arrows-alt"></i>
 					</b-form-radio>
 					<template v-for="option in drawModes">
-						<b-form-radio :value="option.value" :key="option.index" v-b-tooltip.hover :title="option.text">
+						<b-form-radio :value="option.value" :key="option.index" v-b-tooltip.hover.right :title="option.text">
 							<i :class="'fas ' + option.icon"></i>
 						</b-form-radio>
 					</template>
 				</b-form-radio-group>
 			</li>
 			<li>
-				<vue-color-picker 
-					v-model="colorToUse" 
-					class="btn control-button btn-secondary fas fa-palette" 
-					v-b-tooltip.hover 
-					title="Color"
-					v-on:change="chooseColor"
-				/>
+				<vue-color-picker v-model="colorToUse" class="btn control-button btn-secondary fas fa-palette"
+					v-b-tooltip.hover.right title="Color" v-on:change="chooseColor" />
 			</li>
 			<li>
-				<b-button class="control-button" v-b-tooltip.hover title="undo">
+				<b-button class="control-button" v-b-tooltip.hover.right title="undo">
 					<i class="fas fa-undo" v-on:click="undo"></i>
 				</b-button>
 			</li>
 			<li>
-				<b-dropdown class="control-button" v-b-tooltip.hover title="download image">
+				<b-dropdown class="control-button" v-b-tooltip.hover.right title="download image">
 					<template #button-content>
 						<i class="fas fa-file-download"></i>
 					</template>
-					<b-dropdown-item v-on:click="downloadImage('png')"
-						>PNG</b-dropdown-item
-					>
-					<b-dropdown-item v-on:click="downloadImage('jpg')"
-						>JPG</b-dropdown-item
-					>
-					<b-dropdown-item v-on:click="downloadImage('gif')"
-						>GIF</b-dropdown-item
-					>
+					<b-dropdown-item v-on:click="downloadImage('png')">PNG</b-dropdown-item>
+					<b-dropdown-item v-on:click="downloadImage('jpg')">JPG</b-dropdown-item>
+					<b-dropdown-item v-on:click="downloadImage('gif')">GIF</b-dropdown-item>
 				</b-dropdown>
 			</li>
 		</ul>
@@ -86,11 +69,13 @@ Vue.use(VueColorPicker);
 
 import EventBus from "../utils/EventBus";
 import ImageSettingsWindow from './ImageSettingsWindow.vue';
+import Version from './Version.vue';
 
 export default {
 	name: "Controls",
 	components: {
-		ImageSettingsWindow
+		ImageSettingsWindow,
+		Version
 	},
 
 	mounted() {
@@ -161,31 +146,31 @@ export default {
 
 	methods: {
 
-		onImageSettingsWindowSubmit: function(pSettings){
+		onImageSettingsWindowSubmit: function (pSettings) {
 			var _me = this;
 
-			switch(pSettings.mode){
+			switch (pSettings.mode) {
 				case 0: // 8bit
 					_me.changeGridItemSize(pSettings.gridItemSize);
 					_me.chooseGridSize(pSettings.gridSize);
-				break;
+					break;
 				case 1: // photo
 					_me.changeGridItemSize(1);
 					_me.chooseGridSize(pSettings.gridWidth + 'x' + pSettings.gridHeight);
 					_me.changeShowGridLines('0');
-				break;
+					break;
 			}
 		},
 
-		undo: function(){
+		undo: function () {
 			EventBus.$emit("undo");
 		},
 
-		changeGridItemSize: function(pSize){
+		changeGridItemSize: function (pSize) {
 			EventBus.$emit("changeGridItemSize", parseInt(pSize));
 		},
 
-		changeShowGridLines: function(pIsChecked){
+		changeShowGridLines: function (pIsChecked) {
 			EventBus.$emit("changeShowGridLines", pIsChecked + '' === '1' ? true : false);
 		},
 		/**

@@ -1,5 +1,5 @@
 <template>
-	<b-container id="app">
+	<b-container fluid id="app">
 		<b-toast
 			class="browser-comp"
 			ref="browser-comp"

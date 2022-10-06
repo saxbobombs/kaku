@@ -42,33 +42,6 @@ body {
 	max-width: none !important;
 }
 
-.control-container > li {
-	margin-bottom: 4px;
-	margin-right: 4px;
-	display: inline-block;
-}
-
-.btn.cpicker {
-	height: 38px;
-	border-width: 5px;
-	border-style: solid;
-	font-family: 'Font Awesome 5 Free';
-}
-.btn.cpicker::before {
-	display: inline-block;
-	position:absolute;
-	left: 12px;
-	top:7px;
-	z-index: 9999;
-}
-.cpicker__color {
-	border: 1px solid;
-}
-.cpicker__footer .cpicker-btn, /* TODO: close button, but kanji */
-.cpicker-title { /* TODO: label, but kanji */
-	display: none;
-}
-
 .grid-size-container {
 	color: #fff;
 	position: relative;
@@ -96,4 +69,14 @@ body {
 	/* tbd */
 }
 
+.version {
+	font-size: 10px;
+	transform: rotate(-90deg);
+	position: absolute;
+	top:27px;
+	left:-17px;
+	user-select: none;
+}
+
 @import url('_layout.scss');
+@import url('_controls.scss');
