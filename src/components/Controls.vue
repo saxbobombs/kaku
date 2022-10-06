@@ -30,7 +30,7 @@
 					</b-form-radio>
 					<template v-for="option in drawModes">
 						<b-form-radio :value="option.value" :key="option.index" v-b-tooltip.hover.right :title="option.text">
-							<i :class="'fas ' + option.icon"></i>
+							<i :class="option.icon"></i>
 						</b-form-radio>
 					</template>
 				</b-form-radio-group>
@@ -100,27 +100,32 @@ export default {
 				{
 					value: "floodfill",
 					text: "Floodfill",
-					icon: "fa-fill-drip fa-flip-horizontal",
+					icon: "fas fa-fill-drip fa-flip-horizontal",
 				},
 				{
 					value: "simple",
 					text: "Pencil",
-					icon: "fa-pencil-alt",
+					icon: "fas fa-pencil-alt",
 				},
 				{
 					value: "line",
 					text: "Line",
-					icon: "fa-pencil-ruler",
+					icon: "fas fa-pencil-ruler",
+				},
+				{
+					value: "square",
+					text: "Square",
+					icon: "k-icon k-icon-square-o-white"
 				},
 				{
 					value: "erase",
 					text: "Eraser",
-					icon: "fa-eraser",
+					icon: "fas fa-eraser",
 				},
 				{
 					value: "flooderase",
 					text: "FloodEraser",
-					icon: "fa-fill-drip",
+					icon: "fas fa-fill-drip",
 				},
 			],
 			gridSizes: [

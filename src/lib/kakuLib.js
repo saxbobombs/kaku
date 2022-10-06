@@ -169,6 +169,32 @@ function _applyLine(pColorCode, pStartGridItem, pCurrentGridItem){
 	}
 }
 
+
+/**
+ * draw a square between two points
+ *
+ * @param {string} pColorCode
+ * @param {object} pStartGridItem
+ * @param {object} pCurrentGridItem
+ */
+function _applySquare(pColorCode, pStartGridItem, pCurrentGridItem){
+	// clear the line to be redrawn
+	for(let _gridItemIndex in gridMapCache){
+		gridMap[_gridItemIndex].bgcolor = gridMapCache[_gridItemIndex].bgcolor;
+	}
+
+	for(var _h = 0; _h <= Math.abs(pStartGridItem.coordX - pCurrentGridItem.coordX); _h++) {
+		gridMap[(Math.min(pStartGridItem.coordX,pCurrentGridItem.coordX) + _h) + ':' + pStartGridItem.coordY].bgcolor = pColorCode;
+		gridMap[(Math.min(pStartGridItem.coordX,pCurrentGridItem.coordX) + _h) + ':' + pCurrentGridItem.coordY].bgcolor = pColorCode;
+	}
+
+	for(var _v = 0; _v <= Math.abs(pStartGridItem.coordY - pCurrentGridItem.coordY); _v++) {
+		gridMap[pStartGridItem.coordX + ':' + (Math.min(pStartGridItem.coordY,pCurrentGridItem.coordY) + _v)].bgcolor = pColorCode;
+		gridMap[pCurrentGridItem.coordX + ':' + (Math.min(pStartGridItem.coordY,pCurrentGridItem.coordY) + _v)].bgcolor = pColorCode;
+	}
+	
+}
+
 /**
  *
  */
@@ -270,6 +296,9 @@ const applyDrawMode = function (pDrawMode, pColorCode, pGridItems) {
 			break;
 		case 'line':
 			_applyLine(pColorCode, pGridItems.start, _currentGridItem)
+			break;
+		case 'square':
+			_applySquare(pColorCode, pGridItems.start, _currentGridItem)
 			break;
 		default: console.warn('unbekannter drawmode ' + pDrawMode);
 	}

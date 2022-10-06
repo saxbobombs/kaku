@@ -85,6 +85,12 @@ export default {
 							offsetY: 15,
 							text: '<i class="fas fa-pencil-ruler"></i>',
 						};
+					case "square":
+						return {
+							offsetX: 15,
+							offsetY: 15,
+							text: '<i class="k-icon k-icon-square-o-black"></i>',
+						};
 					case "floodfill":
 						return {
 							offsetX: 15,
