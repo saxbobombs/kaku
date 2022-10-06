@@ -20,6 +20,7 @@ export default {
 	created() {
 		this.drawStartGridItem = null;
 		this.moveStartPoint = null;
+		this.currentGridItemIndex = null;
 	},
 
 	mounted() {
@@ -93,6 +94,13 @@ export default {
 			}
 
 			const _gridItem = kakuLib.getGridItemFromEvent(pEvent);
+
+			if(!_gridItem || _me.currentGridItemIndex === _gridItem.index) {
+				return;
+			}
+
+			_me.currentGridItemIndex = _gridItem.index;
+			
 			if (_gridItem) {
 				kakuLib.applyDrawMode(_me.drawMode, _me.colorToUse, {
 						current: _gridItem,
@@ -132,6 +140,7 @@ export default {
 
 				_me.drawStartGridItem = null;
 				_me.moveStartPoint = null;
+				_me.currentGridItemIndex = null;
 			};
 			var _mouseMove = function (pEvent) {
 				var _event = _me.getCursorEvent(pEvent);
