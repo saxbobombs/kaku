@@ -192,7 +192,41 @@ function _applySquare(pColorCode, pStartGridItem, pCurrentGridItem){
 		gridMap[pStartGridItem.coordX + ':' + (Math.min(pStartGridItem.coordY,pCurrentGridItem.coordY) + _v)].bgcolor = pColorCode;
 		gridMap[pCurrentGridItem.coordX + ':' + (Math.min(pStartGridItem.coordY,pCurrentGridItem.coordY) + _v)].bgcolor = pColorCode;
 	}
-	
+}
+
+function _applyCircle(pColorCode, pStartGridItem, pCurrentGridItem) {
+	// clear the circle to be redrawn
+	for(let _gridItemIndex in gridMapCache){
+		gridMap[_gridItemIndex].bgcolor = gridMapCache[_gridItemIndex].bgcolor;
+	}
+
+	// for better usability, calculate the center via a square
+	const startCoordX = pStartGridItem.coordX;
+	const startCoordY = pStartGridItem.coordY;
+	let currentCoordX = pCurrentGridItem.coordX;
+	let currentCoordY = pCurrentGridItem.coordY;
+	const shortestLine = (Math.abs(startCoordX - currentCoordX) > Math.abs(startCoordY - currentCoordY)) 
+		? Math.abs(startCoordY - currentCoordY) : Math.abs(startCoordX - currentCoordX);
+
+	currentCoordX = startCoordX + shortestLine;
+	currentCoordY = startCoordY + shortestLine;
+
+	const centerX = Math.abs(startCoordX - currentCoordX) / 2;
+	const centerY = Math.abs(startCoordY - currentCoordY) / 2;
+	const steps = 200;
+	const radius = centerX;
+
+	for (var i = 0; i < steps; i++) {
+		const point = {
+			x: Math.round(centerX + radius * Math.cos(2 * Math.PI * i / steps)) + pStartGridItem.coordX,
+			y: Math.round(centerY + radius * Math.sin(2 * Math.PI * i / steps)) + pStartGridItem.coordY
+		}
+
+		if (gridMap[point.x + ':' + point.y]) {
+			gridMap[point.x + ':' + point.y].bgcolor = pColorCode;
+		}
+	}
+
 }
 
 /**
@@ -299,6 +333,9 @@ const applyDrawMode = function (pDrawMode, pColorCode, pGridItems) {
 			break;
 		case 'square':
 			_applySquare(pColorCode, pGridItems.start, _currentGridItem)
+			break;
+		case 'circle':
+			_applyCircle(pColorCode, pGridItems.start, _currentGridItem)
 			break;
 		default: console.warn('unbekannter drawmode ' + pDrawMode);
 	}

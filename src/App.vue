@@ -91,6 +91,12 @@ export default {
 							offsetY: 15,
 							text: '<i class="k-icon k-icon-square-o-black"></i>',
 						};
+					case "circle":
+						return {
+							offsetX: 15,
+							offsetY: 15,
+							text: '<i class="far fa-circle"></i>',
+						};
 					case "floodfill":
 						return {
 							offsetX: 15,
