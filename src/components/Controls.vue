@@ -118,6 +118,11 @@ export default {
 					icon: "k-icon k-icon-square-o-white"
 				},
 				{
+					value: "circle",
+					text: "Circle",
+					icon: "far fa-circle"
+				},
+				{
 					value: "erase",
 					text: "Eraser",
 					icon: "fas fa-eraser",
