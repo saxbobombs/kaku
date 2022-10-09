@@ -211,22 +211,30 @@ function _applyCircle(pColorCode, pStartGridItem, pCurrentGridItem) {
 	currentCoordX = startCoordX + shortestLine;
 	currentCoordY = startCoordY + shortestLine;
 
-	const centerX = Math.abs(startCoordX - currentCoordX) / 2;
-	const centerY = Math.abs(startCoordY - currentCoordY) / 2;
+	let virtualCenterX = (startCoordX - currentCoordX) / 2;
+	if (pStartGridItem.coordX < pCurrentGridItem.coordX) {
+		virtualCenterX = Math.abs(virtualCenterX);
+	}
+	
+	let virtualCenterY = (startCoordY - currentCoordY) / 2;
+	if (pStartGridItem.coordY < pCurrentGridItem.coordY) {
+		virtualCenterY = Math.abs(virtualCenterY);
+	}
+	
 	const steps = 200;
-	const radius = centerX;
+	const radius = Math.abs(virtualCenterX);
+
 
 	for (var i = 0; i < steps; i++) {
 		const point = {
-			x: Math.round(centerX + radius * Math.cos(2 * Math.PI * i / steps)) + pStartGridItem.coordX,
-			y: Math.round(centerY + radius * Math.sin(2 * Math.PI * i / steps)) + pStartGridItem.coordY
+			x: Math.round(virtualCenterX + radius * Math.cos(2 * Math.PI * i / steps)) + startCoordX,
+			y: Math.round(virtualCenterY + radius * Math.sin(2 * Math.PI * i / steps)) + startCoordY
 		}
 
 		if (gridMap[point.x + ':' + point.y]) {
 			gridMap[point.x + ':' + point.y].bgcolor = pColorCode;
 		}
 	}
-
 }
 
 /**
