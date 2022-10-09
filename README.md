@@ -18,7 +18,7 @@ https://saxoneee.github.io/kaku/dist/
 
 * run `npm install` once
 * run `npm run serve`
-* open http://localhost:8080/
+* open http://localhost:9001/
 
 ## build
 
