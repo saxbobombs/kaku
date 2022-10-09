@@ -11,6 +11,9 @@ const name = JSON.parse(packageJson).name || 0;
 module.exports = {
 	publicPath: '', // removes leading-slash from linked sources in build
 	lintOnSave: 'warning', // so the build can still succeed
+    devServer: {
+        port: 9001
+    },
 	configureWebpack: {
 		plugins: [
             new webpack.DefinePlugin({
