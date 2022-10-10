@@ -9,9 +9,9 @@ export default {
 
 		_me._cursor = document.createElement('div');
 		_me._cursor.className = 'cursor';
-		_me._cursor.hidden = true;
+	//	_me._cursor.hidden = true;
 
-		document.body.appendChild(_me._cursor);
+		document.querySelector('#app').appendChild(_me._cursor);
 	},
 
 	/**
@@ -25,7 +25,7 @@ export default {
 		pElement.addEventListener('mousemove', function(pEvent){
 			if(_me._cursor && pEvent && !pEvent.noPropagationForCursor){
 				pEvent.noPropagationForCursor = true; // mousemove should not propagate for cursor
-				_me._cursor.hidden = true;
+			//	_me._cursor.hidden = true;
 				var _c = pCursorContentGetter();
 				if(!_c){
 					return;
@@ -55,7 +55,7 @@ export default {
 		});
 
 		pElement.addEventListener('mouseout', function(){
-			_me._cursor.hidden = true;
+		//	_me._cursor.hidden = true;
 		})
 	},
 

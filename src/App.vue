@@ -87,7 +87,7 @@ export default {
 						};
 					case "square":
 						return {
-							offsetX: 15,
+							offsetX: 10,
 							offsetY: 15,
 							text: '<i class="k-icon k-icon-square-o-black"></i>',
 						};
@@ -116,10 +116,16 @@ export default {
 							text: '<i class="fas fa-fill-drip"></i>',
 						};
 					case "move":
-					return {
+						return {
 							offsetX: 15,
 							offsetY: 15,
 							text: '<i class="fas fa-arrows-alt"></i>',
+						};
+					case "pipette":
+						return {
+							offsetX: 15,
+							offsetY: 15,
+							text: '<i class="fas fa-eye-dropper"></i>',
 						};
 				}
 			});

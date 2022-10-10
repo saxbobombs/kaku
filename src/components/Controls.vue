@@ -87,6 +87,12 @@ export default {
 			_me.showGridLines = pDefaults.showGridLines ? '1' : '0';
 			_me.gridItemSize = pDefaults.gridItemSize;
 		});
+
+		EventBus.$on("changeColor", function(pColor) {
+			if (pColor != '#ffffff00') {
+				_me.colorToUse = pColor;
+			}
+		});
 	},
 
 	data() {
@@ -131,6 +137,11 @@ export default {
 					value: "flooderase",
 					text: "FloodEraser",
 					icon: "fas fa-fill-drip",
+				},
+				{
+					value: "pipette",
+					text: "Pipette",
+					icon: "fas fa-eye-dropper",
 				},
 			],
 			gridSizes: [
@@ -188,7 +199,6 @@ export default {
 		 */
 		chooseColor: function (pColor) {
 			EventBus.$emit("changeColor", pColor);
-			this.colorToUse = pColor;
 		},
 
 		/**

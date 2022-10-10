@@ -46,10 +46,11 @@ export default {
 			return 'hide';
 		});
 
-
 		// listen to events from controls
 		EventBus.$on("changeColor", function (pColorCode) {
-			_me.colorToUse = pColorCode;
+			if (pColorCode != '#ffffff00') {
+				_me.colorToUse = pColorCode;
+			}
 		});
 
 		EventBus.$on("changeDrawMode", function (pDrawMode) {
@@ -94,6 +95,11 @@ export default {
 			}
 
 			const _gridItem = kakuLib.getGridItemFromEvent(pEvent);
+			
+			if (_me.drawMode == 'pipette') {
+				EventBus.$emit("changeColor", _gridItem.bgcolor);
+				return;
+			}
 
 			if(!_gridItem || _me.currentGridItemIndex === _gridItem.index) {
 				return;
