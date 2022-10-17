@@ -1,9 +1,9 @@
 
 export default {
 	defaults: {
-		gridSize: '50x50', // integer or "<width>x<height>"
+		gridSize: '10x10', // integer or "<width>x<height>"
 		colorToUse: '#27AF60',
-		drawMode: 'circle',
+		drawMode: 'simple',
 		showGridLines: true,
 		gridItemSize: 8,
 		gridItemDefaultBgColor: '#ffffff00', // grid item fill color

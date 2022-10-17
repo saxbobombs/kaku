@@ -13,11 +13,14 @@ let gridMap = {}, // map of griditems
 	gridMapCache = {}; // cache of maps for some drawing methods
 
 // config
-let gridSize,
-	gridItemSize,
-	gridItemDefaultBgColor,
-	gridItemDefaultBorderColor,
-	gridItemBorderVisible;
+const config = {
+	gridSize: null,
+	gridItemSize: null,
+	gridItemDefaultBgColor: null,
+	gridItemDefaultBorderColor: null,
+	gridItemBorderVisible: null
+};
+
 
 // internal	
 let gridItemsHorizontal,
@@ -42,8 +45,8 @@ const _generateGrid = function () {
 
 		gridMap[_x + ':' + _y] = {
 			index: i,
-			bgcolor: gridItemDefaultBgColor,
-			bordercolor: gridItemDefaultBorderColor,
+			bgcolor: config.gridItemDefaultBgColor,
+			bordercolor: config.gridItemDefaultBorderColor,
 			coordX: _x,
 			coordY: _y
 		};
@@ -63,8 +66,8 @@ const _drawGrid = function () {
 
 	for (let _key in gridMap) {
 		var _gridItem = gridMap[_key],
-			_posX = (_gridItem.coordX * gridItemSize),
-			_posY = (_gridItem.coordY * gridItemSize);
+			_posX = (_gridItem.coordX * config.gridItemSize),
+			_posY = (_gridItem.coordY * config.gridItemSize);
 
 		_gridItem.posX = _posX;
 		_gridItem.posY = _posY;
@@ -75,17 +78,17 @@ const _drawGrid = function () {
 
 		canvasApi.fillPath([
 			{x: _posX, y: _posY},
-			{x: _posX + gridItemSize, y: _posY},
-			{x: _posX + gridItemSize, y: _posY + gridItemSize},
-			{x: _posX, y: _posY + gridItemSize},
+			{x: _posX + config.gridItemSize, y: _posY},
+			{x: _posX + config.gridItemSize, y: _posY + config.gridItemSize},
+			{x: _posX, y: _posY + config.gridItemSize},
 			{x: _posX, y: _posY}
 		], _gridItem.bgcolor);
 		
 	}
 
-	if(gridItemBorderVisible){
-		for(var _y = 1; _y * gridItemSize < canvasApi.getCanvas().height; _y++){
-			var _linePosY = gridItemSize * _y;
+	if(config.gridItemBorderVisible){
+		for(var _y = 1; _y * config.gridItemSize < canvasApi.getCanvas().height; _y++){
+			var _linePosY = config.gridItemSize * _y;
 			// for lines to to be 1px wide, this fix is needed
 			// details: https://stackoverflow.com/questions/7530593/html5-canvas-and-line-width/7531540#7531540
 			_linePosY = Math.floor(_linePosY) + 0.5;
@@ -97,8 +100,8 @@ const _drawGrid = function () {
 			], _gridItem.bordercolor);
 		}
 
-		for(var _x = 1; _x * gridItemSize < canvasApi.getCanvas().width; _x++){
-			var _linePosX = gridItemSize * _x;
+		for(var _x = 1; _x * config.gridItemSize < canvasApi.getCanvas().width; _x++){
+			var _linePosX = config.gridItemSize * _x;
 			// for lines to to be 1px wide, this fix is needed
 			// details: https://stackoverflow.com/questions/7530593/html5-canvas-and-line-width/7531540#7531540
 			_linePosX = Math.floor(_linePosX) + 0.5;
@@ -244,8 +247,8 @@ const getGridItemFromPosition = function (pPosX, pPosY) {
 		var _gridItem = gridMap[_key];
 
 		// +1/-1, damit bei margin auch bei klick auf border gefärbt wird
-		if (_gridItem.posX < pPosX + 1 && _gridItem.posX + gridItemSize > pPosX - 1 &&
-			_gridItem.posY < pPosY + 1 && _gridItem.posY + gridItemSize > pPosY - 1
+		if (_gridItem.posX < pPosX + 1 && _gridItem.posX + config.gridItemSize > pPosX - 1 &&
+			_gridItem.posY < pPosY + 1 && _gridItem.posY + config.gridItemSize > pPosY - 1
 		) {
 			return _gridItem;
 		}
@@ -286,13 +289,13 @@ const downloadImage = function (pFileName, pImageType) {
  * @param {boolean} pShow
  */
 const showGridLines = function(pShow){
-	gridItemBorderVisible = pShow;
+	config.gridItemBorderVisible = pShow;
 	_drawGrid();
 }
 
 const changeGridItemSize = function(pGridItemSize){
-	gridItemSize = pGridItemSize;
-	setGridSize(gridSize);
+	config.gridItemSize = pGridItemSize;
+	setGridSize(config.gridSize);
 	_drawGrid();
 }
 
@@ -309,11 +312,8 @@ const applyDrawMode = function (pDrawMode, pColorCode, pGridItems) {
 
 	switch (pDrawMode) {
 		case 'simple':
-			if (_currentGridItem.bgcolor === pColorCode) {
-				_redraw = false;
-			} else {
-				_currentGridItem.bgcolor = pColorCode;
-			}
+			canvasApi.fillPixel(_currentGridItem, pColorCode);
+			_redraw = false;
 			break;
 		case 'erase':
 			_currentGridItem.bgcolor = '#ffffff00';
@@ -355,10 +355,10 @@ const cacheGridMap = function(){
  * @param {int} pGridSize
  */
 const setGridSize = function (pGridSize) {
-	gridSize = pGridSize;
+	config.gridSize = pGridSize;
 
-	if(typeof gridSize === 'string'){
-		var _gridSize = gridSize.split('x');
+	if(typeof config.gridSize === 'string'){
+		var _gridSize = config.gridSize.split('x');
 		gridItemsHorizontal = _gridSize[0];
 		gridItemsVertical = _gridSize[1];
 	}else{
@@ -367,8 +367,8 @@ const setGridSize = function (pGridSize) {
 	}
 
 
-	canvasApi.getCanvas().width = gridItemsHorizontal * gridItemSize;
-	canvasApi.getCanvas().height = gridItemsVertical * gridItemSize;
+	canvasApi.getCanvas().width = gridItemsHorizontal * config.gridItemSize;
+	canvasApi.getCanvas().height = gridItemsVertical * config.gridItemSize;
 
 	_generateGrid();
 	_drawGrid();
@@ -392,16 +392,17 @@ const updateHistory = function(){
  * @param {<canvas>} pCanvas
  */
 const init = function (pCanvas, pDefaults) {
-	canvasApi.init(pCanvas);
-	// canvasApi.getCanvas() = pCanvas;
+	canvasApi.init(pCanvas, config);
 
-	gridSize = pDefaults.gridSize;
-	gridItemSize = pDefaults.gridItemSize;
-	gridItemDefaultBgColor = pDefaults.gridItemDefaultBgColor;
-	gridItemDefaultBorderColor = pDefaults.gridItemDefaultBorderColor;
-	gridItemBorderVisible = pDefaults.showGridLines;
+	config.gridSize = pDefaults.gridSize;
+	config.gridItemSize = pDefaults.gridItemSize;
+	config.gridItemDefaultBgColor = pDefaults.gridItemDefaultBgColor;
+	config.gridItemDefaultBorderColor = pDefaults.gridItemDefaultBorderColor;
+	config.gridItemBorderVisible = pDefaults.showGridLines;
 	
-	setGridSize(gridSize);
+	setGridSize(config.gridSize);
+
+	// canvasApi.updateImageData();
 }
 
 // API
