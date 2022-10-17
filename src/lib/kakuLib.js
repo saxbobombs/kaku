@@ -6,11 +6,11 @@
 
 import DownloadJs from 'downloadjs';
 
+import canvasApi from './canvasApi';
 import floodfill from './drawmode/floodfill';
 
 let gridMap = {}, // map of griditems
-	gridMapCache = {}, // cache of maps for some drawing methods
-	canvasEl = null; // ref to canvas
+	gridMapCache = {}; // cache of maps for some drawing methods
 
 // config
 let gridSize,
@@ -58,10 +58,8 @@ const _generateGrid = function () {
  * draw the grid
  */
 const _drawGrid = function () {
-	const _context = canvasEl.getContext('2d');
-
 	// always redraw everything
-	_context.clearRect(0, 0, canvasEl.width, canvasEl.height);
+	canvasApi.clear();
 
 	for (let _key in gridMap) {
 		var _gridItem = gridMap[_key],
@@ -75,50 +73,41 @@ const _drawGrid = function () {
 			continue;
 		}
 
-		_context.beginPath();
-		_context.moveTo(_posX, _posY);
-		_context.lineTo(_posX + gridItemSize, _posY);
-		_context.lineTo(_posX + gridItemSize, _posY + gridItemSize);
-		_context.lineTo(_posX, _posY + gridItemSize);
-		_context.lineTo(_posX, _posY);
-		_context.closePath();
-
-		_context.fillStyle = _gridItem.bgcolor;
-		_context.fill();
+		canvasApi.fillPath([
+			{x: _posX, y: _posY},
+			{x: _posX + gridItemSize, y: _posY},
+			{x: _posX + gridItemSize, y: _posY + gridItemSize},
+			{x: _posX, y: _posY + gridItemSize},
+			{x: _posX, y: _posY}
+		], _gridItem.bgcolor);
+		
 	}
 
 	if(gridItemBorderVisible){
-		for(var _y = 1; _y * gridItemSize < canvasEl.height; _y++){
+		for(var _y = 1; _y * gridItemSize < canvasApi.getCanvas().height; _y++){
 			var _linePosY = gridItemSize * _y;
 			// for lines to to be 1px wide, this fix is needed
 			// details: https://stackoverflow.com/questions/7530593/html5-canvas-and-line-width/7531540#7531540
 			_linePosY = Math.floor(_linePosY) + 0.5;
 
-			_context.beginPath();
-			_context.moveTo(0, _linePosY);
-			_context.lineTo(canvasEl.width, _linePosY);
-			_context.lineTo(0, _linePosY);
-			_context.closePath();
-
-			_context.lineWidth = 1;
-			_context.strokeStyle = _gridItem.bordercolor;
-			_context.stroke();
+			canvasApi.strokePath([
+				{x: 0, y: _linePosY},
+				{x: canvasApi.getCanvas().width, y: _linePosY},
+				{x: 0, y: _linePosY},
+			], _gridItem.bordercolor);
 		}
-		for(var _x = 1; _x * gridItemSize < canvasEl.width; _x++){
+
+		for(var _x = 1; _x * gridItemSize < canvasApi.getCanvas().width; _x++){
 			var _linePosX = gridItemSize * _x;
 			// for lines to to be 1px wide, this fix is needed
 			// details: https://stackoverflow.com/questions/7530593/html5-canvas-and-line-width/7531540#7531540
 			_linePosX = Math.floor(_linePosX) + 0.5;
 
-			_context.beginPath();
-			_context.moveTo(_linePosX, 0);
-			_context.lineTo(_linePosX, canvasEl.height);
-			_context.lineTo(_linePosX, 0);
-			_context.closePath();
-
-			_context.lineWidth = 1;
-			_context.strokeStyle = _gridItem.bordercolor;
-			_context.stroke();
+			canvasApi.strokePath([
+				{x: _linePosX, y: 0},
+				{x: _linePosX, y: canvasApi.getCanvas().height},
+				{x: _linePosX, y: 0},
+			], _gridItem.bordercolor);
 		}
 	}
 }
@@ -272,7 +261,7 @@ const getGridItemFromPosition = function (pPosX, pPosY) {
  * @returns
  */
 const getGridItemFromEvent = function (pEvent) {
-	const _canvasBoundingClientRect = canvasEl.getBoundingClientRect(), // to get the position relative to viewport
+	const _canvasBoundingClientRect = canvasApi.getCanvas().getBoundingClientRect(), // to get the position relative to viewport
         _canvasPosX = _canvasBoundingClientRect.left,
         _canvasPosY = _canvasBoundingClientRect.top;
 
@@ -289,7 +278,7 @@ const getGridItemFromEvent = function (pEvent) {
  * @param {string} pImageType
  */
 const downloadImage = function (pFileName, pImageType) {
-	DownloadJs(canvasEl.toDataURL('image/' + pImageType), pFileName + '.' + pImageType, 'image/' + pImageType);
+	DownloadJs(canvasApi.getCanvas().toDataURL('image/' + pImageType), pFileName + '.' + pImageType, 'image/' + pImageType);
 }
 
 /**
@@ -378,8 +367,8 @@ const setGridSize = function (pGridSize) {
 	}
 
 
-	canvasEl.width = gridItemsHorizontal * gridItemSize;
-	canvasEl.height = gridItemsVertical * gridItemSize;
+	canvasApi.getCanvas().width = gridItemsHorizontal * gridItemSize;
+	canvasApi.getCanvas().height = gridItemsVertical * gridItemSize;
 
 	_generateGrid();
 	_drawGrid();
@@ -403,7 +392,8 @@ const updateHistory = function(){
  * @param {<canvas>} pCanvas
  */
 const init = function (pCanvas, pDefaults) {
-	canvasEl = pCanvas;
+	canvasApi.init(pCanvas);
+	// canvasApi.getCanvas() = pCanvas;
 
 	gridSize = pDefaults.gridSize;
 	gridItemSize = pDefaults.gridItemSize;
