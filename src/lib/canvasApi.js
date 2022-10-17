@@ -60,7 +60,54 @@ const canvasApi = {
         }
     },
 
-    fillPixel: (gridItem, color) => {
+    getGridItemFromPosition: (posX, posY) => {
+        return canvasApi.getGridItemFromCoords(
+            Math.floor(Math.floor(posX) / cache.globalConfig.gridItemSize),
+            Math.floor(Math.floor(posY) / cache.globalConfig.gridItemSize)
+        );
+    },
+
+    /**
+     * todo, maybe needs to be refactored...
+     * 
+     * get top left pixel of grid item for floodfill to operate
+     * 
+     * @param {*} coordX 
+     * @param {*} coordY 
+     */
+    getGridItemFromCoords: (coordX, coordY) => {
+          if(coordX < 0 || coordY < 0) {
+            return null;
+        }
+
+        if(coordX >= cache.canvas.width / cache.globalConfig.gridItemSize || coordY >= cache.canvas.height / cache.globalConfig.gridItemSize) {
+            return null;
+        }
+
+        const imageData = _getImageData();
+
+        const pixelRow = 4 * cache.canvas.width;
+        const itemSize = cache.globalConfig.gridItemSize;
+        const pixelStartRow = itemSize * coordY * pixelRow;
+        const itemRowLength = itemSize * 4;
+        const pixelPosition = pixelStartRow + (itemRowLength * coordX);
+
+        const r = imageData.data[pixelPosition];
+        const g = imageData.data[pixelPosition + 1];
+        const b = imageData.data[pixelPosition + 2];
+        const a = imageData.data[pixelPosition + 3];
+
+        return {
+            index: pixelPosition,
+            bgcolor: utils.convertRgbaToHexA("rgba(" + r + "," + g + "," + b + "," + a + ")"),
+            bordercolor: null, // not needed
+            coordX: coordX,
+			coordY: coordY
+        }
+
+    },
+
+    fillGridItem: (gridItem, color) => {
         const rgba = utils.convertHexToRgba(color);
 
         const imageData = _getImageData();

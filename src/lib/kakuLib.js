@@ -71,7 +71,7 @@ const _drawGrid = function () {
 		_gridItem.posX = _posX;
 		_gridItem.posY = _posY;
 
-		if(_gridItem.bgcolor === '#ffffff00'){
+		if(_gridItem.bgcolor === '#00000000'){
 			continue;
 		}
 
@@ -138,7 +138,7 @@ function _applyLine(pColorCode, pStartGridItem, pCurrentGridItem){
 	const t = true;
 
 	while(t){
-		canvasApi.fillPixel(gridMap[x0 + ':' + y0], pColorCode);
+		canvasApi.fillGridItem(canvasApi.getGridItemFromCoords(x0, y0), pColorCode);
 		if (x0 == x1 && y0 == y1){
 			break;
 		}
@@ -169,13 +169,13 @@ function _applySquare(pColorCode, pStartGridItem, pCurrentGridItem){
 	canvasApi.restoreImage();
 
 	for(var _h = 0; _h <= Math.abs(pStartGridItem.coordX - pCurrentGridItem.coordX); _h++) {
-		canvasApi.fillPixel(gridMap[(Math.min(pStartGridItem.coordX,pCurrentGridItem.coordX) + _h) + ':' + pStartGridItem.coordY], pColorCode);
-		canvasApi.fillPixel(gridMap[(Math.min(pStartGridItem.coordX,pCurrentGridItem.coordX) + _h) + ':' + pCurrentGridItem.coordY], pColorCode);
+		canvasApi.fillGridItem(canvasApi.getGridItemFromCoords(Math.min(pStartGridItem.coordX,pCurrentGridItem.coordX) + _h, pStartGridItem.coordY), pColorCode);
+		canvasApi.fillGridItem(canvasApi.getGridItemFromCoords(Math.min(pStartGridItem.coordX,pCurrentGridItem.coordX) + _h, pCurrentGridItem.coordY), pColorCode);
 	}
 
 	for(var _v = 0; _v <= Math.abs(pStartGridItem.coordY - pCurrentGridItem.coordY); _v++) {
-		canvasApi.fillPixel(gridMap[pStartGridItem.coordX + ':' + (Math.min(pStartGridItem.coordY,pCurrentGridItem.coordY) + _v)], pColorCode);
-		canvasApi.fillPixel(gridMap[pCurrentGridItem.coordX + ':' + (Math.min(pStartGridItem.coordY,pCurrentGridItem.coordY) + _v)], pColorCode);
+		canvasApi.fillGridItem(canvasApi.getGridItemFromCoords(pStartGridItem.coordX, Math.min(pStartGridItem.coordY,pCurrentGridItem.coordY) + _v), pColorCode);
+		canvasApi.fillGridItem(canvasApi.getGridItemFromCoords(pCurrentGridItem.coordX, Math.min(pStartGridItem.coordY,pCurrentGridItem.coordY) + _v), pColorCode);
 	}
 }
 
@@ -213,8 +213,10 @@ function _applyCircle(pColorCode, pStartGridItem, pCurrentGridItem) {
 			y: Math.round(virtualCenterY + radius * Math.sin(2 * Math.PI * i / steps)) + startCoordY
 		}
 
-		if (gridMap[point.x + ':' + point.y]) {
-			canvasApi.fillPixel(gridMap[point.x + ':' + point.y], pColorCode);
+		const gridItem = canvasApi.getGridItemFromCoords(point.x, point.y);
+
+		if (gridItem) {
+			canvasApi.fillGridItem(gridItem, pColorCode);
 		}
 	}
 }
@@ -224,27 +226,6 @@ function _applyCircle(pColorCode, pStartGridItem, pCurrentGridItem) {
  */
 const _cloneGridMap = function(){
 	return JSON.parse(JSON.stringify(gridMap));
-}
-
-/**
- * get grid item via pos
- *
- * @param {number} pPosX
- * @param {number} pPosY
- */
-const getGridItemFromPosition = function (pPosX, pPosY) {
-	for (var _key in gridMap) {
-		var _gridItem = gridMap[_key];
-
-		// +1/-1, damit bei margin auch bei klick auf border gefärbt wird
-		if (_gridItem.posX < pPosX + 1 && _gridItem.posX + config.gridItemSize > pPosX - 1 &&
-			_gridItem.posY < pPosY + 1 && _gridItem.posY + config.gridItemSize > pPosY - 1
-		) {
-			return _gridItem;
-		}
-	}
-
-	return null;
 }
 
 /**
@@ -258,7 +239,8 @@ const getGridItemFromEvent = function (pEvent) {
         _canvasPosX = _canvasBoundingClientRect.left,
         _canvasPosY = _canvasBoundingClientRect.top;
 
-	return getGridItemFromPosition(
+
+	return canvasApi.getGridItemFromPosition(
 		pEvent.clientX - _canvasPosX,
 		pEvent.clientY - _canvasPosY
 	);
@@ -297,43 +279,31 @@ const changeGridItemSize = function(pGridItemSize){
  * @param {object} pGridStartItem
  */
 const applyDrawMode = function (pDrawMode, pColorCode, pGridItems) {
-	let _redraw = true,
-		_currentGridItem = pGridItems.current;
+	const _currentGridItem = pGridItems.current;
 
 	switch (pDrawMode) {
 		case 'simple':
-			canvasApi.fillPixel(_currentGridItem, pColorCode);
-			_redraw = false;
+			canvasApi.fillGridItem(_currentGridItem, pColorCode);
 			break;
 		case 'erase':
-			canvasApi.fillPixel(_currentGridItem, '#ffffff00');
-			_redraw = false;
+			canvasApi.fillGridItem(_currentGridItem, '#00000000');
 		break;
 		case 'floodfill':
-			floodfill.apply(gridMap, pColorCode, _currentGridItem.bgcolor, _currentGridItem);
-			_redraw = false;
-			// _applyFloodFill(pColorCode, _currentGridItem.bgcolor, _currentGridItem);
+			floodfill.apply(pColorCode, _currentGridItem.bgcolor, _currentGridItem);
 			break;
 		case 'flooderase':
-			floodfill.apply(gridMap, '#ffffff00', _currentGridItem.bgcolor, _currentGridItem);
+			floodfill.apply('#00000000', _currentGridItem.bgcolor, _currentGridItem);
 			break;
 		case 'line':
 			_applyLine(pColorCode, pGridItems.start, _currentGridItem)
-			_redraw = false;
 			break;
 		case 'square':
 			_applySquare(pColorCode, pGridItems.start, _currentGridItem)
-			_redraw = false;
 			break;
 		case 'circle':
 			_applyCircle(pColorCode, pGridItems.start, _currentGridItem)
-			_redraw = false;
 			break;
 		default: console.warn('unbekannter drawmode ' + pDrawMode);
-	}
-
-	if (_redraw) {
-		_drawGrid();
 	}
 }
 
@@ -397,7 +367,6 @@ const init = function (pCanvas, pDefaults) {
 export default {
 	init: init,
 	setGridSize: setGridSize,
-	getGridItemFromPosition: getGridItemFromPosition,
 	getGridItemFromEvent: getGridItemFromEvent,
 	applyDrawMode: applyDrawMode,
 	downloadImage: downloadImage,

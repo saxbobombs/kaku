@@ -48,7 +48,7 @@ export default {
 
 		// listen to events from controls
 		EventBus.$on("changeColor", function (pColorCode) {
-			if (pColorCode != '#ffffff00') {
+			if (pColorCode != '#00000000') {
 				_me.colorToUse = pColorCode;
 			}
 		});

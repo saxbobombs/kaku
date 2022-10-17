@@ -89,7 +89,7 @@ export default {
 		});
 
 		EventBus.$on("changeColor", function(pColor) {
-			if (pColor != '#ffffff00') {
+			if (pColor != '#00000000') {
 				_me.colorToUse = pColor;
 			}
 		});
