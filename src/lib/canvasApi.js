@@ -75,13 +75,15 @@ const canvasApi = {
      * @param {*} coordX 
      * @param {*} coordY 
      */
-    getGridItemFromCoords: (coordX, coordY) => {
-          if(coordX < 0 || coordY < 0) {
-            return null;
-        }
-
-        if(coordX >= cache.canvas.width / cache.globalConfig.gridItemSize || coordY >= cache.canvas.height / cache.globalConfig.gridItemSize) {
-            return null;
+    getGridItemFromCoords: (coordX, coordY, strict) => {
+        if (strict) {
+            if(coordX < 0 || coordY < 0) {
+                return null;
+            }
+    
+            if(coordX >= cache.canvas.width / cache.globalConfig.gridItemSize || coordY >= cache.canvas.height / cache.globalConfig.gridItemSize) {
+                return null;
+            }
         }
 
         const imageData = _getImageData();
@@ -99,7 +101,7 @@ const canvasApi = {
 
         return {
             index: pixelPosition,
-            bgcolor: utils.convertRgbaToHexA("rgba(" + r + "," + g + "," + b + "," + a + ")"),
+            bgcolor: utils.convertRgbaToHexA(r, g, b, a),
             bordercolor: null, // not needed
             coordX: coordX,
 			coordY: coordY
@@ -108,6 +110,9 @@ const canvasApi = {
     },
 
     fillGridItem: (gridItem, color) => {
+        if(!gridItem) {
+            return;
+        }
         const rgba = utils.convertHexToRgba(color);
 
         const imageData = _getImageData();

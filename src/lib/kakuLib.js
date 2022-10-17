@@ -8,6 +8,7 @@ import DownloadJs from 'downloadjs';
 
 import canvasApi from './canvasApi';
 import floodfill from './drawmode/floodfill';
+import utils from './utils';
 
 let gridMap = {} // map of griditems
 
@@ -138,7 +139,7 @@ function _applyLine(pColorCode, pStartGridItem, pCurrentGridItem){
 	const t = true;
 
 	while(t){
-		canvasApi.fillGridItem(canvasApi.getGridItemFromCoords(x0, y0), pColorCode);
+		canvasApi.fillGridItem(canvasApi.getGridItemFromCoords(x0, y0, true), pColorCode);
 		if (x0 == x1 && y0 == y1){
 			break;
 		}
@@ -169,13 +170,13 @@ function _applySquare(pColorCode, pStartGridItem, pCurrentGridItem){
 	canvasApi.restoreImage();
 
 	for(var _h = 0; _h <= Math.abs(pStartGridItem.coordX - pCurrentGridItem.coordX); _h++) {
-		canvasApi.fillGridItem(canvasApi.getGridItemFromCoords(Math.min(pStartGridItem.coordX,pCurrentGridItem.coordX) + _h, pStartGridItem.coordY), pColorCode);
-		canvasApi.fillGridItem(canvasApi.getGridItemFromCoords(Math.min(pStartGridItem.coordX,pCurrentGridItem.coordX) + _h, pCurrentGridItem.coordY), pColorCode);
+		canvasApi.fillGridItem(canvasApi.getGridItemFromCoords(Math.min(pStartGridItem.coordX,pCurrentGridItem.coordX) + _h, pStartGridItem.coordY, true), pColorCode);
+		canvasApi.fillGridItem(canvasApi.getGridItemFromCoords(Math.min(pStartGridItem.coordX,pCurrentGridItem.coordX) + _h, pCurrentGridItem.coordY, true), pColorCode);
 	}
 
 	for(var _v = 0; _v <= Math.abs(pStartGridItem.coordY - pCurrentGridItem.coordY); _v++) {
-		canvasApi.fillGridItem(canvasApi.getGridItemFromCoords(pStartGridItem.coordX, Math.min(pStartGridItem.coordY,pCurrentGridItem.coordY) + _v), pColorCode);
-		canvasApi.fillGridItem(canvasApi.getGridItemFromCoords(pCurrentGridItem.coordX, Math.min(pStartGridItem.coordY,pCurrentGridItem.coordY) + _v), pColorCode);
+		canvasApi.fillGridItem(canvasApi.getGridItemFromCoords(pStartGridItem.coordX, Math.min(pStartGridItem.coordY,pCurrentGridItem.coordY) + _v, true), pColorCode);
+		canvasApi.fillGridItem(canvasApi.getGridItemFromCoords(pCurrentGridItem.coordX, Math.min(pStartGridItem.coordY,pCurrentGridItem.coordY) + _v, true), pColorCode);
 	}
 }
 
@@ -213,7 +214,7 @@ function _applyCircle(pColorCode, pStartGridItem, pCurrentGridItem) {
 			y: Math.round(virtualCenterY + radius * Math.sin(2 * Math.PI * i / steps)) + startCoordY
 		}
 
-		const gridItem = canvasApi.getGridItemFromCoords(point.x, point.y);
+		const gridItem = canvasApi.getGridItemFromCoords(point.x, point.y, true);
 
 		if (gridItem) {
 			canvasApi.fillGridItem(gridItem, pColorCode);
@@ -279,8 +280,12 @@ const changeGridItemSize = function(pGridItemSize){
  * @param {object} pGridStartItem
  */
 const applyDrawMode = function (pDrawMode, pColorCode, pGridItems) {
-	const _currentGridItem = pGridItems.current;
+	const _currentGridItem = canvasApi.getGridItemFromCoords(pGridItems.current.coordX, pGridItems.current.coordY, true);
 
+	const colorRgba = utils.convertHexToRgba(pColorCode);
+	console.log('colorRgba', colorRgba);
+	pColorCode = utils.convertRgbaToHexA(colorRgba.r, colorRgba.g, colorRgba.b, colorRgba.a);
+	
 	switch (pDrawMode) {
 		case 'simple':
 			canvasApi.fillGridItem(_currentGridItem, pColorCode);

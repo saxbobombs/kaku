@@ -8,16 +8,25 @@ const utils = {
         };
     },
 
-    convertRgbaToHexA(rgba, forceRemoveAlpha = false) {
-        return "#" + rgba.replace(/^rgba?\(|\s+|\)$/g, '') // Get's rgba / rgb string values
-          .split(',') // splits them at ","
-          .filter((string, index) => !forceRemoveAlpha || index !== 3)
-          .map(string => parseFloat(string)) // Converts them to numbers
-          .map((number, index) => index === 3 ? Math.round(number * 255) : number) // Converts alpha to 255 number
-          .map(number => number.toString(16)) // Converts numbers to hex
-          .map(string => string.length === 1 ? "0" + string : string) // Adds 0 when length of one number is 1
-          .join("") // Puts the array to togehter to a string
-      }
+    convertRgbaToHexA: (r, g, b, a) => {
+        a = (a == 0) ? 0 : 255; // @TODO: alpha channel has some rounding issues
+        var outParts = [
+            r.toString(16),
+            g.toString(16),
+            b.toString(16),
+            parseInt(a * 255).toString(16).substring(0, 2)
+        ];
+
+        // Pad single-digit output values
+        outParts.forEach(function (part, i) {
+            if (part.length === 1) {
+                outParts[i] = '0' + part;
+            }
+        });
+
+
+        return ('#' + outParts.join(''));
+    }
 };
 
 module.exports = utils;

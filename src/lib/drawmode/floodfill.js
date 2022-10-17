@@ -37,7 +37,7 @@ const canvasApi = require('./../canvasApi');
 			var _key = _neighbourKeys[_i],
 				_keyX = parseInt(_key.split(':')[0]),
 				_keyY = parseInt(_key.split(':')[1]);
-				const _gridItem = canvasApi.getGridItemFromCoords(_keyX, _keyY)
+				const _gridItem = canvasApi.getGridItemFromCoords(_keyX, _keyY, true)
 
 			if(_gridItem && _gridItem.bgcolor === pColorToOverride && _stack.indexOf(_key) === -1){
 				_gridItem.bgcolor = pColorToUse;
