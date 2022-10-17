@@ -4,7 +4,8 @@ const cache = {
     canvas: null,
     context: null,
     globalConfig: null,
-    pixelMap: null
+    pixelMap: null,
+    imageData: null
 };
 
 
@@ -24,6 +25,10 @@ const _addPathToContext = (pathList) => {
     
     cache.context.closePath();
 };
+
+const _getImageData = () => {
+    return cache.context.getImageData(0, 0, cache.canvas.width, cache.canvas.height)
+}
 
 /**
  * API
@@ -45,23 +50,20 @@ const canvasApi = {
         cache.context.clearRect(0, 0, cache.canvas.width, cache.canvas.height);
     },
 
-    updateImageData: () => {
-        const imageData = cache.context.getImageData(0, 0, cache.canvas.width, cache.canvas.height);
+    cacheImage: () => {
+        cache.imageData = _getImageData();
+    },
 
-        imageData.data[0] = 39;
-        imageData.data[1] = 175;
-        imageData.data[2] = 96;
-        imageData.data[3] = 255;
-
-        cache.context.putImageData(imageData, 0, 0);
-
-        console.log(imageData);
+    restoreImage: () => {
+        if(cache.imageData) {
+            cache.context.putImageData(cache.imageData, 0, 0);
+        }
     },
 
     fillPixel: (gridItem, color) => {
         const rgba = utils.convertHexToRgba(color);
 
-        const imageData = cache.context.getImageData(0, 0, cache.canvas.width, cache.canvas.height);
+        const imageData = _getImageData();
         const x = gridItem.coordX;
         const y = gridItem.coordY;
         const itemSize = cache.globalConfig.gridItemSize;

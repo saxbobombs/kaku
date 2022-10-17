@@ -126,8 +126,9 @@ export default {
 				return;
 			}
 
-			kakuLib.cacheGridMap();
 			kakuLib.updateHistory();
+
+			kakuLib.cacheImage();
 
 			var _event = _me.getCursorEvent(pEvent);
 			_me.drawStartGridItem = kakuLib.getGridItemFromEvent(_event);

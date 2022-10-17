@@ -9,8 +9,7 @@ import DownloadJs from 'downloadjs';
 import canvasApi from './canvasApi';
 import floodfill from './drawmode/floodfill';
 
-let gridMap = {}, // map of griditems
-	gridMapCache = {}; // cache of maps for some drawing methods
+let gridMap = {} // map of griditems
 
 // config
 const config = {
@@ -123,10 +122,7 @@ const _drawGrid = function () {
  * @param {object} pCurrentGridItem
  */
 function _applyLine(pColorCode, pStartGridItem, pCurrentGridItem){
-	// clear the line to be redrawn
-	for(let _gridItemIndex in gridMapCache){
-		gridMap[_gridItemIndex].bgcolor = gridMapCache[_gridItemIndex].bgcolor;
-	}
+	canvasApi.restoreImage();
 
 	// bresenham's line algorithm
 	let x0 = pStartGridItem.coordX,
@@ -142,7 +138,7 @@ function _applyLine(pColorCode, pStartGridItem, pCurrentGridItem){
 	const t = true;
 
 	while(t){
-		gridMap[x0 + ':' + y0].bgcolor = pColorCode;
+		canvasApi.fillPixel(gridMap[x0 + ':' + y0], pColorCode);
 		if (x0 == x1 && y0 == y1){
 			break;
 		}
@@ -170,27 +166,21 @@ function _applyLine(pColorCode, pStartGridItem, pCurrentGridItem){
  * @param {object} pCurrentGridItem
  */
 function _applySquare(pColorCode, pStartGridItem, pCurrentGridItem){
-	// clear the line to be redrawn
-	for(let _gridItemIndex in gridMapCache){
-		gridMap[_gridItemIndex].bgcolor = gridMapCache[_gridItemIndex].bgcolor;
-	}
+	canvasApi.restoreImage();
 
 	for(var _h = 0; _h <= Math.abs(pStartGridItem.coordX - pCurrentGridItem.coordX); _h++) {
-		gridMap[(Math.min(pStartGridItem.coordX,pCurrentGridItem.coordX) + _h) + ':' + pStartGridItem.coordY].bgcolor = pColorCode;
-		gridMap[(Math.min(pStartGridItem.coordX,pCurrentGridItem.coordX) + _h) + ':' + pCurrentGridItem.coordY].bgcolor = pColorCode;
+		canvasApi.fillPixel(gridMap[(Math.min(pStartGridItem.coordX,pCurrentGridItem.coordX) + _h) + ':' + pStartGridItem.coordY], pColorCode);
+		canvasApi.fillPixel(gridMap[(Math.min(pStartGridItem.coordX,pCurrentGridItem.coordX) + _h) + ':' + pCurrentGridItem.coordY], pColorCode);
 	}
 
 	for(var _v = 0; _v <= Math.abs(pStartGridItem.coordY - pCurrentGridItem.coordY); _v++) {
-		gridMap[pStartGridItem.coordX + ':' + (Math.min(pStartGridItem.coordY,pCurrentGridItem.coordY) + _v)].bgcolor = pColorCode;
-		gridMap[pCurrentGridItem.coordX + ':' + (Math.min(pStartGridItem.coordY,pCurrentGridItem.coordY) + _v)].bgcolor = pColorCode;
+		canvasApi.fillPixel(gridMap[pStartGridItem.coordX + ':' + (Math.min(pStartGridItem.coordY,pCurrentGridItem.coordY) + _v)], pColorCode);
+		canvasApi.fillPixel(gridMap[pCurrentGridItem.coordX + ':' + (Math.min(pStartGridItem.coordY,pCurrentGridItem.coordY) + _v)], pColorCode);
 	}
 }
 
 function _applyCircle(pColorCode, pStartGridItem, pCurrentGridItem) {
-	// clear the circle to be redrawn
-	for(let _gridItemIndex in gridMapCache){
-		gridMap[_gridItemIndex].bgcolor = gridMapCache[_gridItemIndex].bgcolor;
-	}
+	canvasApi.restoreImage();
 
 	// for better usability, calculate the center via a square
 	const startCoordX = pStartGridItem.coordX;
@@ -224,7 +214,7 @@ function _applyCircle(pColorCode, pStartGridItem, pCurrentGridItem) {
 		}
 
 		if (gridMap[point.x + ':' + point.y]) {
-			gridMap[point.x + ':' + point.y].bgcolor = pColorCode;
+			canvasApi.fillPixel(gridMap[point.x + ':' + point.y], pColorCode);
 		}
 	}
 }
@@ -316,10 +306,12 @@ const applyDrawMode = function (pDrawMode, pColorCode, pGridItems) {
 			_redraw = false;
 			break;
 		case 'erase':
-			_currentGridItem.bgcolor = '#ffffff00';
+			canvasApi.fillPixel(_currentGridItem, '#ffffff00');
+			_redraw = false;
 		break;
 		case 'floodfill':
 			floodfill.apply(gridMap, pColorCode, _currentGridItem.bgcolor, _currentGridItem);
+			_redraw = false;
 			// _applyFloodFill(pColorCode, _currentGridItem.bgcolor, _currentGridItem);
 			break;
 		case 'flooderase':
@@ -327,12 +319,15 @@ const applyDrawMode = function (pDrawMode, pColorCode, pGridItems) {
 			break;
 		case 'line':
 			_applyLine(pColorCode, pGridItems.start, _currentGridItem)
+			_redraw = false;
 			break;
 		case 'square':
 			_applySquare(pColorCode, pGridItems.start, _currentGridItem)
+			_redraw = false;
 			break;
 		case 'circle':
 			_applyCircle(pColorCode, pGridItems.start, _currentGridItem)
+			_redraw = false;
 			break;
 		default: console.warn('unbekannter drawmode ' + pDrawMode);
 	}
@@ -340,13 +335,6 @@ const applyDrawMode = function (pDrawMode, pColorCode, pGridItems) {
 	if (_redraw) {
 		_drawGrid();
 	}
-}
-
-/**
- * deep clone the grid for certain draw modes
- */
-const cacheGridMap = function(){
-	gridMapCache = _cloneGridMap();
 }
 
 /**
@@ -409,7 +397,6 @@ const init = function (pCanvas, pDefaults) {
 export default {
 	init: init,
 	setGridSize: setGridSize,
-	cacheGridMap: cacheGridMap,
 	getGridItemFromPosition: getGridItemFromPosition,
 	getGridItemFromEvent: getGridItemFromEvent,
 	applyDrawMode: applyDrawMode,
@@ -418,4 +405,5 @@ export default {
 	changeGridItemSize: changeGridItemSize,
 	undo: undo,
 	updateHistory: updateHistory,
+	cacheImage: canvasApi.cacheImage,
 }
