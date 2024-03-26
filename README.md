@@ -24,6 +24,10 @@ https://saxoneee.github.io/kaku/dist/
 
 * run `npm run build`
 
+# todos
+
+* convertRgbaToHexA fix alpha-channel
+
 ## maybe todos
 
 * real sass support

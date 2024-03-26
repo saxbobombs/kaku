@@ -17,7 +17,15 @@ const canvasApi = require('./../canvasApi');
 
 	var _stack = [pGridStartItem.coordX + ':' + pGridStartItem.coordY];
 
+	var _bremse = 0;
+
 	while(_stack.length > 0){
+
+		_bremse++;
+		if(_bremse > 2000) {
+			//break;
+		}
+
 		var _item = _stack.shift(),
 			_x = parseInt(_item.split(':')[0]),
 			_y = parseInt(_item.split(':')[1]);
@@ -41,11 +49,13 @@ const canvasApi = require('./../canvasApi');
 
 			if(_gridItem && _gridItem.bgcolor === pColorToOverride && _stack.indexOf(_key) === -1){
 				_gridItem.bgcolor = pColorToUse;
-				canvasApi.fillGridItem(_gridItem, pColorToUse);
+				canvasApi.fillGridItem(_gridItem, pColorToUse, false);
 				_stack.push(_key);
 			}
 		}
 	}
+
+	canvasApi.applyImageDataCache();
 }
 
 

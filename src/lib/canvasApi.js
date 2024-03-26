@@ -26,9 +26,13 @@ const _addPathToContext = (pathList) => {
     cache.context.closePath();
 };
 
-const _getImageData = () => {
-    return cache.context.getImageData(0, 0, cache.canvas.width, cache.canvas.height)
-}
+const _getImageData = (ignoreCache = true) => {
+    return (cache.imageData && ignoreCache) ? cache.imageData : cache.context.getImageData(0, 0, cache.canvas.width, cache.canvas.height)
+};
+
+const _updateImageCache = (imageData) => {
+    cache.imageData = imageData;
+};
 
 /**
  * API
@@ -58,6 +62,10 @@ const canvasApi = {
         if(cache.imageData) {
             cache.context.putImageData(cache.imageData, 0, 0);
         }
+    },
+
+    resetImageData: () => {
+        cache.imageData = null;
     },
 
     getGridItemFromPosition: (posX, posY) => {
@@ -109,13 +117,20 @@ const canvasApi = {
 
     },
 
-    fillGridItem: (gridItem, color) => {
+    /**
+     * 
+     * @param {*} gridItem 
+     * @param {*} color 
+     * @param {boolean} cacheOnly yes/no apply directly to image
+     * @returns 
+     */
+    fillGridItem: (gridItem, color, useCache) => {
         if(!gridItem) {
             return;
         }
         const rgba = utils.convertHexToRgba(color);
 
-        const imageData = _getImageData();
+        const imageData = _getImageData(!!useCache);
         const x = gridItem.coordX;
         const y = gridItem.coordY;
         const itemSize = cache.globalConfig.gridItemSize;
@@ -150,9 +165,18 @@ const canvasApi = {
 
         } while (counter < itemSize * itemSize); // only draw x*y times
 
-        cache.context.putImageData(imageData, 0, 0);
+        if (!useCache) {
+            cache.context.putImageData(imageData, 0, 0);
+        } else {
+            _updateImageCache(imageData);
+        }
     },
-    
+
+    applyImageDataCache: () => {
+        if (_getImageData(false)) {
+            cache.context.putImageData(_getImageData(false), 0, 0);
+        }
+    },
 
     fillPath: (pathList, fillStyle) => {
         _addPathToContext(pathList);
@@ -170,6 +194,5 @@ const canvasApi = {
     }
 
 };
-
 
 module.exports = canvasApi;
